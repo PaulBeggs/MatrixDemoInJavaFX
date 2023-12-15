@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="matrix.gui.MatrixController">
+   <left>
+      <VBox prefHeight="400.0" prefWidth="130.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" prefWidth="114.0" text="Rows" />
+            <TextField fx:id="sizeRowsField" prefWidth="34.0" promptText="Rows" />
+            <Label alignment="CENTER" prefWidth="114.0" text="Columns" />
+            <TextField fx:id="sizeColsField" promptText="Columns" />
+            <Button fx:id="generateButton" mnemonicParsing="false" onAction="#handleGenerateButton" prefWidth="114.0" text="Generate Matrix" />
+            <HBox prefHeight="25.0" prefWidth="114.0">
+               <children>
+                  <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSaveButton" prefWidth="57.0" text="Save" />
+                  <Button fx:id="loadButton" mnemonicParsing="false" onAction="#handleLoadButton" prefWidth="57.0" text="Load" />
+               </children>
+            </HBox>
+            <TextArea fx:id="directions" editable="false" minHeight="120.0" minWidth="100.0" text="Click 'generate' to produce a Matrix. The cells are editable; use 'tab' to go through each cell and add an entry." wrapText="true">
+               <VBox.margin>
+                  <Insets top="35.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Times New Roman" size="13.0" />
+               </font>
+            </TextArea>
+            <Label alignment="CENTER" prefHeight="18.0" prefWidth="114.0" text="Target Row" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </Label>
+            <TextField fx:id="targetRow" />
+            <Label alignment="CENTER" prefHeight="17.0" prefWidth="117.0" text="Source Row" />
+            <TextField fx:id="sourceRow" />
+            <Label alignment="CENTER" prefWidth="114.0" text="Multiplier" textAlignment="CENTER" />
+            <TextField fx:id="multiplier" text="2" />
+            <Button fx:id="operationButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#performOperation" text="Compute">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin></Button>
+            <ChoiceBox fx:id="operations" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" />
+            <ChoiceBox fx:id="scenes" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin></ChoiceBox>
+         </children>
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="5.0" top="10.0" />
+         </padding>
+      </VBox>
+   </left>
+   <center>
+      <GridPane fx:id="matrixGrid" BorderPane.alignment="CENTER">
+        <columnConstraints>
+            <ColumnConstraints halignment="CENTER" />
+          <ColumnConstraints halignment="CENTER" />
+          <ColumnConstraints halignment="CENTER" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints valignment="CENTER" />
+          <RowConstraints valignment="CENTER" />
+          <RowConstraints valignment="CENTER" />
+        </rowConstraints>
+         <padding>
+            <Insets bottom="15.0" left="10.0" right="15.0" top="15.0" />
+         </padding>
+      </GridPane>
+   </center>
+</BorderPane>

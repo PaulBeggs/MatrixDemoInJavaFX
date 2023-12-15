@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="matrix.gui.DeterminantController">
+   <left>
+      <VBox prefHeight="570.0" prefWidth="170.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="150.0" text="Determinant's Value" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin></Label>
+            <TextField fx:id="determinantValue" editable="false" prefHeight="25.0" prefWidth="86.0" promptText="Value" />
+            <CheckBox fx:id="checkBox" alignment="CENTER" mnemonicParsing="false" prefHeight="20.0" prefWidth="123.0" text="Show Process" textAlignment="CENTER" />
+            <Button fx:id="findDeterminantButton" mnemonicParsing="false" onAction="#handleDeterminantFunctionality" prefHeight="25.0" prefWidth="150.0" text="Find Determinant">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin></Button>
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSaveButton" prefWidth="150.0" text="Save" />
+            <Label alignment="CENTER" prefHeight="20.0" prefWidth="150.0" text="Properties of Determinants:" textAlignment="CENTER">
+               <font>
+                  <Font name="Times New Roman Bold" size="12.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="35.0" />
+               </VBox.margin>
+            </Label>
+            <TextArea fx:id="directions" editable="false" minHeight="140.0" minWidth="135.0" prefHeight="140.0" prefWidth="150.0" wrapText="true">
+               <font>
+                  <Font name="Times New Roman" size="13.0" />
+               </font>
+            </TextArea>
+            <ChoiceBox fx:id="scenes" prefWidth="150.0">
+               <VBox.margin>
+                  <Insets top="195.0" />
+               </VBox.margin></ChoiceBox>
+         </children>
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="5.0" top="10.0" />
+         </padding>
+      </VBox>
+   </left>
+   <center>
+      <GridPane fx:id="matrixGrid">
+        <columnConstraints>
+            <ColumnConstraints halignment="CENTER" />
+          <ColumnConstraints halignment="CENTER" />
+          <ColumnConstraints halignment="CENTER" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints valignment="CENTER" />
+          <RowConstraints valignment="CENTER" />
+          <RowConstraints valignment="CENTER" />
+        </rowConstraints>
+         <padding>
+            <Insets bottom="15.0" left="10.0" right="15.0" top="15.0" />
+         </padding>
+      </GridPane>
+   </center>
+</BorderPane>
