@@ -28,14 +28,17 @@ public class MatrixView {
     public void updateViews (String fileName, boolean isEditable) {
         List<List<String>> matrixData = MatrixFileHandler.loadMatrixFromFile(fileName);
         if (matrixData != null) {
+
             if (!matrixData.isEmpty() && !matrixData.get(0).isEmpty()) {
                 this.matrix = new Matrix(matrixData.size(), matrixData.get(0).size());
+
             } else {
                 System.out.println("Error: matrixData is empty.");
             }
             System.out.println("2nd matrix data: \n" + matrixData);
             populateMatrixFromData(fileName, isEditable);
             MatrixFileHandler.setMatrix(fileName, matrix);
+            saveToFile(fileName);
         }
     }
 
@@ -44,9 +47,11 @@ public class MatrixView {
             setMatrixTextFields(matrixTextFields);
             matrixGrid.getChildren().clear();
             setMatrixGrid(matrixGrid);
+
             if (sizeRowsField != null && sizeColsField != null) {
                 determineMatrixDimensions(filePath);
                 createMatrixFromFile(filePath, isEditable);
+
             } else {
                 int numRows = 0, numCols = 0;
                 matrixDimensionWOTextFields(numRows, numCols, filePath, isEditable);
@@ -76,6 +81,7 @@ public class MatrixView {
             System.out.println("Rows field set to: " + sizeRowsField.getText());
             setSizeRowsField(sizeRowsField);
             setSizeColsField(sizeColsField);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -104,44 +110,55 @@ public class MatrixView {
 
     private void createMatrixFromFile(String filePath, boolean isEditable) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+
             System.out.println("createMatrixFromFile dimensions: \n" + Integer.parseInt(getSizeRowsField().getText()));
             System.out.println(Integer.parseInt(getSizeColsField().getText()));
+
             matrix = new Matrix(Integer.parseInt(getSizeRowsField().getText()), Integer.parseInt(getSizeColsField().getText()));
+
             for (int row = 0; row < Integer.parseInt(sizeRowsField.getText()); row++) {
-                List<TextField> rowList = createAndAddRow(br.readLine(), row, isEditable);
+                List<TextField> rowList = createAndAddRow(br.readLine(), row, filePath, isEditable);
                 matrixTextFields.add(rowList);
             }
+
             MatrixFileHandler.setMatrix(FilePath.MATRIX_PATH.getPath(), matrix);
         }
     }
 
     private void matrixFromFileWOTextFields(int numRows, int numCols, String filePath, boolean isEditable) throws IOException {
+
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+
             matrix = new Matrix(numRows, numCols);
+
             for (int row = 0; row < numRows; row++) {
-                List<TextField> rowList = createAndAddRow(br.readLine(), row, isEditable);
+
+                List<TextField> rowList = createAndAddRow(br.readLine(), row,filePath, isEditable);
                 matrixTextFields.add(rowList);
+                setMatrixTextFields(matrixTextFields);
             }
-            MatrixFileHandler.setMatrix(filePath, matrix);
         }
     }
 
-    private List<TextField> createAndAddRow(String line, int row, boolean isEditable) {
+    private List<TextField> createAndAddRow(String line, int row, String filePath, boolean isEditable) {
+
         List<TextField> rowList = new ArrayList<>();
         String[] values = line.split("\\s+");
 
         int rowLength = values.length;
 
         for (int col = 0; col < rowLength; col++) {
-            TextField cell = createAndConfigureCell(values[col], row, col, isEditable);
+            TextField cell = createAndConfigureCell(values[col], row, col, filePath, isEditable);
             matrixGrid.add(cell, col, row);
+            setMatrixGrid(matrixGrid);
             rowList.add(cell);
         }
 
         return rowList;
     }
 
-    private TextField createAndConfigureCell(String value, int row, int col, boolean isEditable) {
+    private TextField createAndConfigureCell(String value, int row, int col, String filePath, boolean isEditable) {
+
         TextField cell = new TextField();
         cell.setMinHeight(50);
         cell.setMinWidth(50);
@@ -150,6 +167,7 @@ public class MatrixView {
 
         cell.setText(value);
         this.matrix.setValue(row, col, Double.parseDouble(value));
+        MatrixFileHandler.setMatrix(filePath, matrix);
 
         cell.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*(\\.\\d*)?")) {
@@ -167,7 +185,9 @@ public class MatrixView {
                 try {
                     double numericValue = Double.parseDouble(textValue);
                     matrix.setValue(row, col, numericValue);
-                } catch (NumberFormatException ignored) {}
+                } catch (NumberFormatException e) {
+                    e.getMessage();
+                }
             }
         }
     }

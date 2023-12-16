@@ -10,9 +10,13 @@ public class Matrix implements MatrixOperations {
     private int numRows;
 
     public Matrix(int numRows, int numCols) {
+        if (numRows <= 0 || numCols <= 0) {
+            throw new IllegalArgumentException("Matrix dimensions must be positive. Received numRows: " + numRows + ", numCols: " + numCols);
+        }
+
         this.numRows = numRows;
         this.numCols = numCols;
-        matrix = new double[numRows][numCols];
+        this.matrix = new double[numRows][numCols];
     }
 
     public double getValue(int row, int col) {
@@ -33,6 +37,18 @@ public class Matrix implements MatrixOperations {
         }
     }
 
+    public void setToIdentity() {
+        for (int i = 0; i < this.numRows; i++) {
+            for (int j = 0; j < this.numCols; j++) {
+                if (i == j) {
+                    this.matrix[i][j] = 1; // Set diagonal elements to 1
+                } else {
+                    this.matrix[i][j] = 0; // Set off-diagonal elements to 0
+                }
+            }
+        }
+    }
+
     @Override
     public double[][] getDoubleMatrix() {
         return this.matrix;
@@ -50,11 +66,11 @@ public class Matrix implements MatrixOperations {
 
     @Override
     public boolean isValidRow(int row) {
-        return row >= 0 && row < numRows;
+        return row >= 0 && row <= numRows;
     }
 
     private boolean isValidColumn(int col) {
-        return col >= 0 && col < numCols;
+        return col >= 0 && col <= numCols;
     }
 
     public int getSign() {
