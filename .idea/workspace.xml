@@ -4,51 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4abf2f47-9852-4e6c-b90b-d7b7b33c5173" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/javafx_swt.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MatrixGUI_2.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SavedMatrices/determinants/3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SavedMatrices/determinants/l.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/DataManipulation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/DeterminantController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/DeterminantPopUpController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/FilePath.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/InverseController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/MatrixApp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/RREFController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/SaveController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/SaveOperationType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/Scenes.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/resources/RREFScene.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/resources/SaveScene.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/resources/determinantAnimation.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/resources/determinantScene.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/resources/inverseScene.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/resources/matrixGUI.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/model/Matrix.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/model/MatrixFileHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/model/MatrixOperations.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/model/MatrixView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/model/TriangularizationView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/operators/ElementaryMatrixOperations.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/operators/MatrixDeterminantOperations.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/operators/MatrixInputHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/operators/MatrixInverseOperations.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/operators/MatrixRREF.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/module-info.java" afterDir="false" />
+    <list default="true" id="4abf2f47-9852-4e6c-b90b-d7b7b33c5173" name="Changes" comment="Init commit">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,6 +27,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProblemsViewState">
@@ -91,9 +57,9 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "ShowUsagesActions.previewPropertyKey": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "Testing-branch",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/paulb/IdeaProjects/MatrixGUI_2",
+    "last_opened_file_path": "C:/Users/paulb/IdeaProjects/MatrixGUI",
     "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2"
@@ -141,6 +107,19 @@
       <option name="presentableId" value="Default" />
       <updated>1701567107518</updated>
     </task>
+    <task id="LOCAL-00001" summary="Init commit">
+      <option name="closed" value="true" />
+      <created>1702683088483</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1702683088483</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Init commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Init commit" />
   </component>
 </project>

@@ -71,6 +71,7 @@ public class MatrixController implements DataManipulation{
         scenes.setOnAction(event -> {
             Scenes selectedScene = scenes.getValue();
             try {
+                saveToFile();
                 selectedScene.switchScene(event);
             } catch (IOException e) {
                 e.getMessage();
@@ -128,7 +129,7 @@ public class MatrixController implements DataManipulation{
     public void handleLoadButton() {
         FileChooser fileChooser = new FileChooser();
 
-        fileChooser.setInitialDirectory(new File("C:\\Users\\paulb\\IdeaProjects\\MatrixGUI\\savedMatrices"));
+        fileChooser.setInitialDirectory(new File("C:\\Users\\paulb\\IdeaProjects\\MatrixGUI_2\\SavedMatrices"));
 
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
         File file = fileChooser.showOpenDialog(new Stage());
@@ -273,6 +274,7 @@ public class MatrixController implements DataManipulation{
                     }
                 }
             }
+            saveToFile();
         } else {
                 System.out.println("At least one row is invalid. Fix it to proceed.");
         }
@@ -308,8 +310,9 @@ public class MatrixController implements DataManipulation{
 
                 matrixView.getMatrixTextFields();
                 matrixTextFields.get(rowIndex).get(col).setText(String.valueOf((newValue)));
-                saveToFile();
                 matrixView.saveToFile(FilePath.MATRIX_PATH.getPath());
+                saveToFile();
+
             }
         } catch (NumberFormatException e) {
             System.out.println("Error converting text to double: " + e.getMessage());
