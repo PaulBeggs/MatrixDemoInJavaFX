@@ -23,7 +23,7 @@
             <Label alignment="CENTER" prefWidth="114.0" text="Columns" />
             <TextField fx:id="sizeColsField" promptText="Columns" />
             <Button fx:id="generateButton" mnemonicParsing="false" onAction="#handleGenerateButton" prefWidth="114.0" text="Generate Matrix" />
-            <Button fx:id="clearButton" alignment="CENTER" mnemonicParsing="false" onAction="#handleClearButton" prefWidth="114.0" text="Clear Matrix" />
+            <Button fx:id="clearButton" mnemonicParsing="false" onAction="#handleClearButton" prefWidth="114.0" text="Clear Matrix" />
             <HBox prefHeight="25.0" prefWidth="114.0">
                <children>
                   <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSaveButton" prefWidth="57.0" text="Save" />
@@ -43,11 +43,11 @@
                   <Insets top="30.0" />
                </VBox.margin>
             </Label>
-            <TextField fx:id="targetRow" />
+            <TextField fx:id="targetRow" text="1" />
             <Label alignment="CENTER" prefHeight="17.0" prefWidth="117.0" text="Source Row" />
-            <TextField fx:id="sourceRow" />
+            <TextField fx:id="sourceRow" text="2" />
             <Label alignment="CENTER" prefWidth="114.0" text="Multiplier" textAlignment="CENTER" />
-            <TextField fx:id="multiplier" text="2" />
+            <TextField fx:id="multiplier" text="-2" />
             <Button fx:id="operationButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#performOperation" text="Compute">
                <VBox.margin>
                   <Insets top="20.0" />

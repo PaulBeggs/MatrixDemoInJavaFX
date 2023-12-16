@@ -10,9 +10,10 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import matrix.model.FilePath;
+import matrix.fileManaging.FilePath;
+import matrix.fileManaging.MatrixType;
 import matrix.model.Matrix;
-import matrix.model.MatrixFileHandler;
+import matrix.fileManaging.MatrixFileHandler;
 import matrix.model.MatrixView;
 import javafx.fxml.FXML;
 
@@ -23,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -57,8 +59,10 @@ public class MatrixController implements DataManipulation{
         matrixView = new MatrixView(matrix, matrixGrid, matrixTextFields);
 
         // Listeners to handle changes in the size fields.
-        integerOnlyListener(sizeRowsField, "Rows");
-        integerOnlyListener(sizeColsField, "Cols");
+        integerOnlyListener(sourceRow, "sourceRow");
+        integerOnlyListener(targetRow, "targetRow");
+        integerOnlyListener(sizeRowsField, "sizeRows");
+        integerOnlyListener(sizeColsField, "sizeCols");
 
         operations.getItems().addAll("Swap Rows", "Multiply Rows", "Add Rows");
         operations.setValue("Swap Rows");
@@ -79,7 +83,7 @@ public class MatrixController implements DataManipulation{
         directions.setWrapText(true);
         directions.setEditable(false);
 
-        matrixView.updateViews(FilePath.MATRIX_PATH.getPath(), true);
+        matrixView.updateViews(FilePath.MATRIX_PATH.getPath(), MatrixType.REGULAR, true);
         update();
     }
 
@@ -123,7 +127,6 @@ public class MatrixController implements DataManipulation{
         SaveController saveController = loader.getController();
         saveController.setMatrixTextFields(matrixTextFields);
         saveController.setStage(saveStage);
-        saveController.setSavableController(this, SaveOperationType.MATRIX_ONLY);
 
         Scene saveScene = new Scene(root);
         saveStage.setScene(saveScene);
@@ -134,14 +137,14 @@ public class MatrixController implements DataManipulation{
     public void handleLoadButton() {
         FileChooser fileChooser = new FileChooser();
 
-        fileChooser.setInitialDirectory(new File("C:\\Users\\paulb\\IdeaProjects\\MatrixGUI_2\\SavedMatrices"));
+        fileChooser.setInitialDirectory(new File("C:\\Users\\paulb\\IdeaProjects\\MatrixGUI_2\\SavedMatrices\\matrices"));
 
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
         File file = fileChooser.showOpenDialog(new Stage());
 
         if (file != null) {
             String filePath = file.getAbsolutePath();
-            matrixView.updateViews(filePath, true);
+//            matrixView.updateViews(filePath, MatrixType.REGULAR, true);
             saveToFile();
         }
     }
@@ -221,7 +224,7 @@ public class MatrixController implements DataManipulation{
 
             }
 
-            matrixView.saveToFile(FilePath.MATRIX_PATH.getPath());
+//            matrixView.updateViews(FilePath.MATRIX_PATH.getPath(), MatrixType.REGULAR, true);
             saveToFile();
         } catch (NumberFormatException e) {
             System.out.println("Error converting text to double: " + e.getMessage());
@@ -282,22 +285,32 @@ public class MatrixController implements DataManipulation{
     @Override
     public void saveToFile() {
         matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
+
+        // If the matrix is null, populate the file and try to get the matrix again
+        if (matrix == null) {
+            MatrixFileHandler.populateFileIfEmpty(FilePath.MATRIX_PATH.getPath());
+            matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
+
+            // If still null after trying to populate, log an error and return
+            if (matrix == null) {
+                System.out.println("Error: Unable to load or create the matrix.");
+                return;
+            }
+        }
+
         matrixView.setMatrixTextFields(matrixTextFields);
         matrixView.updateMatrixFromUI();
-        matrixView.saveToFile(FilePath.MATRIX_PATH.getPath());
 
-        if (matrix != null) {
-            List<List<String>> matrixData = matrixView.parseMatrixData(matrix);
-            if (matrixData != null) {
-                MatrixFileHandler.saveMatrixToFile(FilePath.MATRIX_PATH.getPath(), matrixData);
-                MatrixFileHandler.setMatrix(FilePath.MATRIX_PATH.getPath(), matrix);
-            } else {
-                System.out.println("Error: Matrix data is null.");
-            }
+        List<List<String>> matrixData = matrixView.parseMatrixData(matrix);
+        if (matrixData != null) {
+            MatrixFileHandler.saveMatrixDataToFile(FilePath.MATRIX_PATH.getPath(),
+                    BigDecimal.valueOf(0), matrixData, MatrixType.REGULAR);
+            MatrixFileHandler.setMatrix(FilePath.MATRIX_PATH.getPath(), matrix);
         } else {
-            System.out.println("Error: Matrix is null.");
+            System.out.println("Error: Matrix data is null.");
         }
     }
+
 
     private void updateMatrixGrid(Boolean identityCheck) {
         matrixGrid.getChildren().clear();

@@ -8,4 +8,6 @@ module MatrixGUI_2 {
     opens matrix.model;
     exports matrix.operators;
     opens matrix.operators;
+    exports matrix.fileManaging;
+    opens matrix.fileManaging;
 }

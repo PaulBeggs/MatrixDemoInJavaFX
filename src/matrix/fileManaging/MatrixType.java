@@ -1,4 +1,4 @@
-package matrix.model;
+package matrix.fileManaging;
 
 public enum MatrixType {
     DETERMINANT,

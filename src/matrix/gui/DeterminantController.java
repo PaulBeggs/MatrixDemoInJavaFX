@@ -1,6 +1,5 @@
 package matrix.gui;
 
-import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,9 +8,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import matrix.model.FilePath;
+import matrix.fileManaging.FilePath;
+import matrix.fileManaging.MatrixType;
 import matrix.model.Matrix;
-import matrix.model.MatrixFileHandler;
+import matrix.fileManaging.MatrixFileHandler;
 import matrix.model.MatrixView;
 import matrix.operators.MatrixDeterminantOperations;
 
@@ -41,33 +41,13 @@ public class DeterminantController implements DataManipulation {
     private BigDecimal determinant;
     private boolean tickedBox;
     private boolean determinantIsZero = false;
-
-    private Movement clock;
-
-    private class Movement extends AnimationTimer {
-
-        private final long FRAMES_PER_SEC = 50L;
-        private final long INTERVAL = 1000000L / FRAMES_PER_SEC;
-        private long last = 0;
-
-        @Override
-        public void handle(long now) {
-            if (now - last > INTERVAL) {
-                //System.out.println("This is running!");
-//                if (matrixGrid.getBoundsInParent().getMaxX() > borderPane.getPrefWidth()) {
-//                    borderPane.setPrefWidth(matrixGrid.getBoundsInParent().getMaxX() + 10);
-//                }
-
-                matrixView.saveToFile(FilePath.MATRIX_PATH.getPath());
-                saveToFile();
-                last = now;
-            }
-
-        }
-    }
+    private long AUTO_SAVE_INTERVAL;
+    private boolean isEditable;
 
     @FXML
     private void initialize() {
+        setupAutoSave();
+        isEditable = true;
         tickedBox = false;
         matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
 
@@ -94,37 +74,24 @@ public class DeterminantController implements DataManipulation {
         scenes.setOnAction(event -> {
             Scenes selectedScene = scenes.getValue();
             try {
-                stop();
                 selectedScene.switchScene(event);
             } catch (IOException e) {
                 e.getMessage();
             }
         });
-        clock = new Movement();
 
+        matrixView.updateViews(FilePath.MATRIX_PATH.getPath(), MatrixType.REGULAR, true);
         update();
     }
 
     @FXML
-    public void start() {
-        clock.start();
-    }
-
-    @FXML
-    public void stop() {
-        clock.stop();
-    }
-
-    @FXML
     public void handleDeterminantFunctionality() {
-        stop();
         tickedBox = true;
         // System.out.println("2nd Matrix: \n" + matrix + "\n");
 
         if (checkBox.isSelected()) {
             showDeterminantAnimation();
-
-            stop();
+            isEditable = false;
         }
         determinantValue.setText(String.valueOf(determinant));
         processMatrixForDeterminant();
@@ -146,14 +113,12 @@ public class DeterminantController implements DataManipulation {
     private void handleNonZeroDeterminant() {
 //        if (tickedBox) {
 //            matrix = MatrixFileHandler.getMatrix(FilePath.TRIANGULAR_PATH.getPath());
-//            matrixView.updateViews(FilePath.TRIANGULAR_PATH.getPath(), false);
 //            stop();
 //        }
     }
 
     private void handleMissingMatrix() {
-        //System.out.println("Matrix not found. Generate a matrix first.");
-        stop();
+        System.out.println("Matrix not found. Generate a matrix first.");
     }
 
     @Override
@@ -173,11 +138,11 @@ public class DeterminantController implements DataManipulation {
             return;
         }
 
-        this.saveController = loader.getController();
-        saveController.setMatrixTextFields(matrixTextFields);
-        saveController.setDeterminantValue(determinant);
-        saveController.setStage(saveStage);
-        saveController.setSavableController(this, SaveOperationType.MATRIX_AND_DETERMINANT);
+//        this.saveController = loader.getController();
+//        saveController.setMatrixTextFields(matrixTextFields);
+//        saveController.setDeterminantValue(determinant);
+//        saveController.setStage(saveStage);
+//        saveController.setSavableController(this, SaveOperationType.MATRIX_AND_DETERMINANT);
 
 
         Scene saveScene = new Scene(root);
@@ -187,6 +152,7 @@ public class DeterminantController implements DataManipulation {
 
     private void showDeterminantAnimation() {
         if (!determinantIsZero) {
+            AUTO_SAVE_INTERVAL = 1000000000;
 //
 //            Stage animationStage = new Stage();
 //            animationStage.setTitle("Determinant Animation");
@@ -210,10 +176,9 @@ public class DeterminantController implements DataManipulation {
 //            Scene animationScene = new Scene(root);
 //            animationStage.setScene(animationScene);
 //            animationStage.show();
-//            stop();
+
         } else {
             showErrorPopup("Determinant is either zero or undefined. Therefore, the matrix is not invertible.");
-            stop();
         }
     }
 
@@ -228,18 +193,15 @@ public class DeterminantController implements DataManipulation {
 
     @Override
     public void update() {
-        matrixView.updateViews(FilePath.MATRIX_PATH.getPath(), true);
         if (matrix != null) {
             this.determinant = determinantOperations.calculateDeterminant();
             List<List<String>> matrixData = matrixView.parseMatrixData(matrix);
-            MatrixFileHandler.saveMatrixAndDeterminantToFile
-                    (FilePath.DETERMINANT_PATH.getPath(), determinant,
-                            matrixData);
+            MatrixFileHandler.saveMatrixDataToFile(
+                    FilePath.DETERMINANT_PATH.getPath(), determinant,
+                            matrixData, MatrixType.DETERMINANT);
             processMatrixForDeterminant();
-            start();
         } else {
             handleMissingMatrix();
-            stop();
         }
     }
 
@@ -263,8 +225,6 @@ public class DeterminantController implements DataManipulation {
                 numCols = Math.max(numCols, values.length);
             }
 
-            start();
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -273,13 +233,13 @@ public class DeterminantController implements DataManipulation {
     @Override
     public void saveToFile() {
         matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
-        matrixView.saveToFile(FilePath.MATRIX_PATH.getPath());
         matrixView.updateMatrixFromUI();
 
         if (matrix != null) {
             List<List<String>> matrixData = matrixView.parseMatrixData(matrix);
             if (matrixData != null) {
-                MatrixFileHandler.saveMatrixToFile(FilePath.MATRIX_PATH.getPath(), matrixData);
+                MatrixFileHandler.saveMatrixDataToFile(FilePath.MATRIX_PATH.getPath(),
+                        BigDecimal.valueOf(0), matrixData, MatrixType.DETERMINANT);
             } else {
                 System.out.println("Error: Matrix data is null.");
             }
@@ -291,7 +251,7 @@ public class DeterminantController implements DataManipulation {
     @Override
     public void setupAutoSave() {
         Timer autoSaveTimer = new Timer();
-        long AUTO_SAVE_INTERVAL = 500;
+        AUTO_SAVE_INTERVAL = 500;
         autoSaveTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {

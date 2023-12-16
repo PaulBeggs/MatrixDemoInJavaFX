@@ -1,8 +1,9 @@
 package matrix.operators;
 
-import matrix.model.FilePath;
+import matrix.fileManaging.FilePath;
+import matrix.fileManaging.MatrixType;
 import matrix.model.Matrix;
-import matrix.model.MatrixFileHandler;
+import matrix.fileManaging.MatrixFileHandler;
 import matrix.model.MatrixView;
 import matrix.model.TriangularizationView;
 
@@ -95,7 +96,7 @@ public class MatrixDeterminantOperations {
             List<List<String>> matrixData = matrixView.parseMatrixData(matrix);
             if (matrixData != null) {
                 System.out.println("This is the matrixData inside DeterminantOperations: \n" + matrixData);
-                MatrixFileHandler.saveMatrixToFile(FilePath.TRIANGULAR_PATH.getPath(), matrixData);
+                MatrixFileHandler.saveMatrixDataToFile(FilePath.TRIANGULAR_PATH.getPath(), BigDecimal.valueOf(0), matrixData, MatrixType.REGULAR);
             }
         }
 

@@ -1,4 +1,4 @@
-package matrix.model;
+package matrix.fileManaging;
 
 public enum FilePath {
     AUGMENTED_PATH("SavedMatrices/augmented/augmented_data.txt"),

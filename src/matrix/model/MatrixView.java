@@ -4,10 +4,14 @@ import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 
 import javafx.scene.layout.GridPane;
+import matrix.fileManaging.FilePath;
+import matrix.fileManaging.MatrixFileHandler;
+import matrix.fileManaging.MatrixType;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +28,7 @@ public class MatrixView {
         this.matrixTextFields = matrixTextFields;
     }
 
-    public void updateViews (String fileName, boolean isEditable) {
+    public void updateViews (String fileName, MatrixType matrixType, boolean isEditable) {
         List<List<String>> matrixData = MatrixFileHandler.loadMatrixFromFile(fileName);
         if (matrixData != null) {
 
@@ -37,7 +41,7 @@ public class MatrixView {
             System.out.println("2nd matrix data: \n" + matrixData);
             populateMatrixFromData(fileName, isEditable);
             MatrixFileHandler.setMatrix(fileName, matrix);
-            saveToFile(fileName);
+            saveToFile(fileName, matrixType);
         }
     }
 
@@ -127,12 +131,16 @@ public class MatrixView {
     private void matrixFromFileWOTextFields(int numRows, int numCols, String filePath, boolean isEditable) throws IOException {
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-
-            matrix = new Matrix(numRows, numCols);
-
+            if (numCols == 0) {
+                if (numRows == 0) {
+                    matrix = new Matrix(1, 1);
+                }
+            } else {
+                matrix = new Matrix(numRows, numCols);
+            }
             for (int row = 0; row < numRows; row++) {
 
-                List<TextField> rowList = createAndAddRow(br.readLine(), row,filePath, isEditable);
+                List<TextField> rowList = createAndAddRow(br.readLine(), row, filePath, isEditable);
                 matrixTextFields.add(rowList);
                 setMatrixTextFields(matrixTextFields);
             }
@@ -169,10 +177,11 @@ public class MatrixView {
         MatrixFileHandler.setMatrix(filePath, matrix);
 
         cell.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*(\\.\\d*)?")) {
-                cell.setText(newValue.replaceAll("[^\\d.]", ""));
+            if (!newValue.matches("-?\\d*(\\.\\d*)?")) {
+                cell.setText(newValue.replaceAll("[^-\\d.]", ""));
             }
         });
+
 
         return cell;
     }
@@ -194,7 +203,7 @@ public class MatrixView {
         }
     }
 
-    public void saveToFile(String matrixFileName) {
+    public void saveToFile(String matrixFileName, MatrixType matrixType) {
         List<List<String>> matrixData = new ArrayList<>();
         for (int row = 0; row < matrix.getRows(); row++) {
             List<String> rowData = new ArrayList<>();
@@ -205,7 +214,7 @@ public class MatrixView {
         }
         //System.out.println("after saveToFile inside matrixView");
         //textFieldToString(matrixTextFields);
-        MatrixFileHandler.saveMatrixToFile(matrixFileName, matrixData);
+        MatrixFileHandler.saveMatrixDataToFile(matrixFileName, BigDecimal.valueOf(0), matrixData, matrixType);
     }
 
 

@@ -7,6 +7,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import matrix.fileManaging.FilePath;
+import matrix.fileManaging.MatrixFileHandler;
 import matrix.model.*;
 import javafx.fxml.FXML;
 

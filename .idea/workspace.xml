@@ -4,26 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4abf2f47-9852-4e6c-b90b-d7b7b33c5173" name="Changes" comment="Got the Matrix Controller to work with saving EMOs.">
-      <change afterPath="$PROJECT_DIR$/src/matrix/model/MatrixType.java" afterDir="false" />
+    <list default="true" id="4abf2f47-9852-4e6c-b90b-d7b7b33c5173" name="Changes" comment="Finalized Matrix Controller. for real this time I think">
+      <change afterPath="$PROJECT_DIR$/SavedMatrices/augmented/augmented_data.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SavedMatrices/custom/custom_data.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SavedMatrices/eigen/eigen_data.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SavedMatrices/inverse/inverse_data.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SavedMatrices/matrices/1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SavedMatrices/matrices/identity.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SavedMatrices/rref/rref_data.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/matrix/fileManaging/FileUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SavedMatrices/determinants/3.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SavedMatrices/determinants/determiantn2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SavedMatrices/determinants/determinant.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SavedMatrices/determinants/l.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SavedMatrices/matrices/identity.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/DataManipulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DataManipulation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/DeterminantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DeterminantController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/DeterminantPopUpController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DeterminantPopUpController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/FilePath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/model/FilePath.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/MatrixApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MatrixApp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/model/Matrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/model/Matrix.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/SaveController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/SaveController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/SaveScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/SaveScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/matrixGUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/matrixGUI.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/model/FilePath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/fileManaging/FilePath.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/model/MatrixFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/fileManaging/MatrixFileHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/model/MatrixType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/fileManaging/MatrixType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/model/MatrixView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/model/MatrixView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/operators/ElementaryMatrixOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/operators/ElementaryMatrixOperations.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/operators/MatrixDeterminantOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/operators/MatrixDeterminantOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module-info.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,8 +42,8 @@
       <list>
         <option value="Interface" />
         <option value="FxmlFile" />
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -74,15 +81,19 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "ShowUsagesActions.previewPropertyKey": "true",
-    "git-widget-placeholder": "Testing-DeterminantController",
+    "git-widget-placeholder": "Testing-ContinuedWorkOnMatrixController",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/paulb/IdeaProjects/MatrixGUI_2",
+    "last_opened_file_path": "C:/Users/paulb/AppData/Local/SceneBuilder/SceneBuilder.exe",
     "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.JavaFX"
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\paulb\IdeaProjects\MatrixGUI_2\src\matrix\gui\resources" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\paulb\IdeaProjects\FinalProject\SavedMatricies" />
       <recent name="C:\Users\paulb\IdeaProjects\DataStructuresFinalProject_PaulBeggs1\src\matrix\gui\resources" />
@@ -94,7 +105,7 @@
       <module name="MatrixGUI_2" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="matrix.model.*" />
+          <option name="PATTERN" value="matrix.fileManaging.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -144,13 +155,22 @@
       <option name="project" value="LOCAL" />
       <updated>1702686905403</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Finalized Matrix Controller. for real this time I think">
+      <option name="closed" value="true" />
+      <created>1702700287294</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1702700287294</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Init commit" />
     <MESSAGE value="Got the Matrix Controller to work with saving EMOs." />
-    <option name="LAST_COMMIT_MESSAGE" value="Got the Matrix Controller to work with saving EMOs." />
+    <MESSAGE value="Finalized Matrix Controller. for real this time I think" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finalized Matrix Controller. for real this time I think" />
   </component>
 </project>

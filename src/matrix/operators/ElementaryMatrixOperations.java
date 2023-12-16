@@ -1,8 +1,8 @@
 package matrix.operators;
 
-import matrix.model.FilePath;
+import matrix.fileManaging.FilePath;
 import matrix.model.Matrix;
-import matrix.model.MatrixFileHandler;
+import matrix.fileManaging.MatrixFileHandler;
 import matrix.model.MatrixOperations;
 
 public class ElementaryMatrixOperations implements MatrixOperations {

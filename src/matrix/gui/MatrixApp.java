@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import matrix.fileManaging.FileUtil;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -12,8 +13,11 @@ import java.util.Objects;
 public class MatrixApp extends Application {
     private static Stage primaryStage;
 
+
+
     @Override
     public void start(Stage stage) {
+        FileUtil.ensureAllFilesExist();
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/matrixGUI.fxml"), "FXML resource is null"));
 
