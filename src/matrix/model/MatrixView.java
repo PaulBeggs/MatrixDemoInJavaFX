@@ -4,7 +4,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 
 import javafx.scene.layout.GridPane;
-import matrix.gui.FilePath;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -179,10 +178,13 @@ public class MatrixView {
     }
 
     public void updateMatrixFromUI() {
+        matrixTextFields = getMatrixTextFields();
         for (int row = 0; row < matrixTextFields.size(); row++) {
             for (int col = 0; col < matrixTextFields.get(row).size(); col++) {
                 String textValue = matrixTextFields.get(row).get(col).getText();
                 try {
+//                    System.out.println("These are the numCols and numRows within MatrixView: \n" + col);
+//                    System.out.println(row);
                     double numericValue = Double.parseDouble(textValue);
                     matrix.setValue(row, col, numericValue);
                 } catch (NumberFormatException e) {

@@ -5,4 +5,5 @@ public interface DataManipulation {
     void update();
     void setInitMatrixData(String fileName);
     void saveToFile();
+    void setupAutoSave();
 }

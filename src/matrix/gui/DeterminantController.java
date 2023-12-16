@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import matrix.model.FilePath;
 import matrix.model.Matrix;
 import matrix.model.MatrixFileHandler;
 import matrix.model.MatrixView;
@@ -16,9 +17,7 @@ import matrix.operators.MatrixDeterminantOperations;
 
 import java.io.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class DeterminantController implements DataManipulation {
     @FXML
@@ -145,11 +144,11 @@ public class DeterminantController implements DataManipulation {
     }
 
     private void handleNonZeroDeterminant() {
-        if (tickedBox) {
-            matrix = MatrixFileHandler.getMatrix(FilePath.TRIANGULAR_PATH.getPath());
-            matrixView.updateViews(FilePath.TRIANGULAR_PATH.getPath(), false);
-            stop();
-        }
+//        if (tickedBox) {
+//            matrix = MatrixFileHandler.getMatrix(FilePath.TRIANGULAR_PATH.getPath());
+//            matrixView.updateViews(FilePath.TRIANGULAR_PATH.getPath(), false);
+//            stop();
+//        }
     }
 
     private void handleMissingMatrix() {
@@ -273,8 +272,9 @@ public class DeterminantController implements DataManipulation {
 
     @Override
     public void saveToFile() {
-        matrixView.updateMatrixFromUI();
         matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
+        matrixView.saveToFile(FilePath.MATRIX_PATH.getPath());
+        matrixView.updateMatrixFromUI();
 
         if (matrix != null) {
             List<List<String>> matrixData = matrixView.parseMatrixData(matrix);
@@ -286,6 +286,18 @@ public class DeterminantController implements DataManipulation {
         } else {
             System.out.println("Error: Matrix is null.");
         }
+    }
+
+    @Override
+    public void setupAutoSave() {
+        Timer autoSaveTimer = new Timer();
+        long AUTO_SAVE_INTERVAL = 500;
+        autoSaveTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                saveToFile();
+            }
+        }, AUTO_SAVE_INTERVAL, AUTO_SAVE_INTERVAL);
     }
 }
 

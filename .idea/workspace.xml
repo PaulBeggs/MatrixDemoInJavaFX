@@ -5,18 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4abf2f47-9852-4e6c-b90b-d7b7b33c5173" name="Changes" comment="Got the Matrix Controller to work with saving EMOs.">
-      <change afterPath="$PROJECT_DIR$/SavedMatrices/determinants/determiantn2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SavedMatrices/determinants/determinant.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SavedMatrices/matrices/identity.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/matrix/model/MatrixType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/determinants/3.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/determinants/determiantn2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/determinants/determinant.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/determinants/l.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/matrices/identity.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/FilePath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/FilePath.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/DataManipulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DataManipulation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/DeterminantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DeterminantController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/DeterminantPopUpController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DeterminantPopUpController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/FilePath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/model/FilePath.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/matrixGUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/matrixGUI.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/model/Matrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/model/Matrix.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/model/MatrixView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/model/MatrixView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/operators/ElementaryMatrixOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/operators/ElementaryMatrixOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/operators/MatrixDeterminantOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/operators/MatrixDeterminantOperations.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,9 +51,9 @@
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 0
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="2Z0lvM6KgkmygbgXRmrOEE7MWyi" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -67,9 +74,9 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "ShowUsagesActions.previewPropertyKey": "true",
-    "git-widget-placeholder": "Testing-branch",
+    "git-widget-placeholder": "Testing-DeterminantController",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/paulb/IdeaProjects/MatrixGUI",
+    "last_opened_file_path": "C:/Users/paulb/IdeaProjects/MatrixGUI_2",
     "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2"
@@ -87,7 +94,7 @@
       <module name="MatrixGUI_2" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="matrix.gui.*" />
+          <option name="PATTERN" value="matrix.model.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -97,6 +104,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.MatrixApp" />
+        <item itemvalue="Application.MatrixApp" />
+        <item itemvalue="Application.MatrixApp" />
+        <item itemvalue="Application.MatrixApp" />
         <item itemvalue="Application.MatrixApp" />
       </list>
     </recent_temporary>

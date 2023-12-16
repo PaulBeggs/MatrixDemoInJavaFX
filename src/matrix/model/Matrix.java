@@ -16,6 +16,9 @@ public class Matrix implements MatrixOperations {
 
         this.numRows = numRows;
         this.numCols = numCols;
+
+        System.out.println("the numrows and numcols inside the matrix constructor: \n" + numRows);
+        System.out.println(numCols);
         this.matrix = new double[numRows][numCols];
     }
 
@@ -26,8 +29,9 @@ public class Matrix implements MatrixOperations {
     public void setValue(int row, int col, double value) {
         if (isValidRow(row) && isValidColumn(col)) {
             this.matrix[row][col] = value;
-        } else {
-            System.out.println("Invalid row or column index.");
+//        } else {
+//            System.out.println("For isValidRow(row) to be true, " + row + " needs to equal to: " + numRows);
+//            System.out.println("Invalid row or column index.");
         }
     }
 
@@ -66,11 +70,11 @@ public class Matrix implements MatrixOperations {
 
     @Override
     public boolean isValidRow(int row) {
-        return row >= 0 && row <= numRows;
+        return row >= 0 && row < numRows;
     }
 
     private boolean isValidColumn(int col) {
-        return col >= 0 && col <= numCols;
+        return col >= 0 && col < numCols;
     }
 
     public int getSign() {

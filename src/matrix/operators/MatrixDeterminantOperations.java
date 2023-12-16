@@ -1,6 +1,6 @@
 package matrix.operators;
 
-import matrix.gui.FilePath;
+import matrix.model.FilePath;
 import matrix.model.Matrix;
 import matrix.model.MatrixFileHandler;
 import matrix.model.MatrixView;
@@ -44,7 +44,6 @@ public class MatrixDeterminantOperations {
         private DecimalFormat decimalFormat = new DecimalFormat("#.#####");
         private Matrix matrix;
         private MatrixView matrixView;
-        private ElementaryMatrixOperations EMO;
         private int sign = 1;
         private int steps;
         private List<Integer> signChanges = new ArrayList<>();
@@ -55,7 +54,6 @@ public class MatrixDeterminantOperations {
             this.matrix = matrix;
             this.matrixView = matrixView;
 
-            this.EMO = new ElementaryMatrixOperations(matrix);
             tV = new TriangularizationView(matrix);
         }
 
@@ -199,9 +197,12 @@ public class MatrixDeterminantOperations {
                 matrix.setSign(matrix.getSign() * -1);
                 tV.setSign(matrix.getSign());
                 tV.updateSignChanges(matrix.getSign());
+                if (matrix != null && matrix.isValidRow(row1) && matrix.isValidRow(row2)) {
+                    double[] temp = matrix.getDoubleMatrix()[row1];
+                    matrix.getDoubleMatrix()[row1] = matrix.getDoubleMatrix()[row2];
+                    matrix.getDoubleMatrix()[row2] = temp;
+                }
             }
-
-            EMO.swapRows(row1, row2);
         }
 
         private List<List<String>> formatMatrix(Matrix matrix, DecimalFormat decimalFormat) {
