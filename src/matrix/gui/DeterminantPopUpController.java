@@ -47,13 +47,8 @@ public class DeterminantPopUpController {
 
         matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
 
-        tV = new TriangularizationView(matrix);
+        tV = new TriangularizationView(matrix, matrixGrid, matrixTextFields);
         setMatrixTextFields(matrixTextFields);
-
-        tV.setMatrixView(matrixView);
-
-
-
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), (ActionEvent t) -> {
 

@@ -17,7 +17,9 @@ import matrix.fileManaging.MatrixFileHandler;
 import matrix.model.MatrixView;
 import javafx.fxml.FXML;
 
+import matrix.model.TriangularizationView;
 import matrix.operators.ElementaryMatrixOperations;
+import matrix.operators.MatrixDeterminantOperations;
 import matrix.operators.MatrixInputHandler;
 
 import java.io.BufferedReader;
@@ -43,54 +45,84 @@ public class MatrixController implements DataManipulation{
     ChoiceBox<Scenes> scenes;
     @FXML
     ChoiceBox<String> operations;
-    private MatrixView matrixView;
-    private ElementaryMatrixOperations EMO;
-    private Matrix matrix;
-    private final MatrixInputHandler MIH = new MatrixInputHandler();
     @FXML
     GridPane matrixGrid = new GridPane();
+    private MatrixView matrixView;
+    private TriangularizationView tView;
+    private MatrixInputHandler MIP = new MatrixInputHandler();
+    private ElementaryMatrixOperations EMO;
+    private MatrixDeterminantOperations MDO;
+    private Matrix matrix;
+    private Matrix tMatrix;
     private List<List<TextField>> matrixTextFields;
 
     @FXML
     private void initialize() {
-        setupAutoSave();
+        initializeMatrixView();
+        setupAutoSaveAndLoad();
+        initializeTriangularizationView();
+        saveTMatrixToFile();
+        setupChoiceBoxes();
+        setupTextArea();
+        setupListeners();
+        update();
+    }
 
+    private void initializeMatrixView() {
         matrixTextFields = new ArrayList<>();
         matrixView = new MatrixView(matrix, matrixGrid, matrixTextFields);
+        matrixView.updateViews(FilePath.MATRIX_PATH.getPath(), MatrixType.REGULAR, true);
+    }
 
-        // Listeners to handle changes in the size fields.
-        integerOnlyListener(sourceRow, "sourceRow");
-        integerOnlyListener(targetRow, "targetRow");
-        integerOnlyListener(sizeRowsField, "sizeRows");
-        integerOnlyListener(sizeColsField, "sizeCols");
+    @Override
+    public void setupAutoSaveAndLoad() {
+        Timer autoSaveTimer = new Timer();
+        long AUTO_SAVE_INTERVAL = 100;
+        autoSaveTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                saveToFile();
+            }
+        }, AUTO_SAVE_INTERVAL, AUTO_SAVE_INTERVAL);
+    }
 
+    public void initializeTriangularizationView() {
+        MDO = new MatrixDeterminantOperations(matrix);
+        tView = new TriangularizationView(tMatrix, matrixGrid, matrixTextFields);
+    }
+
+    private void setupChoiceBoxes() {
         operations.getItems().addAll("Swap Rows", "Multiply Rows", "Add Rows");
         operations.setValue("Swap Rows");
-
         scenes.getItems().setAll(Scenes.values());
         scenes.setValue(Scenes.MATRIX);
+    }
 
-        // Setting up scene switching and UI text
+    private void setupTextArea() {
+        directions.setWrapText(true);
+        directions.setEditable(false);
+    }
+
+    private void setupListeners() {
+        MIP.integerOnlyListener(sourceRow, "sourceRow");
+        MIP.integerOnlyListener(targetRow, "targetRow");
+        MIP.integerOnlyListener(sizeRowsField, "sizeRows");
+        MIP.integerOnlyListener(sizeColsField, "sizeCols");
+
         scenes.setOnAction(event -> {
             Scenes selectedScene = scenes.getValue();
             try {
                 saveToFile();
                 selectedScene.switchScene(event);
             } catch (IOException e) {
-                e.getMessage();
+                e.printStackTrace();
             }
         });
-        directions.setWrapText(true);
-        directions.setEditable(false);
-
-        matrixView.updateViews(FilePath.MATRIX_PATH.getPath(), MatrixType.REGULAR, true);
-        update();
     }
-
 
     @FXML
     public void handleGenerateButton() {
-        if (MIH.isPositiveIntValid(sizeColsField) && MIH.isPositiveIntValid(sizeRowsField)) {
+        if (MIP.isPositiveIntValid(sizeColsField) && MIP.isPositiveIntValid(sizeRowsField)) {
             updateMatrixGrid(false);
         } else {
             sizeColsField.clear();
@@ -137,14 +169,18 @@ public class MatrixController implements DataManipulation{
     public void handleLoadButton() {
         FileChooser fileChooser = new FileChooser();
 
-        fileChooser.setInitialDirectory(new File("C:\\Users\\paulb\\IdeaProjects\\MatrixGUI_2\\SavedMatrices\\matrices"));
+        File initialDir = new File(System.getProperty("user.dir"), "SavedMatrices/matrices");
+        if (!initialDir.exists()) {
+            initialDir = new File(System.getProperty("user.dir"));
+        }
+        fileChooser.setInitialDirectory(initialDir);
 
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
         File file = fileChooser.showOpenDialog(new Stage());
 
         if (file != null) {
             String filePath = file.getAbsolutePath();
-//            matrixView.updateViews(filePath, MatrixType.REGULAR, true);
+            matrixView.updateViews(filePath, MatrixType.REGULAR, true);
             saveToFile();
         }
     }
@@ -156,7 +192,7 @@ public class MatrixController implements DataManipulation{
         EMO = new ElementaryMatrixOperations(matrix);
         String selectedOption = operations.getValue();
 
-        if (MIH.isRowValid(targetRow, matrix.getRows()) && MIH.isRowValid(sourceRow, matrix.getRows())) {
+        if (MIP.isRowValid(targetRow, matrix.getRows()) && MIP.isRowValid(sourceRow, matrix.getRows())) {
             int targetRowIndex = Integer.parseInt(targetRow.getText()) - 1;
             int sourceRowIndex = Integer.parseInt(sourceRow.getText()) - 1;
 
@@ -168,7 +204,7 @@ public class MatrixController implements DataManipulation{
 
                 }
                 case "Multiply Rows", "Add Rows" -> {
-                    if (MIH.isDoubleValid(multiplier)) {
+                    if (MIP.isDoubleValid(multiplier)) {
                         double rowMultiplier = Double.parseDouble(multiplier.getText());
 
                         if (selectedOption.equals("Multiply Rows")) {
@@ -190,8 +226,6 @@ public class MatrixController implements DataManipulation{
                 System.out.println("At least one row is invalid. Fix it to proceed.");
         }
     }
-
-
 
     // To cut down on duplicated code and add some abstraction to the project:
     private enum MatrixOperation {
@@ -238,8 +272,6 @@ public class MatrixController implements DataManipulation{
         double rowMultiplier = 0;
         updateMatrixUIFromOperations(targetRowIndex, matrix.getCols(), MatrixOperation.SWAP, sourceRowIndex, rowMultiplier);
         MatrixFileHandler.setMatrix(FilePath.MATRIX_PATH.getPath(), matrix);
-
-
     }
 
     private void updateMultipliedMatrixUI(int targetRowIndex, double rowMultiplier) {
@@ -291,13 +323,13 @@ public class MatrixController implements DataManipulation{
             MatrixFileHandler.populateFileIfEmpty(FilePath.MATRIX_PATH.getPath());
             matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
 
+
             // If still null after trying to populate, log an error and return
             if (matrix == null) {
-                System.out.println("Error: Unable to load or create the matrix.");
+                System.out.println("(MatrixController) Error: Unable to load or create the regMatrix.");
                 return;
             }
         }
-
         matrixView.setMatrixTextFields(matrixTextFields);
         matrixView.updateMatrixFromUI();
 
@@ -307,7 +339,33 @@ public class MatrixController implements DataManipulation{
                     BigDecimal.valueOf(0), matrixData, MatrixType.REGULAR);
             MatrixFileHandler.setMatrix(FilePath.MATRIX_PATH.getPath(), matrix);
         } else {
-            System.out.println("Error: Matrix data is null.");
+            System.out.println("(MatrixController) Error: regMatrix data is null.");
+        }
+    }
+
+    public void saveTMatrixToFile() {
+        tMatrix = MatrixFileHandler.getMatrix(FilePath.TRIANGULAR_PATH.getPath());
+
+        if (tMatrix == null) {
+            MatrixFileHandler.populateFileIfEmpty(FilePath.TRIANGULAR_PATH.getPath());
+            tMatrix = MatrixFileHandler.getMatrix(FilePath.TRIANGULAR_PATH.getPath());
+
+            if (matrix == null) {
+                System.out.println("(MatrixController) Error: Unable to load or create the triMatrix.");
+                return;
+            }
+
+            tView.setMatrixTextFields(matrixTextFields);
+            tView.updateMatrixFromUI();
+
+            List<List<String>> matrixData = tView.parseMatrixData(tMatrix);
+            if (matrixData != null) {
+                MatrixFileHandler.saveMatrixDataToFile(FilePath.TRIANGULAR_PATH.getPath(),
+                        BigDecimal.valueOf(0), matrixData, MatrixType.TRIANGULAR);
+                MatrixFileHandler.setMatrix(FilePath.TRIANGULAR_PATH.getPath(), tMatrix);
+            } else {
+                System.out.println("(MatrixController) Error: triMatrix data is null.");
+            }
         }
     }
 
@@ -328,6 +386,7 @@ public class MatrixController implements DataManipulation{
             List<TextField> rowList = new ArrayList<>();
             for (int col = 0; col < numCols; col++) {
                 TextField cell = new TextField();
+                MIP.addNumericValidation(cell);
                 cell.setMinHeight(50);
                 cell.setMinWidth(50);
                 cell.setAlignment(Pos.CENTER);
@@ -339,17 +398,11 @@ public class MatrixController implements DataManipulation{
                 } else if (identityCheck) {
                     cellValue = 0.0; // Off-diagonal element for identity matrix
                 } else {
-                    cellValue = Math.floor(Math.random() * 100); // Random value for regular matrix
+                    cellValue = Math.floor(Math.random() * 101) - 50; // Random value for regular matrix
                 }
 
                 cell.setText(String.valueOf(cellValue));
                 matrix.setValue(row, col, cellValue);
-
-                cell.textProperty().addListener((observable, oldValue, newValue) -> {
-                    if (!newValue.matches("\\d*(\\.\\d*)?")) {
-                        cell.setText(newValue.replaceAll("[^\\d.]", ""));
-                    }
-                });
 
                 matrixGrid.add(cell, col, row);
                 rowList.add(cell);
@@ -372,25 +425,5 @@ public class MatrixController implements DataManipulation{
 
             System.out.println("After Setting (within 'updateMatrixGrid()': \n" + MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath()));
         }
-    }
-
-    @Override
-    public void setupAutoSave() {
-        Timer autoSaveTimer = new Timer();
-        long AUTO_SAVE_INTERVAL = 100;
-        autoSaveTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                saveToFile();
-            }
-        }, AUTO_SAVE_INTERVAL, AUTO_SAVE_INTERVAL);
-    }
-
-    private void integerOnlyListener(TextField textField, String fieldName) {
-        textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                textField.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-        });
     }
 }

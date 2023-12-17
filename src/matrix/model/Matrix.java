@@ -1,5 +1,7 @@
 package matrix.model;
 
+import matrix.operators.MatrixDeterminantOperations;
+
 import java.util.Arrays;
 
 public class Matrix implements MatrixOperations {
@@ -11,13 +13,13 @@ public class Matrix implements MatrixOperations {
 
     public Matrix(int numRows, int numCols) {
         if (numRows <= 0 || numCols <= 0) {
-            throw new IllegalArgumentException("Matrix dimensions must be positive. Received numRows: " + numRows + ", numCols: " + numCols);
+//            throw new IllegalArgumentException("Matrix dimensions must be positive. Received numRows: " + numRows + ", numCols: " + numCols);
         }
 
         this.numRows = numRows;
         this.numCols = numCols;
 
-        System.out.println("the numrows and numcols inside the matrix constructor: \n" + numRows);
+//        System.out.println("the numrows and numcols inside the matrix constructor: \n" + numRows);
         System.out.println(numCols);
         this.matrix = new double[numRows][numCols];
     }

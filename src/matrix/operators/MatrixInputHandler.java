@@ -23,7 +23,6 @@ public class MatrixInputHandler {
         }
     }
 
-
     public boolean isDoubleValid(TextField textField) {
         try {
             Double.parseDouble(textField.getText());
@@ -50,5 +49,21 @@ public class MatrixInputHandler {
             Platform.runLater(textField::clear);
             return false;
         }
+    }
+
+    public void integerOnlyListener(TextField textField, String fieldName) {
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                textField.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+    }
+
+    public void addNumericValidation(TextField textField) {
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("-?\\d*(\\.\\d*)?")) {
+                textField.setText(newValue.replaceAll("[^-\\d.]", ""));
+            }
+        });
     }
 }

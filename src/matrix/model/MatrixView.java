@@ -7,6 +7,7 @@ import javafx.scene.layout.GridPane;
 import matrix.fileManaging.FilePath;
 import matrix.fileManaging.MatrixFileHandler;
 import matrix.fileManaging.MatrixType;
+import matrix.operators.MatrixInputHandler;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MatrixView {
+    private MatrixInputHandler MIP = new MatrixInputHandler();
     private Matrix matrix;
     private List<List<TextField>> matrixTextFields;
     private GridPane matrixGrid;
@@ -38,7 +40,7 @@ public class MatrixView {
             } else {
                 System.out.println("Error: matrixData is empty.");
             }
-            System.out.println("2nd matrix data: \n" + matrixData);
+            System.out.println("(MatrixView) 2nd matrix data: \n" + matrixData);
             populateMatrixFromData(fileName, isEditable);
             MatrixFileHandler.setMatrix(fileName, matrix);
             saveToFile(fileName, matrixType);
@@ -167,6 +169,7 @@ public class MatrixView {
     private TextField createAndConfigureCell(String value, int row, int col, String filePath, boolean isEditable) {
 
         TextField cell = new TextField();
+        MIP.addNumericValidation(cell);
         cell.setMinHeight(50);
         cell.setMinWidth(50);
         cell.setAlignment(Pos.CENTER);
@@ -175,13 +178,6 @@ public class MatrixView {
         cell.setText(value);
         this.matrix.setValue(row, col, Double.parseDouble(value));
         MatrixFileHandler.setMatrix(filePath, matrix);
-
-        cell.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("-?\\d*(\\.\\d*)?")) {
-                cell.setText(newValue.replaceAll("[^-\\d.]", ""));
-            }
-        });
-
 
         return cell;
     }
@@ -289,12 +285,4 @@ public class MatrixView {
         return stringBuilder.toString();
     }
 
-//    public void textFieldToString(List<List<TextField>> matrixTextFields) {
-//        System.out.println("TextFields:");
-//        for (List<TextField> rowList : matrixTextFields) {
-//            for (TextField cell : rowList) {
-//                System.out.println("TextField: " + cell.getText());
-//            }
-//        }
-//    }
 }
