@@ -15,11 +15,9 @@ import java.util.List;
 public class MatrixDeterminantOperations {
 
     private Matrix matrix;
-    private MatrixView matrixView;
 
-    public MatrixDeterminantOperations(Matrix matrix, MatrixView matrixView) {
+    public MatrixDeterminantOperations(Matrix matrix) {
         this.matrix = matrix;
-        this.matrixView = matrixView;
     }
 
     public BigDecimal calculateDeterminant() {
@@ -33,7 +31,7 @@ public class MatrixDeterminantOperations {
             return BigDecimal.valueOf(.12319620031999);
         }
 
-        DeterminantCalc determinantCalc = new DeterminantCalc(matrix, matrixView);
+        DeterminantCalc determinantCalc = new DeterminantCalc(matrix);
         BigDecimal determinant = determinantCalc.determinant();
 
         return determinant;
@@ -51,10 +49,8 @@ public class MatrixDeterminantOperations {
 
         private TriangularizationView tV;
 
-        DeterminantCalc(Matrix matrix, MatrixView matrixView) {
+        DeterminantCalc(Matrix matrix) {
             this.matrix = matrix;
-            this.matrixView = matrixView;
-
             tV = new TriangularizationView(matrix);
         }
 
@@ -93,11 +89,11 @@ public class MatrixDeterminantOperations {
 
             tV.setMatrix(matrix);
             System.out.println("Triangular matrix: \n" + formatMatrix(matrix, decimalFormat));
-            List<List<String>> matrixData = matrixView.parseMatrixData(matrix);
-            if (matrixData != null) {
-                System.out.println("This is the matrixData inside DeterminantOperations: \n" + matrixData);
-                MatrixFileHandler.saveMatrixDataToFile(FilePath.TRIANGULAR_PATH.getPath(), BigDecimal.valueOf(0), matrixData, MatrixType.REGULAR);
-            }
+//            List<List<String>> matrixData = matrixView.parseMatrixData(matrix);
+//            if (matrixData != null) {
+//                System.out.println("This is the matrixData inside DeterminantOperations: \n" + matrixData);
+//                MatrixFileHandler.saveMatrixDataToFile(FilePath.TRIANGULAR_PATH.getPath(), BigDecimal.valueOf(0), matrixData, MatrixType.REGULAR);
+//            }
         }
 
 

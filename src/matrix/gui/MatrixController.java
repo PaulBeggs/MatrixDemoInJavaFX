@@ -1,5 +1,6 @@
 package matrix.gui;
 
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -27,8 +28,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class MatrixController implements DataManipulation {
     @FXML
@@ -50,6 +52,11 @@ public class MatrixController implements DataManipulation {
     private ElementaryMatrixOperations EMO;
     private Matrix matrix;
     private List<List<TextField>> matrixTextFields;
+    private String initialDirections =
+            """
+                    Click 'generate' to produce a Matrix. The cells are editable; use 'tab' to go through each cell and add an entry.""";
+
+    private final ScheduledExecutorService autoSaveExecutor = Executors.newSingleThreadScheduledExecutor();
 
     @FXML
     private void initialize() {
@@ -69,10 +76,11 @@ public class MatrixController implements DataManipulation {
     }
 
     private void setupTextFieldListeners() {
-        integerOnlyListener(sourceRow, "sourceRow");
-        integerOnlyListener(targetRow, "targetRow");
-        integerOnlyListener(sizeRowsField, "sizeRows");
-        integerOnlyListener(sizeColsField, "sizeCols");
+        objectOnlyListener(sourceRow, "sourceRow", ObjectType.INTEGER);
+        objectOnlyListener(targetRow, "targetRow", ObjectType.INTEGER);
+        objectOnlyListener(sizeRowsField, "sizeRows", ObjectType.INTEGER);
+        objectOnlyListener(sizeColsField, "sizeCols", ObjectType.INTEGER);
+        objectOnlyListener(multiplier, "multiplier", ObjectType.DOUBLE);
     }
 
     private void setupOperationsDropdown() {
@@ -87,6 +95,7 @@ public class MatrixController implements DataManipulation {
             Scenes selectedScene = scenes.getValue();
             try {
                 saveToFile();
+                stopAutoSave();
                 selectedScene.switchScene(event);
             } catch (IOException e) {
                 e.printStackTrace(); // Changed to printStackTrace for better error visibility
@@ -95,6 +104,7 @@ public class MatrixController implements DataManipulation {
     }
 
     private void setupDirectionText() {
+        directions.setText(initialDirections);
         directions.setWrapText(true);
         directions.setEditable(false);
     }
@@ -121,6 +131,7 @@ public class MatrixController implements DataManipulation {
         } else {
             // Handle invalid input
             System.out.println("Invalid input for matrix dimensions.");
+            temporarilyUpdateDirections("Invalid input for matrix dimensions.");
         }
     }
 
@@ -233,12 +244,14 @@ public class MatrixController implements DataManipulation {
 
                     } else {
                         System.out.println("Invalid Multiplier. Please enter a valid double.");
+                        temporarilyUpdateDirections("Invalid Multiplier. Please enter a valid double.");
                     }
                 }
             }
             saveToFile();
         } else {
             System.out.println("At least one row is invalid. Fix it to proceed.");
+            temporarilyUpdateDirections("At least one row is invalid. Fix it to proceed.");
         }
     }
 
@@ -248,6 +261,10 @@ public class MatrixController implements DataManipulation {
         SWAP,
         MULTIPLY,
         ADD
+    }
+    private enum ObjectType {
+        INTEGER,
+        DOUBLE;
     }
 
     private void updateMatrixUIFromOperations(int rowIndex, int numCols, MatrixOperation operation, int sourceRowIndex, double rowMultiplier) {
@@ -273,14 +290,14 @@ public class MatrixController implements DataManipulation {
                 matrixTextFields.get(rowIndex).get(col).setText(String.valueOf((newValue)));
 
             }
-
-//            matrixView.updateViews(FilePath.MATRIX_PATH.getPath(), MatrixType.REGULAR, true);
             saveToFile();
         } catch (NumberFormatException e) {
             System.out.println("Error converting text to double: " + e.getMessage());
+            temporarilyUpdateDirections("Error converting text to double.");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("An unexpected error occurred: " + e.getMessage());
+            temporarilyUpdateDirections("An unexpected error occurred.");
         }
     }
 
@@ -436,26 +453,71 @@ public class MatrixController implements DataManipulation {
         }
     }
 
-    @Override
-    public void setupAutoSave() {
-        Timer autoSaveTimer = new Timer();
-        long AUTO_SAVE_INTERVAL = 100;
-        autoSaveTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                uploadFromFile();
-                saveToFile();
-            }
-        }, AUTO_SAVE_INTERVAL, AUTO_SAVE_INTERVAL);
+    // Method to update the directions text area
+    private void temporarilyUpdateDirections(String newDirections) {
+        directions.setText(newDirections);
+
+        // Schedule resetting the directions text area after 10 seconds
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+        executorService.schedule(() -> {
+            Platform.runLater(() -> directions.setText(initialDirections));
+            executorService.shutdown(); // Important to shut down the executor to prevent resource leaks
+        }, 6, TimeUnit.SECONDS);
     }
 
-    private void integerOnlyListener(TextField textField, String fieldName) {
+    @Override
+    public void setupAutoSave() {
+        long autoSaveInterval = 100; // The auto-save interval in milliseconds
+
+        // Schedule the auto-save task to run periodically
+        autoSaveExecutor.scheduleAtFixedRate(() -> {
+            Platform.runLater(() -> {
+                // Ensure that file operations that affect the UI are run on the JavaFX Application Thread
+                uploadFromFile();
+                saveToFile();
+            });
+        }, autoSaveInterval, autoSaveInterval, TimeUnit.MILLISECONDS);
+    }
+
+    public void stopAutoSave() {
+        autoSaveExecutor.shutdown();
+        try {
+            if (!autoSaveExecutor.awaitTermination(800, TimeUnit.MILLISECONDS)) {
+                autoSaveExecutor.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            autoSaveExecutor.shutdownNow();
+        }
+    }
+
+
+    private void objectOnlyListener(TextField textField, String fieldName, ObjectType objectType) {
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                textField.setText(newValue.replaceAll("[^\\d]", ""));
+            String regex;
+            switch (objectType) {
+                case INTEGER:
+                    regex = "-?\\d*"; // Allows negative integers
+                    break;
+                case DOUBLE:
+                    regex = "-?\\d*(\\.\\d*)?"; // Allows negative doubles and decimals
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unsupported object type: " + objectType);
+            }
+
+            if (!newValue.matches(regex)) {
+                // The newValue is not a valid format, so don't change the text field.
+                // This is to prevent invalid inputs like "--" or "3.-" or multiple dots.
+                if (newValue.isEmpty()) {
+                    textField.setText(""); // If the new value is empty, allow it to clear the field
+                } else {
+                    textField.setText(oldValue); // Otherwise, revert to the old value
+                }
             }
         });
     }
+
+
 
     // for "fast facts" pop-up
 

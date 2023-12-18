@@ -1,5 +1,7 @@
 package matrix.gui;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -44,22 +46,8 @@ public class DeterminantController implements DataManipulation {
     private long AUTO_SAVE_INTERVAL;
     private boolean isEditable;
     private boolean isStart;
-
-    @FXML
-    private void initialize() {
-        setupAutoSave();
-        isEditable = true;
-        tickedBox = false;
-        matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
-
-        matrixTextFields = new ArrayList<>();
-        matrixView = new MatrixView(matrix, matrixGrid, matrixTextFields);
-        determinantOperations = new MatrixDeterminantOperations(matrix, matrixView);
-
-        checkBox.setSelected(true);
-
-        directions.setText(
-                """
+    private String initialDirections =
+                    """
                         Additive:\s
                         det(B) = det(A)\s
                         \s
@@ -67,8 +55,41 @@ public class DeterminantController implements DataManipulation {
                         det(B) = -det(A);\s
                         \s
                         Scalar Multiplication:\s
-                        det(B) = k * det(A)""");
+                        det(B) = k * det(A)""";
 
+    @FXML
+    private void initialize() {
+        setupAutoSave();
+        setBooleans();
+        initializeMatrixAndOperations();
+        initializeMatrixView();
+        setupDirectionText();
+        setupUIListeners();
+        matrixView.updateViews(FilePath.MATRIX_PATH.getPath(), MatrixType.REGULAR, true);
+        update();
+    }
+
+    private void initializeMatrixAndOperations() {
+        matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
+        determinantOperations = new MatrixDeterminantOperations(matrix);
+    }
+    private void setBooleans() {
+        isEditable = true;
+        tickedBox = true;
+        checkBox.setSelected(true);
+    }
+
+    private void initializeMatrixView() {
+        matrixTextFields = new ArrayList<>();
+        matrixView = new MatrixView(matrix, matrixGrid, matrixTextFields);
+    }
+    private void setupDirectionText() {
+        directions.setText(initialDirections);
+        directions.setWrapText(true);
+        directions.setEditable(false);
+    }
+
+    private void setupUIListeners() {
         scenes.getItems().setAll(Scenes.values());
         scenes.setValue(Scenes.DETERMINANT);
 
@@ -81,15 +102,18 @@ public class DeterminantController implements DataManipulation {
             }
         });
 
-        matrixView.updateViews(FilePath.MATRIX_PATH.getPath(), MatrixType.REGULAR, true);
-        update();
+        checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                System.out.println("Checkbox is checked");
+                tickedBox = true;
+            } else {
+                System.out.println("Checkbox is unchecked");
+                tickedBox = false;
+            }
+        });
     }
-
     @FXML
     public void handleDeterminantFunctionality() {
-        tickedBox = true;
-        // System.out.println("2nd Matrix: \n" + matrix + "\n");
-
         if (checkBox.isSelected()) {
             showDeterminantAnimation();
             isEditable = false;

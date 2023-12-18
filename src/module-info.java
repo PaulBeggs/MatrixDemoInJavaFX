@@ -4,10 +4,10 @@ module MatrixGUI_2 {
 
     exports matrix.gui;
     exports matrix.model;
+    exports matrix.operators;
+    exports matrix.fileManaging;
     opens matrix.gui;
     opens matrix.model;
-    exports matrix.operators;
     opens matrix.operators;
-    exports matrix.fileManaging;
     opens matrix.fileManaging;
 }
