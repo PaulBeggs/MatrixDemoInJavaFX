@@ -43,6 +43,7 @@ public class DeterminantController implements DataManipulation {
     private boolean determinantIsZero = false;
     private long AUTO_SAVE_INTERVAL;
     private boolean isEditable;
+    private boolean isStart;
 
     @FXML
     private void initialize() {
@@ -235,11 +236,11 @@ public class DeterminantController implements DataManipulation {
         matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
         matrixView.updateMatrixFromUI();
 
-        if (matrix != null) {
+        if (matrix != null && isEditable) {
             List<List<String>> matrixData = matrixView.parseMatrixData(matrix);
             if (matrixData != null) {
-                MatrixFileHandler.saveMatrixDataToFile(FilePath.MATRIX_PATH.getPath(),
-                        BigDecimal.valueOf(0), matrixData, MatrixType.DETERMINANT);
+                MatrixFileHandler.saveMatrixDataToFile(FilePath.DETERMINANT_PATH.getPath(),
+                        determinant, matrixData, MatrixType.DETERMINANT);
             } else {
                 System.out.println("Error: Matrix data is null.");
             }

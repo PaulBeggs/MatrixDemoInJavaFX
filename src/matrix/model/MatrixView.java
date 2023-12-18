@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class MatrixView {
@@ -155,11 +156,15 @@ public class MatrixView {
         int rowLength = values.length;
 
         for (int col = 0; col < rowLength; col++) {
-            TextField cell = createAndConfigureCell(values[col], row, col, filePath, isEditable);
+            // Replace empty strings (which represent missing cells) with "0.0"
+            String cellValue = values[col].trim().isEmpty() ? "0.0" : values[col];
+
+            TextField cell = createAndConfigureCell(cellValue, row, col, filePath, isEditable);
             matrixGrid.add(cell, col, row);
-            setMatrixGrid(matrixGrid);
+            setMatrixGrid(matrixGrid); // Assuming this updates the grid layout or similar
             rowList.add(cell);
         }
+
 
         return rowList;
     }

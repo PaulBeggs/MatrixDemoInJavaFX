@@ -62,24 +62,6 @@ public class MatrixFileHandler {
         matrices.put(key, matrix);
     }
 
-    public static void saveMatrixAndDeterminantToFile(String fileName, BigDecimal determinant, List<List<String>> matrixData) {
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false))) {
-
-            for (List<String> row : matrixData) {
-                String line = String.join(" ", row);
-                writer.write(line);
-                writer.newLine();
-            }
-            writer.newLine();
-            writer.write("Determinant: " + determinant);
-            writer.newLine();
-            writer.write("--------------");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void populateFileIfEmpty(String filePath) {
         File file = new File(filePath);
 

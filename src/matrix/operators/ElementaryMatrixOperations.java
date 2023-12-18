@@ -20,7 +20,7 @@ public class ElementaryMatrixOperations implements MatrixOperations {
             matrix.getDoubleMatrix()[row2] = temp;
 
             MatrixFileHandler.setMatrix(FilePath.MATRIX_PATH.getPath(), matrix);
-            System.out.println("this should be the matrix that is printed within 'swapRows: \n" + matrix);
+            System.out.println("this should be the matrix that is printed within 'swapRows': \n" + matrix);
         } else {
             System.out.println("matrix is null inside 'swappedRows:' \n" + matrix);
         }

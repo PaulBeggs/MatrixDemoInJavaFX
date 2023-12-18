@@ -30,6 +30,7 @@
                   <Button fx:id="loadButton" mnemonicParsing="false" onAction="#handleLoadButton" prefWidth="57.0" text="Load" />
                </children>
             </HBox>
+            <Button fx:id="fastFactsButton" minWidth="110.0" mnemonicParsing="false" onAction="#handleFastFactsButton" text="Fast Facts" />
             <TextArea fx:id="directions" editable="false" minHeight="120.0" minWidth="100.0" text="Click 'generate' to produce a Matrix. The cells are editable; use 'tab' to go through each cell and add an entry." wrapText="true">
                <VBox.margin>
                   <Insets top="35.0" />

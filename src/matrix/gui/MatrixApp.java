@@ -23,6 +23,7 @@ public class MatrixApp extends Application {
 
             Scene scene = new Scene(root);
             primaryStage = stage;
+            stage.setTitle("Matrix GUI");
 
             stage.setScene(scene);
             stage.show();

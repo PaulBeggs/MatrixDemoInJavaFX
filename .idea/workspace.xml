@@ -5,32 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4abf2f47-9852-4e6c-b90b-d7b7b33c5173" name="Changes" comment="Finalized Matrix Controller. for real this time I think">
-      <change afterPath="$PROJECT_DIR$/SavedMatrices/augmented/augmented_data.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SavedMatrices/custom/custom_data.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SavedMatrices/eigen/eigen_data.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SavedMatrices/inverse/inverse_data.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SavedMatrices/matrices/1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SavedMatrices/matrices/identity.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SavedMatrices/rref/rref_data.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/fileManaging/FileUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SavedMatrices/matrices/testing.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SavedMatrices/matrices/wad.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/fileManaging/MatrixFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/fileManaging/MatrixFileHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/DeterminantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DeterminantController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/DeterminantPopUpController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DeterminantPopUpController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/MatrixApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MatrixApp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/SaveController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/SaveController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/SaveScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/SaveScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/Scenes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/Scenes.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/matrixGUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/matrixGUI.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/model/FilePath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/fileManaging/FilePath.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/model/MatrixFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/fileManaging/MatrixFileHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/model/MatrixType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/fileManaging/MatrixType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/model/MatrixView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/model/MatrixView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/operators/ElementaryMatrixOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/operators/ElementaryMatrixOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/operators/MatrixDeterminantOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/operators/MatrixDeterminantOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module-info.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,10 +38,24 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="Testing-branch" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "PaulBeggs"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="f309c6f4-5411-47c0-a320-d8f6f55fd48c" />
+        <option name="url" value="https://github.com/PaulBeggs/MatrixGUI_2.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
@@ -81,7 +83,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "ShowUsagesActions.previewPropertyKey": "true",
-    "git-widget-placeholder": "Testing-ContinuedWorkOnMatrixController",
+    "git-widget-placeholder": "Starting-anew",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/paulb/AppData/Local/SceneBuilder/SceneBuilder.exe",
     "project.structure.last.edited": "Libraries",
