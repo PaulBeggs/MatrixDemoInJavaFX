@@ -68,9 +68,7 @@ public class DeterminantPopUpController {
 
         timeline.setCycleCount(matrix.getRows());
 
-        start.setOnAction((t) -> {
-            timeline.play();
-        });
+        start.setOnAction((t) -> timeline.play());
 
         loadFromFile();
     }
@@ -82,22 +80,17 @@ public class DeterminantPopUpController {
 
     public void populateMatrixFromData(String filePath) {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(filePath));
-            int numRows = 0;
-            int numCols = 0;
+            try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 
-            while (br.readLine() != null) {
-                numRows++;
+                int numCols = 0;
+
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] values = line.split("\\s+");
+                    numCols = Math.max(numCols, values.length);
+                }
             }
 
-            br.close();
-            br = new BufferedReader(new FileReader(filePath));
-
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] values = line.split("\\s+");
-                numCols = Math.max(numCols, values.length);
-            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

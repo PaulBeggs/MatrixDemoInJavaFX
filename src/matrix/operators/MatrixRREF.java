@@ -27,7 +27,7 @@ public class MatrixRREF implements MatrixOperations {
         return row >= 0 && row < matrix.getRows();
     }
 
-    public boolean isValidCol(int col) {
-        return col >= 0 && col < matrix.getCols();
-    }
+//    public boolean isValidCol(int col) {
+//        return col >= 0 && col < matrix.getCols();
+//    }
 }

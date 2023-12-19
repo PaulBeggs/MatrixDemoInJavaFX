@@ -4,16 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4abf2f47-9852-4e6c-b90b-d7b7b33c5173" name="Changes" comment="Feeling good with this branch">
-      <change afterPath="$PROJECT_DIR$/src/matrix/operators/DecimalToFraction.java" afterDir="false" />
+    <list default="true" id="4abf2f47-9852-4e6c-b90b-d7b7b33c5173" name="Changes" comment="added some decimal to fraction stuff">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/fileManaging/MatrixType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/fileManaging/MatrixType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/DeterminantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DeterminantController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/DeterminantPopUpController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DeterminantPopUpController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/MatrixApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MatrixApp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/matrixGUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/matrixGUI.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/SaveController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/SaveController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/operators/MatrixDeterminantOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/operators/MatrixDeterminantOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/operators/MatrixInputHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/operators/MatrixInputHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/operators/MatrixRREF.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/operators/MatrixRREF.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,7 +187,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702879675735</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="added some decimal to fraction stuff">
+      <option name="closed" value="true" />
+      <created>1702885352588</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1702885352588</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -191,6 +204,7 @@
     <MESSAGE value="Got the Matrix Controller to work with saving EMOs." />
     <MESSAGE value="Finalized Matrix Controller. for real this time I think" />
     <MESSAGE value="Feeling good with this branch" />
-    <option name="LAST_COMMIT_MESSAGE" value="Feeling good with this branch" />
+    <MESSAGE value="added some decimal to fraction stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="added some decimal to fraction stuff" />
   </component>
 </project>

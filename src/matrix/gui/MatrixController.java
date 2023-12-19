@@ -48,11 +48,10 @@ public class MatrixController implements DataManipulation {
     @FXML
     GridPane matrixGrid = new GridPane();
     private MatrixView matrixView;
-    private MatrixInputHandler MIH = new MatrixInputHandler();
-    private ElementaryMatrixOperations EMO;
+    private final MatrixInputHandler MIH = new MatrixInputHandler();
     private Matrix matrix;
     private List<List<TextField>> matrixTextFields;
-    private String initialDirections =
+    private final String initialDirections =
             """
                     Click 'generate' to produce a Matrix. The cells are editable; use 'tab' to go through each cell and add an entry.""";
 
@@ -76,11 +75,11 @@ public class MatrixController implements DataManipulation {
     }
 
     private void setupTextFieldListeners() {
-        objectOnlyListener(sourceRow, "sourceRow", ObjectType.INTEGER);
-        objectOnlyListener(targetRow, "targetRow", ObjectType.INTEGER);
-        objectOnlyListener(sizeRowsField, "sizeRows", ObjectType.INTEGER);
-        objectOnlyListener(sizeColsField, "sizeCols", ObjectType.INTEGER);
-        objectOnlyListener(multiplier, "multiplier", ObjectType.DOUBLE);
+        objectOnlyListener(sourceRow, ObjectType.INTEGER);
+        objectOnlyListener(targetRow, ObjectType.INTEGER);
+        objectOnlyListener(sizeRowsField, ObjectType.INTEGER);
+        objectOnlyListener(sizeColsField, ObjectType.INTEGER);
+        objectOnlyListener(multiplier, ObjectType.DOUBLE);
     }
 
     private void setupOperationsDropdown() {
@@ -215,7 +214,7 @@ public class MatrixController implements DataManipulation {
     @FXML
     private void performOperation() {
         matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
-        EMO = new ElementaryMatrixOperations(matrix);
+        ElementaryMatrixOperations EMO = new ElementaryMatrixOperations(matrix);
         String selectedOption = operations.getValue();
 
         if (MIH.isRowValid(targetRow, matrix.getRows()) && MIH.isRowValid(sourceRow, matrix.getRows())) {
@@ -264,7 +263,7 @@ public class MatrixController implements DataManipulation {
     }
     private enum ObjectType {
         INTEGER,
-        DOUBLE;
+        DOUBLE
     }
 
     private void updateMatrixUIFromOperations(int rowIndex, int numCols, MatrixOperation operation, int sourceRowIndex, double rowMultiplier) {
@@ -351,14 +350,14 @@ public class MatrixController implements DataManipulation {
     public void uploadFromFile() {
         matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
         if (matrix == null) {
-            System.out.println("(DeterminantController) regMatrix is null from the start.");
+            System.out.println("(MatrixController) regMatrix is null from the start.");
             System.out.println("Populating with 0.0...");
 
             MatrixFileHandler.populateFileIfEmpty(FilePath.MATRIX_PATH.getPath());
             matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
 
             if (matrix == null) {
-                System.out.println("(DeterminantController) Error: Unable to load initial matrix.");
+                System.out.println("(MatrixController) Error: Unable to load initial matrix.");
             }
         } else {
             matrixView.setMatrixTextFields(matrixTextFields);
@@ -384,7 +383,7 @@ public class MatrixController implements DataManipulation {
     private void updateMatrixGrid(Boolean identityCheck, List<List<String>> matrixData) {
         matrixGrid.getChildren().clear();
         int numRows = matrixData.size();
-        int numCols = matrixData.get(0).size(); // Assumes each row has the same number of columns
+        int numCols = matrixData.getFirst().size(); // Assumes each row has the same number of columns
 
         this.matrix = new Matrix(numRows, numCols);
         this.matrixTextFields = new ArrayList<>();
@@ -409,7 +408,7 @@ public class MatrixController implements DataManipulation {
                 } else if (identityCheck) {
                     cellValue = 0.0; // Off-diagonal element for identity matrix
                 } else {
-                    cellValue = Math.floor(Math.random() * 100); // Random value for regular matrix
+                    cellValue = Math.floor(Math.random() * 101) - 50; // Random value for regular matrix
                 }
 
                 cell.setText(String.valueOf(cellValue));
@@ -470,13 +469,11 @@ public class MatrixController implements DataManipulation {
         long autoSaveInterval = 100; // The auto-save interval in milliseconds
 
         // Schedule the auto-save task to run periodically
-        autoSaveExecutor.scheduleAtFixedRate(() -> {
-            Platform.runLater(() -> {
-                // Ensure that file operations that affect the UI are run on the JavaFX Application Thread
-                uploadFromFile();
-                saveToFile();
-            });
-        }, autoSaveInterval, autoSaveInterval, TimeUnit.MILLISECONDS);
+        autoSaveExecutor.scheduleAtFixedRate(() -> Platform.runLater(() -> {
+            // Ensure that file operations that affect the UI are run on the JavaFX Application Thread
+            uploadFromFile();
+            saveToFile();
+        }), autoSaveInterval, autoSaveInterval, TimeUnit.MILLISECONDS);
     }
 
     public void stopAutoSave() {
@@ -491,19 +488,12 @@ public class MatrixController implements DataManipulation {
     }
 
 
-    private void objectOnlyListener(TextField textField, String fieldName, ObjectType objectType) {
+    private void objectOnlyListener(TextField textField, ObjectType objectType) {
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            String regex;
-            switch (objectType) {
-                case INTEGER:
-                    regex = "-?\\d*"; // Allows negative integers
-                    break;
-                case DOUBLE:
-                    regex = "-?\\d*(\\.\\d*)?"; // Allows negative doubles and decimals
-                    break;
-                default:
-                    throw new IllegalArgumentException("Unsupported object type: " + objectType);
-            }
+            String regex = switch (objectType) {
+                case INTEGER -> "-?\\d*"; // Allows negative integers
+                case DOUBLE -> "-?\\d*(\\.\\d*)?"; // Allows negative doubles and decimals
+            };
 
             if (!newValue.matches(regex)) {
                 // The newValue is not a valid format, so don't change the text field.
@@ -526,7 +516,7 @@ public class MatrixController implements DataManipulation {
 
     }
 
-    public TriangularizationResult triangularizeMatrix(Matrix matrix) {
+    private TriangularizationResult triangularizeMatrix(Matrix matrix) {
         if (matrix == null || matrix.getRows() != matrix.getCols()) {
             // Non-square or null matrix cannot be triangularized
             return new TriangularizationResult(false, null);

@@ -2,8 +2,6 @@ package matrix.operators;
 
 import javafx.application.Platform;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
-import matrix.model.Matrix;
 
 public class MatrixInputHandler {
     public boolean isPositiveIntValid(TextField textField) {

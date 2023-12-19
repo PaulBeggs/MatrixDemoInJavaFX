@@ -98,19 +98,6 @@ public class SaveController {
         }
     }
 
-
-    private void saveDeterminant(String fileName) {
-        String filePath = "savedMatrices/determinants/" + fileName + ".txt";
-
-        try (PrintWriter writer = new PrintWriter(filePath)) {
-            // Write determinant to the file
-            writer.println("Determinant: " + determinantValue);
-            System.out.println("Determinant saved to file: " + filePath);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
     public List<List<String>> getMatrixDataFromTextFields() {
         List<List<String>> matrixData = new ArrayList<>();
 

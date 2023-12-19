@@ -7,7 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import matrix.fileManaging.FileUtil;
 
-import java.io.IOException;
 import java.util.Objects;
 
 public class MatrixApp extends Application {
