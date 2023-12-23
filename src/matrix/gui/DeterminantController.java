@@ -78,7 +78,6 @@ public class DeterminantController implements DataManipulation {
         tickedBox = true;
         checkBox.setSelected(true);
     }
-
     private void initializeMatrixView() {
         matrixTextFields = new ArrayList<>();
         matrixView = new MatrixView(matrix, matrixGrid, matrixTextFields);
@@ -88,7 +87,6 @@ public class DeterminantController implements DataManipulation {
         directions.setWrapText(true);
         directions.setEditable(false);
     }
-
     private void setupUIListeners() {
         scenes.getItems().setAll(Scenes.values());
         scenes.setValue(Scenes.DETERMINANT);
@@ -113,11 +111,13 @@ public class DeterminantController implements DataManipulation {
             }
         });
     }
+
     @FXML
     public void handleDeterminantFunctionality() {
+        update();
         if (checkBox.isSelected()) {
             tickedBox = true;
-            update();
+
             showDeterminantAnimation();
             isEditable = false;
         }
@@ -156,7 +156,7 @@ public class DeterminantController implements DataManipulation {
     @FXML
     public void handleSaveButton() {
         Stage saveStage = new Stage();
-        saveStage.setTitle("Save Matrix and Its Determinant");
+        saveStage.setTitle("Save Menu");
         saveStage.initModality(Modality.WINDOW_MODAL);
         saveStage.initOwner(MatrixApp.getPrimaryStage());
 
@@ -169,12 +169,10 @@ public class DeterminantController implements DataManipulation {
             return;
         }
 
-//        this.saveController = loader.getController();
-//        saveController.setMatrixTextFields(matrixTextFields);
-//        saveController.setDeterminantValue(determinant);
-//        saveController.setStage(saveStage);
-//        saveController.setSavableController(this, SaveOperationType.MATRIX_AND_DETERMINANT);
-
+        SaveController saveController = loader.getController();
+        saveController.setMatrixTextFields(matrixTextFields);
+        saveController.setDeterminantValue(determinant);
+        saveController.setStage(saveStage);
 
         Scene saveScene = new Scene(root);
         saveStage.setScene(saveScene);
@@ -200,7 +198,7 @@ public class DeterminantController implements DataManipulation {
 
             DeterminantPopUpController determinantPopUpController = loader.getController();
             determinantPopUpController.setMatrixTextFields(matrixTextFields);
-            determinantPopUpController.setMatrixView(matrixView);
+            determinantPopUpController.setMatrixGrid(matrixGrid);
             determinantPopUpController.setStage(animationStage);
 
             Scene animationScene = new Scene(root);
@@ -224,11 +222,13 @@ public class DeterminantController implements DataManipulation {
     @Override
     public void update() {
         if (matrix != null) {
+            System.out.println("Matrix is not null (determinantController) ");
             this.determinant = determinantOperations.calculateDeterminant();
             BigDecimal threshold = new BigDecimal("1.0E-5");
 
             // Set the scale of the determinant to 5 decimal places, rounding as necessary
             BigDecimal scaledDeterminant = determinant.setScale(5, RoundingMode.HALF_UP);
+            System.out.println("This is the scaled determinant: \n" + scaledDeterminant);
 
             // Perform the comparison
             if (scaledDeterminant.compareTo(threshold) < 0) {
@@ -243,26 +243,9 @@ public class DeterminantController implements DataManipulation {
                             matrixData, MatrixType.DETERMINANT);
             processMatrixForDeterminant();
         } else {
+            System.out.println("Matrix is null (determinantController) ");
+            System.out.println("Handling missing matrix...");
             handleMissingMatrix();
-        }
-    }
-
-    @Override
-    public void setInitMatrixData(String filePath) {
-        try {
-            try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-
-                int numCols = 0;
-
-                String line;
-                while ((line = br.readLine()) != null) {
-                    String[] values = line.split("\\s+");
-                    numCols = Math.max(numCols, values.length);
-                }
-            }
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -283,14 +266,14 @@ public class DeterminantController implements DataManipulation {
     public void uploadFromFile() {
         matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
         if (matrix == null) {
-            System.out.println("(MatrixController) regMatrix is null from the start.");
+            System.out.println("(DeterminantController) regMatrix is null from the start.");
             System.out.println("Populating with 0.0...");
 
             MatrixFileHandler.populateFileIfEmpty(FilePath.MATRIX_PATH.getPath());
             matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
 
             if (matrix == null) {
-                System.out.println("(MatrixController) Error: Unable to load initial matrix.");
+                System.out.println("(DeterminantController) Error: Unable to load initial matrix.");
             }
         } else if (isEditable) {
             matrixView.setMatrixTextFields(matrixTextFields);

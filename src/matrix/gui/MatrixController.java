@@ -36,7 +36,7 @@ public class MatrixController implements DataManipulation {
     @FXML
     BorderPane borderPane;
     @FXML
-    Button generateButton, saveButton, operationButton, clearButton, fastFactsButton;
+    Button generateButton, saveButton, operationButton, identityButton, fastFactsButton;
     @FXML
     TextField sizeColsField, sizeRowsField, targetRow, sourceRow, multiplier;
     @FXML
@@ -136,7 +136,7 @@ public class MatrixController implements DataManipulation {
 
 
     @FXML
-    public void handleClearButton() {
+    public void handleIdentityButton() {
         int numRows = matrix.getRows();
         int numCols = matrix.getCols();
 
@@ -162,7 +162,7 @@ public class MatrixController implements DataManipulation {
     @FXML
     public void handleSaveButton() {
         Stage saveStage = new Stage();
-        saveStage.setTitle("Save Matrix");
+        saveStage.setTitle("Save Menu");
         saveStage.initModality(Modality.WINDOW_MODAL);
         saveStage.initOwner(MatrixApp.getPrimaryStage());
 
@@ -322,7 +322,6 @@ public class MatrixController implements DataManipulation {
         setInitMatrixData(FilePath.MATRIX_PATH.getPath());
     }
 
-    @Override
     public void setInitMatrixData(String filePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             sizeRowsField.setText(String.valueOf(0));

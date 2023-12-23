@@ -32,7 +32,7 @@ public class MatrixFileHandler {
 
             } else if (matrixType == TRIANGULAR) {
                 // do nothing
-            } else {
+            } else if (matrixType == IDENTITY){
                 // do nothing
             }
         } catch (IOException e) {
@@ -49,7 +49,7 @@ public class MatrixFileHandler {
                     .toList();
             //System.out.println("Matrix data: \n" + matrixData);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return matrixData;
     }

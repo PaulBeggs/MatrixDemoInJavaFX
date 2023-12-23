@@ -1,6 +1,7 @@
 package matrix.gui;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -77,14 +78,16 @@ public class SaveController {
                         MatrixFileHandler.saveMatrixDataToFile("savedMatrices/determinants/"
                                 + fileName + ".txt", determinantValue, matrixData, MatrixType.DETERMINANT);
                     } else {
-                        System.out.println("Must find the determinant first before you can save.");
+                        showErrorPopup("Must find the determinant before you can save.");
+                        System.out.println("Must find the determinant before you can save.");
                     }
                 }
                 case "Triangular Matrix" -> {
                     if (getTriangularMatrix() != null) {
 
                     } else {
-                        System.out.println("Must find the determinant first before you can save.");
+                        showErrorPopup("Must find the triangular matrix before you can save.");
+                        System.out.println("Must find the triangular matrix before you can save.");
                     }
                 }
                 default -> {
@@ -107,5 +110,14 @@ public class SaveController {
         }
 
         return matrixData;
+    }
+
+    private void showErrorPopup(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+
+        alert.showAndWait();
     }
 }

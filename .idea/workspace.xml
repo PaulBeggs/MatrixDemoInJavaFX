@@ -4,26 +4,67 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4abf2f47-9852-4e6c-b90b-d7b7b33c5173" name="Changes" comment="added some decimal to fraction stuff">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="4abf2f47-9852-4e6c-b90b-d7b7b33c5173" name="Changes" comment="removed some of the triangularization stuff from determinant controller.">
+      <change afterPath="$PROJECT_DIR$/htmlReport/css/coverage.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/css/idea.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/img/arrowDown.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/img/arrowUp.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/index_SORT_BY_BLOCK.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/index_SORT_BY_BLOCK_DESC.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/index_SORT_BY_CLASS.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/index_SORT_BY_CLASS_DESC.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/index_SORT_BY_LINE.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/index_SORT_BY_LINE_DESC.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/index_SORT_BY_METHOD.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/index_SORT_BY_METHOD_DESC.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/index_SORT_BY_NAME_DESC.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/js/highlight.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/js/highlightjs-line-numbers.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/ns-1/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/ns-1/index_SORT_BY_BLOCK.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/ns-1/index_SORT_BY_BLOCK_DESC.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/ns-1/index_SORT_BY_CLASS.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/ns-1/index_SORT_BY_CLASS_DESC.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/ns-1/index_SORT_BY_LINE.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/ns-1/index_SORT_BY_LINE_DESC.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/ns-1/index_SORT_BY_METHOD.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/ns-1/index_SORT_BY_METHOD_DESC.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/ns-1/index_SORT_BY_NAME_DESC.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/ns-1/sources/source-1.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/ns-1/sources/source-2.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/ns-1/sources/source-3.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/ns-1/sources/source-4.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/ns-1/sources/source-5.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/htmlReport/ns-1/sources/source-6.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/matrices/1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/matrices/identity.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/matrices/identity.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/matrices/testing.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/matrices/wad.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/fileManaging/MatrixFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/fileManaging/MatrixFileHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/fileManaging/MatrixType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/fileManaging/MatrixType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/DataManipulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DataManipulation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/DeterminantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DeterminantController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/DeterminantPopUpController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DeterminantPopUpController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/MatrixApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MatrixApp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/SaveController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/SaveController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/operators/MatrixDeterminantOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/operators/MatrixDeterminantOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/operators/MatrixInputHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/operators/MatrixInputHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/operators/MatrixRREF.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/operators/MatrixRREF.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/determinantScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/determinantScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/matrixGUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/matrixGUI.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/model/MatrixView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/model/MatrixView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/model/TriangularizationView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/model/TriangularizationView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExportToHTMLSettings">
+    <option name="OPEN_IN_BROWSER" value="true" />
+    <option name="OUTPUT_DIRECTORY" value="C:\Users\paulb\IdeaProjects\MatrixGUI_2\htmlReport" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -43,12 +84,12 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "PaulBeggs"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;PaulBeggs&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
@@ -74,7 +115,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Application.DecimalToFraction.executor": "Run",
+    "Application.DecimalToFraction.executor": "Coverage",
     "Application.MatrixApp.executor": "Run",
     "Downloaded.Files.Path.Enabled": "false",
     "Repository.Attach.Annotations": "false",
@@ -84,6 +125,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "ShowUsagesActions.previewPropertyKey": "true",
+    "create.test.in.the.same.root": "true",
     "git-widget-placeholder": "Start-of-Triangularization",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/paulb/AppData/Local/SceneBuilder/SceneBuilder.exe",
@@ -124,11 +166,27 @@
           <option name="PATTERN" value="matrix.fileManaging.*" />
           <option name="ENABLED" value="true" />
         </pattern>
+        <pattern>
+          <option name="PATTERN" value="matrix.gui.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+        <pattern>
+          <option name="PATTERN" value="matrix.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+        <pattern>
+          <option name="PATTERN" value="matrix.operators.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
       </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.DecimalToFraction" />
+      <item itemvalue="Application.MatrixApp" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.MatrixApp" />
@@ -195,7 +253,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702885352588</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="removed some of the triangularization stuff from determinant controller.">
+      <option name="closed" value="true" />
+      <created>1702952842297</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1702952842297</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -205,6 +271,18 @@
     <MESSAGE value="Finalized Matrix Controller. for real this time I think" />
     <MESSAGE value="Feeling good with this branch" />
     <MESSAGE value="added some decimal to fraction stuff" />
-    <option name="LAST_COMMIT_MESSAGE" value="added some decimal to fraction stuff" />
+    <MESSAGE value="removed some of the triangularization stuff from determinant controller." />
+    <option name="LAST_COMMIT_MESSAGE" value="removed some of the triangularization stuff from determinant controller." />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/FinalProject_iml$DecimalToFraction.ic" NAME="DecimalToFraction Coverage Results" MODIFIED="1703359890785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>matrix.operators.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/FinalProject_iml$MatrixApp.ic" NAME="MatrixApp Coverage Results" MODIFIED="1703360573857" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>matrix.fileManaging.*</FILTER>
+      <FILTER>matrix.gui.*</FILTER>
+      <FILTER>matrix.model.*</FILTER>
+      <FILTER>matrix.operators.*</FILTER>
+    </SUITE>
   </component>
 </project>

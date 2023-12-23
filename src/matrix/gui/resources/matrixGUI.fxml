@@ -16,22 +16,22 @@
 
 <BorderPane fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="matrix.gui.MatrixController">
    <left>
-      <VBox prefHeight="400.0" prefWidth="130.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="625.0" prefWidth="136.0" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" prefWidth="114.0" text="Rows" />
-            <TextField fx:id="sizeRowsField" prefWidth="34.0" promptText="Rows" />
-            <Label alignment="CENTER" prefWidth="114.0" text="Columns" />
+            <Label alignment="CENTER" prefWidth="116.0" text="Rows" />
+            <TextField fx:id="sizeRowsField" prefWidth="116.0" promptText="Rows" />
+            <Label alignment="CENTER" prefWidth="116.0" text="Columns" />
             <TextField fx:id="sizeColsField" promptText="Columns" />
-            <Button fx:id="generateButton" mnemonicParsing="false" onAction="#handleGenerateButton" prefWidth="114.0" text="Generate Matrix" />
-            <Button fx:id="clearButton" mnemonicParsing="false" onAction="#handleClearButton" prefWidth="114.0" text="Clear Matrix" />
+            <Button fx:id="generateButton" mnemonicParsing="false" onAction="#handleGenerateButton" prefWidth="116.0" text="Generate Matrix" />
+            <Button fx:id="identityButton" mnemonicParsing="false" onAction="#handleIdentityButton" prefWidth="116.0" text="Set Identity Matrix" />
             <HBox prefHeight="25.0" prefWidth="114.0">
                <children>
-                  <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSaveButton" prefWidth="57.0" text="Save" />
-                  <Button fx:id="loadButton" mnemonicParsing="false" onAction="#handleLoadButton" prefWidth="57.0" text="Load" />
+                  <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSaveButton" prefWidth="58.0" text="Save" />
+                  <Button fx:id="loadButton" mnemonicParsing="false" onAction="#handleLoadButton" prefWidth="58.0" text="Load" />
                </children>
             </HBox>
-            <Button fx:id="fastFactsButton" minWidth="110.0" mnemonicParsing="false" onAction="#handleFastFactsButton" text="Fast Facts" />
-            <TextArea fx:id="directions" editable="false" minHeight="130.0" minWidth="100.0" prefHeight="134.0" prefWidth="110.0" text="&#10;" wrapText="true">
+            <Button fx:id="fastFactsButton" mnemonicParsing="false" onAction="#handleFastFactsButton" prefWidth="116.0" text="Fast Facts" />
+            <TextArea fx:id="directions" editable="false" minHeight="130.0" minWidth="116.0" prefHeight="134.0" prefWidth="116.0" text="&#10;" wrapText="true">
                <VBox.margin>
                   <Insets top="35.0" />
                </VBox.margin>
@@ -39,15 +39,15 @@
                   <Font name="Times New Roman" size="13.0" />
                </font>
             </TextArea>
-            <Label alignment="CENTER" prefHeight="18.0" prefWidth="114.0" text="Target Row" textAlignment="CENTER">
+            <Label alignment="CENTER" prefHeight="18.0" prefWidth="116.0" text="Target Row" textAlignment="CENTER">
                <VBox.margin>
                   <Insets top="30.0" />
                </VBox.margin>
             </Label>
             <TextField fx:id="targetRow" text="1" />
-            <Label alignment="CENTER" prefHeight="17.0" prefWidth="117.0" text="Source Row" />
+            <Label alignment="CENTER" prefHeight="17.0" prefWidth="116.0" text="Source Row" />
             <TextField fx:id="sourceRow" text="2" />
-            <Label alignment="CENTER" prefWidth="114.0" text="Multiplier" textAlignment="CENTER" />
+            <Label alignment="CENTER" prefWidth="116.0" text="Multiplier" textAlignment="CENTER" />
             <TextField fx:id="multiplier" text="-2" />
             <Button fx:id="operationButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#performOperation" text="Compute">
                <VBox.margin>

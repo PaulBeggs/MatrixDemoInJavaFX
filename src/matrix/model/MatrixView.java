@@ -33,13 +33,13 @@ public class MatrixView {
         List<List<String>> matrixData = MatrixFileHandler.loadMatrixFromFile(fileName);
         if (matrixData != null) {
 
-            if (!matrixData.isEmpty() && !matrixData.get(0).isEmpty()) {
-                this.matrix = new Matrix(matrixData.size(), matrixData.get(0).size());
+            if (!matrixData.isEmpty() && !matrixData.getFirst().isEmpty()) {
+                this.matrix = new Matrix(matrixData.size(), matrixData.getFirst().size());
 
             } else {
                 System.out.println("Error: matrixData is empty.");
             }
-            System.out.println("2nd matrix data: \n" + matrixData);
+            System.out.println("matrix data inside MatrixViews: \n" + matrixData);
             populateMatrixFromData(fileName, isEditable);
             MatrixFileHandler.setMatrix(fileName, matrix);
             saveToFile(fileName, matrixType);
