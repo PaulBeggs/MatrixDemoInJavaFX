@@ -10,9 +10,16 @@ public class Matrix implements MatrixOperations {
     private int numRows;
 
     public Matrix(int numRows, int numCols) {
+        if (numRows <= 0 || numCols <= 0) {
+            throw new IllegalArgumentException("Matrix dimensions must be positive. Received numRows: " + numRows + ", numCols: " + numCols);
+        }
+
         this.numRows = numRows;
         this.numCols = numCols;
-        matrix = new double[numRows][numCols];
+
+        System.out.println("the numrows and numcols inside the matrix constructor: \n" + numRows);
+        System.out.println(numCols);
+        this.matrix = new double[numRows][numCols];
     }
 
     public double getValue(int row, int col) {
@@ -22,14 +29,27 @@ public class Matrix implements MatrixOperations {
     public void setValue(int row, int col, double value) {
         if (isValidRow(row) && isValidColumn(col)) {
             this.matrix[row][col] = value;
-        } else {
-            System.out.println("Invalid row or column index.");
+//        } else {
+//            System.out.println("For isValidRow(row) to be true, " + row + " needs to equal to: " + numRows);
+//            System.out.println("Invalid row or column index.");
         }
     }
 
     public void setMatrix(double[][] newMatrix) {
         for (int i = 0; i < numRows; i++) {
             System.arraycopy(newMatrix[i], 0, this.matrix[i], 0, numCols);
+        }
+    }
+
+    public void setToIdentity() {
+        for (int i = 0; i < this.numRows; i++) {
+            for (int j = 0; j < this.numCols; j++) {
+                if (i == j) {
+                    this.matrix[i][j] = 1; // Set diagonal elements to 1
+                } else {
+                    this.matrix[i][j] = 0; // Set off-diagonal elements to 0
+                }
+            }
         }
     }
 

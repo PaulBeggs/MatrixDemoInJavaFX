@@ -1,0 +1,181 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ElementaryMatrixOperations</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">matrix.operators</a>
+</div>
+
+<h1>Coverage Summary for Class: ElementaryMatrixOperations (matrix.operators)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ElementaryMatrixOperations</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/29)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package matrix.operators;
+&nbsp;
+&nbsp;import matrix.fileManaging.FilePath;
+&nbsp;import matrix.model.Matrix;
+&nbsp;import matrix.fileManaging.MatrixFileHandler;
+&nbsp;import matrix.model.MatrixOperations;
+&nbsp;
+&nbsp;public class ElementaryMatrixOperations implements MatrixOperations {
+&nbsp;    private Matrix matrix;
+&nbsp;
+<b class="nc">&nbsp;    public ElementaryMatrixOperations(Matrix matrix) {</b>
+<b class="nc">&nbsp;        this.matrix = matrix;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void swapRows(int row1, int row2) {
+<b class="nc">&nbsp;        matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());</b>
+<b class="nc">&nbsp;        if (matrix != null &amp;&amp; isValidRow(row1) &amp;&amp; isValidRow(row2)) {</b>
+<b class="nc">&nbsp;            double[] temp = matrix.getDoubleMatrix()[row1];</b>
+<b class="nc">&nbsp;            matrix.getDoubleMatrix()[row1] = matrix.getDoubleMatrix()[row2];</b>
+<b class="nc">&nbsp;            matrix.getDoubleMatrix()[row2] = temp;</b>
+&nbsp;
+<b class="nc">&nbsp;            MatrixFileHandler.setMatrix(FilePath.MATRIX_PATH.getPath(), matrix);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;this should be the matrix that is printed within &#39;swapRows&#39;: \n&quot; + matrix);</b>
+<b class="nc">&nbsp;        } else {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;matrix is null inside &#39;swappedRows:&#39; \n&quot; + matrix);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public void multiplyRow(int row, double multiplier) {
+<b class="nc">&nbsp;        matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());</b>
+<b class="nc">&nbsp;        if (matrix != null &amp;&amp; isValidRow(row)) {</b>
+<b class="nc">&nbsp;            for (int col = 0; col &lt; matrix.getCols(); col++) {</b>
+<b class="nc">&nbsp;                matrix.getDoubleMatrix()[row][col] *= multiplier;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            MatrixFileHandler.setMatrix(FilePath.MATRIX_PATH.getPath(), matrix);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;this should be the matrix that is printed within &#39;multipliedRow: \n&quot; + matrix);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            System.out.println(&quot;matrix is null inside &#39;multipliedRows:&#39; \n&quot; + matrix);</b>
+&nbsp;
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public void addRows(int sourceRow, int targetRow, double multiplier) {
+<b class="nc">&nbsp;        matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());</b>
+<b class="nc">&nbsp;        if (matrix != null &amp;&amp; isValidRow(sourceRow) &amp;&amp; isValidRow(targetRow)) {</b>
+<b class="nc">&nbsp;            for (int col = 0; col &lt; matrix.getCols(); col++) {</b>
+<b class="nc">&nbsp;                matrix.getDoubleMatrix()[targetRow][col] += multiplier * matrix.getDoubleMatrix()[sourceRow][col];</b>
+&nbsp;            }
+<b class="nc">&nbsp;            MatrixFileHandler.setMatrix(FilePath.MATRIX_PATH.getPath(), matrix);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;this should be the matrix that is printed within &#39;addRows: \n&quot; + matrix);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            System.out.println(&quot;matrix is null inside &#39;addRows:&#39; \n&quot; + matrix);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public double[][] getDoubleMatrix() {
+<b class="nc">&nbsp;        return new double[0][];</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public int getRows() {
+<b class="nc">&nbsp;        return 0;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public int getCols() {
+<b class="nc">&nbsp;        return 0;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public boolean isValidRow(int row) {
+<b class="nc">&nbsp;        return row &gt;= 0 &amp;&amp; row &lt; matrix.getRows();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-23 13:32</div>
+</div>
+</body>
+</html>

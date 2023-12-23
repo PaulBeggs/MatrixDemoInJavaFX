@@ -1,20 +1,22 @@
 package matrix.operators;
 
-import matrix.gui.FilePath;
+import matrix.fileManaging.FilePath;
+import matrix.fileManaging.MatrixType;
 import matrix.model.Matrix;
-import matrix.model.MatrixFileHandler;
+import matrix.fileManaging.MatrixFileHandler;
 import matrix.model.MatrixView;
 import matrix.model.TriangularizationView;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MatrixDeterminantOperations {
 
-    private Matrix matrix;
-    private MatrixView matrixView;
+    private final Matrix matrix;
+    private final MatrixView matrixView;
 
     public MatrixDeterminantOperations(Matrix matrix, MatrixView matrixView) {
         this.matrix = matrix;
@@ -32,41 +34,39 @@ public class MatrixDeterminantOperations {
             return BigDecimal.valueOf(.12319620031999);
         }
 
-        DeterminantCalc determinantCalc = new DeterminantCalc(matrix, matrixView);
-        BigDecimal determinant = determinantCalc.determinant();
+        DeterminantCalc determinantCalc = new DeterminantCalc(matrix, getMatrixView());
 
-        return determinant;
+        return determinantCalc.determinant();
     }
 
+    private MatrixView getMatrixView() {
+        return matrixView;
+    }
 
     private static class DeterminantCalc {
 
-        private DecimalFormat decimalFormat = new DecimalFormat("#.#####");
-        private Matrix matrix;
-        private MatrixView matrixView;
-        private ElementaryMatrixOperations EMO;
-        private int sign = 1;
-        private int steps;
-        private List<Integer> signChanges = new ArrayList<>();
+        private final DecimalFormat decimalFormat = new DecimalFormat("#.#####");
+        private final Matrix matrix;
+        private final int sign = 1;
 
-        private TriangularizationView tV;
+        private final MatrixView matrixView;
+        private int steps;
+        private final List<Integer> signChanges = new ArrayList<>();
+
+        private final TriangularizationView tV;
 
         DeterminantCalc(Matrix matrix, MatrixView matrixView) {
             this.matrix = matrix;
             this.matrixView = matrixView;
-
-            this.EMO = new ElementaryMatrixOperations(matrix);
             tV = new TriangularizationView(matrix);
         }
 
         public BigDecimal determinant() {
             BigDecimal deter;
-            if (isUpperTriangular() || isLowerTriangular()) {
-                deter = multiplyDiameter().multiply(BigDecimal.valueOf(sign));
-            } else {
+            if (!isUpperTriangular() && !isLowerTriangular()) {
                 makeTriangular();
-                deter = multiplyDiameter().multiply(BigDecimal.valueOf(sign));
             }
+            deter = multiplyDiameter().multiply(BigDecimal.valueOf(sign));
             tV.setDeterminantValue(deter);
             return deter;
         }
@@ -94,10 +94,11 @@ public class MatrixDeterminantOperations {
 
             tV.setMatrix(matrix);
             System.out.println("Triangular matrix: \n" + formatMatrix(matrix, decimalFormat));
+            MatrixFileHandler.setMatrix(FilePath.TRIANGULAR_PATH.getPath(), matrix);
             List<List<String>> matrixData = matrixView.parseMatrixData(matrix);
             if (matrixData != null) {
                 System.out.println("This is the matrixData inside DeterminantOperations: \n" + matrixData);
-                MatrixFileHandler.saveMatrixToFile(FilePath.TRIANGULAR_PATH.getPath(), matrixData);
+                MatrixFileHandler.saveMatrixDataToFile(FilePath.TRIANGULAR_PATH.getPath(), BigDecimal.valueOf(0), matrixData, MatrixType.REGULAR);
             }
         }
 
@@ -139,36 +140,34 @@ public class MatrixDeterminantOperations {
             return result;
         }
 
-        public void makeNonZero(int rowPos, int colPos) {
-            int len = matrix.getRows();
-
-            for (int i = 0; i < len; i++) {
-                for (int j = 0; j < len; j++) {
-                    if (matrix.getDoubleMatrix()[i][j] != 0) {
-                        if (i == rowPos) {
-                            addCol(colPos, j);
-                            return;
-                        }
-                        if (j == colPos) {
-                            addRow(rowPos, i);
-                            return;
-                        }
-                    }
-                }
-            }
-        }
+//        public void makeNonZero(int rowPos, int colPos) {
+//            int len = matrix.getRows();
+//
+//            for (int i = 0; i < len; i++) {
+//                for (int j = 0; j < len; j++) {
+//                    if (matrix.getDoubleMatrix()[i][j] != 0) {
+//                        if (i == rowPos) {
+//                            addCol(colPos, j);
+//                            return;
+//                        }
+//                        if (j == colPos) {
+//                            addRow(rowPos, i);
+//                            return;
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         public void addRow(int row1, int row2) {
             for (int j = 0; j < matrix.getCols(); j++) {
-                matrix.getDoubleMatrix()[row1][j] += matrix.getDoubleMatrix()[row2][j];
+                BigDecimal value1 = BigDecimal.valueOf(matrix.getDoubleMatrix()[row1][j]);
+                BigDecimal value2 = BigDecimal.valueOf(matrix.getDoubleMatrix()[row2][j]);
+                BigDecimal result = value1.add(value2).setScale(5, RoundingMode.HALF_UP);
+                matrix.getDoubleMatrix()[row1][j] = normalizeZero(result).doubleValue();
             }
         }
 
-        public void addCol(int col1, int col2) {
-            for (int i = 0; i < matrix.getRows(); i++) {
-                matrix.getDoubleMatrix()[i][col1] += matrix.getDoubleMatrix()[i][col2];
-            }
-        }
 
         public void multiplyRow(int row, double num) {
             if (num < 0) {
@@ -178,9 +177,12 @@ public class MatrixDeterminantOperations {
             }
 
             for (int j = 0; j < matrix.getCols(); j++) {
-                matrix.getDoubleMatrix()[row][j] *= num;
+                BigDecimal value = BigDecimal.valueOf(matrix.getDoubleMatrix()[row][j]);
+                BigDecimal result = value.multiply(BigDecimal.valueOf(num)).setScale(5, RoundingMode.HALF_UP);
+                matrix.getDoubleMatrix()[row][j] = normalizeZero(result).doubleValue();
             }
         }
+
 
         private void sortCol(int col) {
             for (int i = matrix.getRows() - 1; i >= col; i--) {
@@ -199,9 +201,16 @@ public class MatrixDeterminantOperations {
                 matrix.setSign(matrix.getSign() * -1);
                 tV.setSign(matrix.getSign());
                 tV.updateSignChanges(matrix.getSign());
+                if (matrix.isValidRow(row1) && matrix.isValidRow(row2)) {
+                    double[] temp = matrix.getDoubleMatrix()[row1];
+                    matrix.getDoubleMatrix()[row1] = matrix.getDoubleMatrix()[row2];
+                    matrix.getDoubleMatrix()[row2] = temp;
+                }
             }
+        }
 
-            EMO.swapRows(row1, row2);
+        private BigDecimal normalizeZero(BigDecimal value) {
+            return (value.compareTo(BigDecimal.ZERO) == 0) ? BigDecimal.ZERO : value;
         }
 
         private List<List<String>> formatMatrix(Matrix matrix, DecimalFormat decimalFormat) {
@@ -226,4 +235,9 @@ public class MatrixDeterminantOperations {
             return formattedMatrix;
         }
     }
+//        public void addCol(int col1, int col2) {
+//            for (int i = 0; i < matrix.getRows(); i++) {
+//                matrix.getDoubleMatrix()[i][col1] += matrix.getDoubleMatrix()[i][col2];
+//            }
+//        }
 }

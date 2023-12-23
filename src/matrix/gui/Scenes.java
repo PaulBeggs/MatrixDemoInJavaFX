@@ -22,9 +22,14 @@ public enum Scenes {
         }
 
         @Override
+        public String getTitle() {
+            return "Inversion Operation";
+        }
+
+        @Override
         public void switchScene(ActionEvent event) throws IOException {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/inverseScene.fxml")));
-            switchToScene(event, root);
+            switchToScene(event, root, getTitle());
 
 
         }
@@ -36,9 +41,14 @@ public enum Scenes {
         }
 
         @Override
+        public String getTitle() {
+            return "Determinant Operation";
+        }
+
+        @Override
         public void switchScene(ActionEvent event) throws IOException {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/determinantScene.fxml")));
-            switchToScene(event, root);
+            switchToScene(event, root, getTitle());
         }
     },
     RREF {
@@ -48,9 +58,14 @@ public enum Scenes {
         }
 
         @Override
+        public String getTitle() {
+            return "RREF Operation";
+        }
+
+        @Override
         public void switchScene(ActionEvent event) throws IOException {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/RREFScene.fxml")));
-            switchToScene(event, root);
+            switchToScene(event, root, getTitle());
         }
     },
     MATRIX {
@@ -60,20 +75,24 @@ public enum Scenes {
         }
 
         @Override
+        public String getTitle() {
+            return "Matrix GUI";
+        }
+
+        @Override
         public void switchScene(ActionEvent event) throws IOException {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/matrixGUI.fxml")));
-            switchToScene(event, root);
+            switchToScene(event, root, getTitle());
         }
     };
 
-    private Stage stage;
-    private Scene scene;
-
     public abstract void switchScene(ActionEvent event) throws IOException;
+    public abstract String getTitle();
 
-    protected void switchToScene(ActionEvent event, Parent root) {
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
+    protected void switchToScene(ActionEvent event, Parent root, String title) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setTitle(title); // Set the title here
         stage.setScene(scene);
         stage.show();
     }
