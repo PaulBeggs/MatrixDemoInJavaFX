@@ -79,6 +79,7 @@ public class DeterminantController implements DataManipulation {
         checkBox.setSelected(true);
     }
     private void initializeMatrixView() {
+        matrixGrid.getStyleClass().add("grid-pane");
         matrixTextFields = new ArrayList<>();
         matrixView = new MatrixView(matrix, matrixGrid, matrixTextFields);
     }
@@ -175,6 +176,8 @@ public class DeterminantController implements DataManipulation {
         saveController.setStage(saveStage);
 
         Scene saveScene = new Scene(root);
+        MatrixApp.setupGlobalEscapeHandler(saveScene);
+        MatrixApp.applyTheme(saveScene);
         saveStage.setScene(saveScene);
         saveStage.showAndWait();
     }
@@ -310,7 +313,8 @@ public class DeterminantController implements DataManipulation {
     public void stopAutoSave() {
         autoSaveExecutor.shutdown();
         try {
-            if (!autoSaveExecutor.awaitTermination(800, TimeUnit.MILLISECONDS)) {
+            if (!autoSaveExecutor.awaitTermination(500, TimeUnit.MILLISECONDS)) {
+                System.out.println("autoSaver has been shut down.");
                 autoSaveExecutor.shutdownNow();
             }
         } catch (InterruptedException e) {

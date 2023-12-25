@@ -1,4 +1,4 @@
-module MatrixGUI_2 {
+module MatrixDemoInJavaFX {
     requires javafx.fxml;
     requires javafx.controls;
 

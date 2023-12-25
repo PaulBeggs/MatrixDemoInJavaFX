@@ -170,8 +170,8 @@ public class MatrixView {
     }
 
     private TextField createAndConfigureCell(String value, int row, int col, String filePath, boolean isEditable) {
-
         TextField cell = new TextField();
+        cell.getStyleClass().add("textfield-grid-cell");
         cell.setMinHeight(50);
         cell.setMinWidth(50);
         cell.setAlignment(Pos.CENTER);

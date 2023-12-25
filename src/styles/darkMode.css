@@ -1,0 +1,78 @@
+.root {
+    -primary-color: #282828;
+    -secondary-color: #383838;
+    -third-color: #181818;
+    -text-color: white;
+
+    -fx-background-color: -primary-color;
+}
+
+.textfield-grid-cell {
+    -fx-border-color: red; /* Border color */
+    -fx-border-width: .75; /* Border width */
+
+    -fx-background-color: -third-color; /* Background color */
+    -fx-text-fill: -text-color; /* Text color */
+}
+
+.button {
+    -fx-background-color: -third-color; /* black background */
+    -fx-text-fill: -text-color; /* White text */
+}
+
+/* Background color of the whole context menu */
+.choice-box .context-menu {
+    -fx-background-color: -third-color;
+}
+
+/* Focused item background color in the list */
+.choice-box .menu-item:focused {
+    -fx-background-color: red;
+}
+
+/* Text color of non-focused items in the list */
+.choice-box .menu-item > .label {
+    -fx-text-fill: -text-color;
+}
+
+/* Text color of focused item in the list */
+.choice-box .menu-item:focused > .label {
+    -fx-text-fill: -third-color;
+}
+
+/* Background color of the control itself */
+.choice-box {
+  -fx-background-color: -third-color;
+  -fx-mark-color: red;
+}
+
+/* Selected item text color on the control itself */
+.choice-box > .label {
+    -fx-text-fill: -text-color;
+}
+
+.title-label {
+    -fx-text-fill: -text-color;
+}
+
+
+.title-label {
+    -fx-text-fill: -text-color;
+}
+
+.text-area {
+    -fx-background-color: red; /* Light gray background */
+    -fx-control-inner-background: -third-color; /* For text field background */
+    -fx-text-fill: -text-color; /* Light text for dark mode */
+}
+
+.text-field {
+    -fx-background-color: -third-color;
+    -fx-text-fill: -text-color;
+}
+
+.bordered-grid {
+    -fx-border-color: red;
+    -fx-border-width: 0.75;
+    /* Other styles as needed */
+}

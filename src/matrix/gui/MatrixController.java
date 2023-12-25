@@ -40,13 +40,13 @@ public class MatrixController implements DataManipulation {
     @FXML
     TextField sizeColsField, sizeRowsField, targetRow, sourceRow, multiplier;
     @FXML
-    TextArea directions = new TextArea();
+    TextArea directions;
     @FXML
     ChoiceBox<Scenes> scenes;
     @FXML
     ChoiceBox<String> operations;
     @FXML
-    GridPane matrixGrid = new GridPane();
+    GridPane matrixGrid;
     private MatrixView matrixView;
     private final MatrixInputHandler MIH = new MatrixInputHandler();
     private Matrix matrix;
@@ -90,6 +90,7 @@ public class MatrixController implements DataManipulation {
     private void setupScenesDropdown() {
         scenes.getItems().setAll(Scenes.values());
         scenes.setValue(Scenes.MATRIX);
+        scenes.setTooltip(new Tooltip("Pick the scene"));
         scenes.setOnAction(event -> {
             Scenes selectedScene = scenes.getValue();
             try {
@@ -97,7 +98,7 @@ public class MatrixController implements DataManipulation {
                 stopAutoSave();
                 selectedScene.switchScene(event);
             } catch (IOException e) {
-                e.printStackTrace(); // Changed to printStackTrace for better error visibility
+                e.printStackTrace();
             }
         });
     }
@@ -163,6 +164,7 @@ public class MatrixController implements DataManipulation {
     public void handleSaveButton() {
         Stage saveStage = new Stage();
         saveStage.setTitle("Save Menu");
+
         saveStage.initModality(Modality.WINDOW_MODAL);
         saveStage.initOwner(MatrixApp.getPrimaryStage());
 
@@ -180,6 +182,8 @@ public class MatrixController implements DataManipulation {
         saveController.setStage(saveStage);
 
         Scene saveScene = new Scene(root);
+        MatrixApp.setupGlobalEscapeHandler(saveScene);
+        MatrixApp.applyTheme(saveScene);
         saveStage.setScene(saveScene);
         saveStage.showAndWait();
     }
@@ -396,6 +400,7 @@ public class MatrixController implements DataManipulation {
                 final int currentCol = col; // Final variable for use in lambda
 
                 TextField cell = new TextField();
+                cell.getStyleClass().add("textfield-grid-cell");
                 cell.setMinHeight(50);
                 cell.setMinWidth(50);
                 cell.setAlignment(Pos.CENTER);
@@ -407,7 +412,7 @@ public class MatrixController implements DataManipulation {
                 } else if (identityCheck) {
                     cellValue = 0.0; // Off-diagonal element for identity matrix
                 } else {
-                    cellValue = Math.floor(Math.random() * 101) - 50; // Random value for regular matrix
+                    cellValue = Math.floor(Math.random() * 101.12) - 50.5; // Random value for regular matrix
                 }
 
                 cell.setText(String.valueOf(cellValue));
@@ -478,7 +483,8 @@ public class MatrixController implements DataManipulation {
     public void stopAutoSave() {
         autoSaveExecutor.shutdown();
         try {
-            if (!autoSaveExecutor.awaitTermination(800, TimeUnit.MILLISECONDS)) {
+            if (!autoSaveExecutor.awaitTermination(500, TimeUnit.MILLISECONDS)) {
+                System.out.println("autoSaver has been shut down.");
                 autoSaveExecutor.shutdownNow();
             }
         } catch (InterruptedException e) {

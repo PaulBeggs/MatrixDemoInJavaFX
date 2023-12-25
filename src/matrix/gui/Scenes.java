@@ -90,9 +90,14 @@ public enum Scenes {
     public abstract String getTitle();
 
     protected void switchToScene(ActionEvent event, Parent root, String title) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
-        stage.setTitle(title); // Set the title here
+        MatrixApp.setupGlobalEscapeHandler(scene);
+
+        stage.setTitle(title);
+
+        MatrixApp.applyTheme(scene);
+
         stage.setScene(scene);
         stage.show();
     }
