@@ -6,6 +6,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import matrix.fileManaging.FilePath;
 import matrix.fileManaging.MatrixType;
 import matrix.model.Matrix;
 import matrix.fileManaging.MatrixFileHandler;
@@ -72,9 +73,11 @@ public class SaveController {
 
             switch (selectedMatrixOption) {
                 case "Default Matrix" ->
-                        MatrixFileHandler.saveMatrixDataToFile("savedMatrices/matrices/" + fileName + ".txt", BigDecimal.valueOf(0), matrixData, MatrixType.REGULAR);
+                        MatrixFileHandler.saveMatrixDataToFile("savedMatrices/matrices/"
+                                + fileName + ".txt", BigDecimal.valueOf(0), matrixData, MatrixType.REGULAR);
                 case "Determinant Matrix" -> {
                     if (getDeterminant() != null) {
+                        matrixData = MatrixFileHandler.loadMatrixFromFile(FilePath.TRIANGULAR_PATH.getPath());
                         MatrixFileHandler.saveMatrixDataToFile("savedMatrices/determinants/"
                                 + fileName + ".txt", determinantValue, matrixData, MatrixType.DETERMINANT);
                     } else {
@@ -108,6 +111,7 @@ public class SaveController {
             List<String> rowData = row.stream().map(TextField::getText).collect(Collectors.toList());
             matrixData.add(rowData);
         }
+        System.out.println("This is the matrixData inside of the SaveController: \n" + matrixData);
 
         return matrixData;
     }

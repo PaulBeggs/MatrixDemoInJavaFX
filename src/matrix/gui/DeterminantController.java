@@ -37,7 +37,6 @@ public class DeterminantController implements DataManipulation {
     TextArea directions;
     @FXML
     CheckBox checkBox;
-    private SaveController saveController;
     private MatrixDeterminantOperations determinantOperations;
     private MatrixView matrixView;
     private List<List<TextField>> matrixTextFields;
@@ -62,8 +61,8 @@ public class DeterminantController implements DataManipulation {
     private void initialize() {
         setupAutoSave();
         setBooleans();
-        initializeMatrixView();
         initializeMatrixAndOperations();
+        initializeMatrixView();
         setupDirectionText();
         setupUIListeners();
         matrixView.updateViews(FilePath.MATRIX_PATH.getPath(), MatrixType.REGULAR, true);
@@ -71,7 +70,6 @@ public class DeterminantController implements DataManipulation {
 
     private void initializeMatrixAndOperations() {
         matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
-        determinantOperations = new MatrixDeterminantOperations(matrix, matrixView);
     }
     private void setBooleans() {
         isEditable = true;
@@ -115,6 +113,7 @@ public class DeterminantController implements DataManipulation {
 
     @FXML
     public void handleDeterminantFunctionality() {
+        stopAutoSave();
         update();
         if (checkBox.isSelected()) {
             tickedBox = true;
@@ -123,7 +122,7 @@ public class DeterminantController implements DataManipulation {
             isEditable = false;
         }
         determinantValue.setText(String.valueOf(determinant));
-        processMatrixForDeterminant();
+        System.out.println("This is the determinant value inside of 'handleDeterminantFunctionality' \n" + determinant);
     }
 
     private void processMatrixForDeterminant() {
@@ -146,6 +145,7 @@ public class DeterminantController implements DataManipulation {
     private void handleNonZeroDeterminant() {
         stopAutoSave();
         matrix = MatrixFileHandler.getMatrix(FilePath.TRIANGULAR_PATH.getPath());
+        System.out.println("This is the matrix that is being acquired from Triangular_Path: \n" + matrix);
         matrixView.updateViews(FilePath.TRIANGULAR_PATH.getPath(), MatrixType.TRIANGULAR, false);
     }
 
@@ -171,6 +171,11 @@ public class DeterminantController implements DataManipulation {
         }
 
         SaveController saveController = loader.getController();
+        System.out.println("These are the matrixTextFields that are being sent to the save controller: ");
+        for (List<TextField> row : matrixTextFields) {
+            row.forEach(textField -> System.out.print(textField.getText() + " "));
+            System.out.println(); // To move to the next line after each row
+        }
         saveController.setMatrixTextFields(matrixTextFields);
         saveController.setDeterminantValue(determinant);
         saveController.setStage(saveStage);
@@ -213,6 +218,15 @@ public class DeterminantController implements DataManipulation {
         }
     }
 
+    private void makeTriangular(Matrix matrix) {
+        List<List<String>> matrixData = matrixView.parseMatrixData(matrix);
+        if (matrixData != null) {
+            System.out.println("This is the (hopefully triangularized) matrixData inside DeterminantController: \n" + matrixData);
+            MatrixFileHandler.saveMatrixDataToFile(FilePath.TRIANGULAR_PATH.getPath(), BigDecimal.valueOf(0), matrixData, MatrixType.TRIANGULAR);
+            matrixView.updateViews(FilePath.TRIANGULAR_PATH.getPath(), MatrixType.TRIANGULAR, false);
+        }
+    }
+
     private void showErrorPopup() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -225,25 +239,23 @@ public class DeterminantController implements DataManipulation {
     @Override
     public void update() {
         if (matrix != null) {
-            System.out.println("Matrix is not null (determinantController) ");
+            System.out.println("Matrix is not null (determinantController) \n" + matrix);
+            determinantOperations = new MatrixDeterminantOperations(matrix);
             this.determinant = determinantOperations.calculateDeterminant();
-            BigDecimal threshold = new BigDecimal("1.0E-5");
 
             // Set the scale of the determinant to 5 decimal places, rounding as necessary
             BigDecimal scaledDeterminant = determinant.setScale(5, RoundingMode.HALF_UP);
             System.out.println("This is the scaled determinant: \n" + scaledDeterminant);
 
-            // Perform the comparison
-            if (scaledDeterminant.compareTo(threshold) < 0) {
-                this.determinant = BigDecimal.ZERO;
-            } else {
-                this.determinant = scaledDeterminant;
-            }
+            this.determinant = scaledDeterminant;
 
             List<List<String>> matrixData = matrixView.parseMatrixData(matrix);
             MatrixFileHandler.saveMatrixDataToFile(
                     FilePath.DETERMINANT_PATH.getPath(), determinant,
                             matrixData, MatrixType.DETERMINANT);
+            MatrixFileHandler.saveMatrixDataToFile(FilePath.TRIANGULAR_PATH.getPath(),
+                    BigDecimal.ZERO, matrixData, MatrixType.TRIANGULAR);
+            makeTriangular(matrix);
             processMatrixForDeterminant();
         } else {
             System.out.println("Matrix is null (determinantController) ");
@@ -262,7 +274,7 @@ public class DeterminantController implements DataManipulation {
             MatrixFileHandler.setMatrix(FilePath.MATRIX_PATH.getPath(), matrix);
 
         } else {
-            System.out.println("(MatrixController) Error: regMatrix data is null.");
+            System.out.println("(MatrixController) Error: reg Matrix data is null.");
         }
     }
 

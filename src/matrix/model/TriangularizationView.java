@@ -19,8 +19,6 @@ public class TriangularizationView {
     GridPane matrixGrid = new GridPane();
     private Matrix matrix;
     private List<List<TextField>> matrixTextFields;
-    private TriangularizationView tV;
-    private Stage stage;
     private MatrixDeterminantOperations MDO;
     private Animation animation;
     private int currentStep;

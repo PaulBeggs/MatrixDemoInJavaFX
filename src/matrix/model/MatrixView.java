@@ -41,7 +41,6 @@ public class MatrixView {
             }
             System.out.println("matrix data inside MatrixViews: \n" + matrixData);
             populateMatrixFromData(fileName, isEditable);
-            MatrixFileHandler.setMatrix(fileName, matrix);
             saveToFile(fileName, matrixType);
         }
     }
@@ -161,11 +160,9 @@ public class MatrixView {
 
             TextField cell = createAndConfigureCell(cellValue, row, col, filePath, isEditable);
             matrixGrid.add(cell, col, row);
-            setMatrixGrid(matrixGrid); // Assuming this updates the grid layout or similar
+            setMatrixGrid(matrixGrid);
             rowList.add(cell);
         }
-
-
         return rowList;
     }
 
