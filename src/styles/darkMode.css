@@ -8,11 +8,19 @@
 }
 
 .textfield-grid-cell {
-    -fx-border-color: red; /* Border color */
-    -fx-border-width: .75; /* Border width */
+    -fx-min-height: 70;
+    -fx-min-width: 120;
 
-    -fx-background-color: -third-color; /* Background color */
-    -fx-text-fill: -text-color; /* Text color */
+    -fx-pref-height: 70;
+    -fx-pref-width: 120;
+
+    -fx-alignment: center;
+
+    -fx-border-color: red;
+    -fx-border-width: .75;
+
+    -fx-background-color: -third-color;
+    -fx-text-fill: -text-color;
 }
 
 .button {
@@ -50,11 +58,6 @@
 .choice-box > .label {
     -fx-text-fill: -text-color;
 }
-
-.title-label {
-    -fx-text-fill: -text-color;
-}
-
 
 .title-label {
     -fx-text-fill: -text-color;

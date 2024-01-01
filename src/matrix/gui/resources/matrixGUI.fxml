@@ -117,7 +117,7 @@
       </VBox>
    </left>
    <center>
-      <GridPane fx:id="matrixGrid" BorderPane.alignment="CENTER">
+      <GridPane fx:id="matrixGrid" styleClass="bordered-grid" BorderPane.alignment="CENTER">
         <columnConstraints>
             <ColumnConstraints halignment="CENTER" />
           <ColumnConstraints halignment="CENTER" />

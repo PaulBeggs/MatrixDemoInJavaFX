@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -30,7 +31,7 @@ public class DeterminantController implements DataManipulation {
     @FXML
     TextField determinantValue;
     @FXML
-    GridPane matrixGrid = new GridPane();
+    GridPane matrixGrid;
     @FXML
     ChoiceBox<Scenes> scenes;
     @FXML
@@ -101,13 +102,7 @@ public class DeterminantController implements DataManipulation {
         });
 
         checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                System.out.println("Checkbox is checked");
-                tickedBox = true;
-            } else {
-                System.out.println("Checkbox is unchecked");
-                tickedBox = false;
-            }
+            tickedBox = newValue;
         });
     }
 
@@ -189,7 +184,7 @@ public class DeterminantController implements DataManipulation {
 
     private void showDeterminantAnimation() {
         if (!determinantIsZero) {
-
+            System.out.println("This is the matrix that is being sent to be calculated for the determinant in show determinant operation: \n" + matrix);
             Stage animationStage = new Stage();
             animationStage.setTitle("Determinant Animation");
             animationStage.initModality(Modality.WINDOW_MODAL);
@@ -210,6 +205,8 @@ public class DeterminantController implements DataManipulation {
             determinantPopUpController.setStage(animationStage);
 
             Scene animationScene = new Scene(root);
+            MatrixApp.setupGlobalEscapeHandler(animationScene);
+            MatrixApp.applyTheme(animationScene);
             animationStage.setScene(animationScene);
             animationStage.show();
 

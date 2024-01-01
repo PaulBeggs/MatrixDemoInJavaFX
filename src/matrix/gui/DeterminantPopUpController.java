@@ -4,6 +4,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -11,6 +12,7 @@ import matrix.fileManaging.FilePath;
 import matrix.fileManaging.MatrixFileHandler;
 import matrix.model.*;
 import javafx.fxml.FXML;
+import matrix.operators.MatrixDeterminantOperations;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -28,64 +30,58 @@ public class DeterminantPopUpController {
     @FXML
     TextField signTextField;
     @FXML
-    GridPane matrixGrid = new GridPane();
+    GridPane matrixGrid;
     private List<List<TextField>> matrixTextFields;
     private Matrix matrix;
-    private MatrixView matrixView;
-    private TriangularizationView tV;
+    private TriangularizationView view;
     private boolean clockOn;
     private Stage stage;
+    private MatrixDeterminantOperations operations;
     Timeline timeline;
     AtomicInteger counter = new AtomicInteger();
 
     @FXML
     private void initialize() {
         uploadFromFile();
-        matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
-
+        operations = new MatrixDeterminantOperations(matrix);
+        setUpTriangularizationViews();
+        operations.calculateDeterminant();
+        System.out.println("this is the initial matrix inside of the popup controller: \n" + matrix);
         matrixTextFields = new ArrayList<>();
         setStage(stage);
+        view.updateViews("initial");
         handleTimer();
-        tV.updateViews();
     }
 
-    public void loadFromFile() {
-        populateMatrixFromData(FilePath.MATRIX_PATH.getPath());
+
+    private void updateSignChangesDisplay() {
+        String signChanges = String.valueOf((matrix.getSign()));
+        signTextField.setText(signChanges);
+    }
+
+    private void setUpTriangularizationViews() {
+        this.view = new TriangularizationView(matrix, matrixGrid);
     }
 
     private void handleTimer() {
-        timeline = new Timeline(new KeyFrame(Duration.seconds(2.5), (ActionEvent t) -> {
+        int totalSteps = operations.getTotalSteps();
+        System.out.println("These are the total steps (handleTimer): \n" + totalSteps);
 
-            System.out.println(counter.get() + 1);
-            matrix.setValue(counter.get(), 0, counter.getAndIncrement());
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), (ActionEvent t) -> {
+            if (totalSteps == 0) {
 
-            for (int i = 0; i < matrix.getRows(); i++) {
-                TextField tempTextField = (TextField) matrixGrid.getChildren().get(i);
-                tempTextField.setText(Double.toString(matrix.getValue(i, 0)));
+            } else {
+                String stepKey = "step_" + counter.getAndIncrement();
+                System.out.println("Animating: " + stepKey);
+//            updateSignChangesDisplay();
+
+                view.updateViews(stepKey);
             }
+
         }));
 
-        timeline.setCycleCount(matrix.getRows());
-
+        timeline.setCycleCount(totalSteps);
         start.setOnAction((t) -> timeline.play());
-    }
-
-    public void populateMatrixFromData(String filePath) {
-        try {
-            try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-
-                int numCols = 0;
-
-                String line;
-                while ((line = br.readLine()) != null) {
-                    String[] values = line.split("\\s+");
-                    numCols = Math.max(numCols, values.length);
-                }
-            }
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @FXML
@@ -102,17 +98,8 @@ public class DeterminantPopUpController {
         handleProgressBar();
     }
 
-    public void setMatrixView(MatrixView matrixView) {
-        this.matrixView = matrixView;
-    }
-
     public void setMatrixGrid(GridPane matrixGrid) {
         this.matrixGrid = matrixGrid;
-    }
-
-    @FXML
-    private void handleSignTextFieldUpdates() {
-        signTextField.setText(String.valueOf(tV.getSign()));
     }
 
     @FXML
@@ -123,12 +110,6 @@ public class DeterminantPopUpController {
         progressBar.setOpacity(0);
     }
 
-//
-//    private void updateUIForStep(int step) {
-//        double[][] matrixAtStep = determinantCalc.getMatrixAtStep(step);
-//        matrixView.updateMatrixFromUI(matrixAtStep);
-//    }
-
         public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -138,25 +119,8 @@ public class DeterminantPopUpController {
     }
 
     public void uploadFromFile() {
-        matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
-        tV = new TriangularizationView(matrix);
-        tV.setMatrixTextFields(matrixTextFields);
-        tV.setMatrixGrid(matrixGrid);
-        tV.updateMatrixFromUI();
-    }
-
-    public void saveToFile() {
-
-    }
-
-    public List<List<String>> getMatrixDataFromTextFields() {
-        List<List<String>> matrixData = new ArrayList<>();
-
-        for (List<TextField> row : this.matrixTextFields) {
-            List<String> rowData = row.stream().map(TextField::getText).collect(Collectors.toList());
-            matrixData.add(rowData);
-        }
-
-        return matrixData;
+        matrix = MatrixFileHandler.getMatrix("initial");
+        setMatrixTextFields(matrixTextFields);
+        setMatrixGrid(matrixGrid);
     }
 }

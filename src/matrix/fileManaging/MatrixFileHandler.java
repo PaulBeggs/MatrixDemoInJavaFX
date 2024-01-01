@@ -59,6 +59,7 @@ public class MatrixFileHandler {
     }
 
     public static void setMatrix(String key, Matrix matrix) {
+//        System.out.println("SetMatrix has been invoked. This is the matrix and key being saved: \n" + matrix + key);
         matrices.put(key, matrix);
     }
 

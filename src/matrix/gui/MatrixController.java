@@ -2,7 +2,6 @@ package matrix.gui;
 
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -111,6 +110,11 @@ public class MatrixController implements DataManipulation {
 
     @FXML
     public void handleGenerateButton() {
+        List<List<String>> newMatrixData = getNewMatrixData();
+        updateMatrixGrid(false, newMatrixData); // false indicates it's not an identity matrix
+    }
+
+    private List<List<String>> getNewMatrixData() {
         if (MIH.isPositiveIntValid(sizeColsField) && MIH.isPositiveIntValid(sizeRowsField)) {
             int numRows = Integer.parseInt(sizeRowsField.getText());
             int numCols = Integer.parseInt(sizeColsField.getText());
@@ -120,42 +124,47 @@ public class MatrixController implements DataManipulation {
                 List<String> rowData = new ArrayList<>();
                 for (int col = 0; col < numCols; col++) {
                     // For a regular matrix, initialize with random/default values
-                    // For an identity matrix, you'd check if row == col for 1.0, else 0.0
                     double cellValue = Math.floor(Math.random() * 100); // or another initialization logic
                     rowData.add(String.valueOf(cellValue));
                 }
                 matrixData.add(rowData);
             }
-
-            updateMatrixGrid(false, matrixData); // false indicates it's not an identity matrix
+            return matrixData;
         } else {
-            // Handle invalid input
             System.out.println("Invalid input for matrix dimensions.");
             temporarilyUpdateDirections("Invalid input for matrix dimensions.");
+            return null;
         }
     }
 
 
     @FXML
     public void handleIdentityButton() {
-        int numRows = matrix.getRows();
-        int numCols = matrix.getCols();
-
-        List<List<String>> identityMatrixData = new ArrayList<>();
-        for (int row = 0; row < numRows; row++) {
-            List<String> rowData = new ArrayList<>();
-            for (int col = 0; col < numCols; col++) {
-                String cellValue = (row == col) ? "1.0" : "0.0"; // Identity matrix logic
-                rowData.add(cellValue);
-            }
-            identityMatrixData.add(rowData);
-        }
-
+        List<List<String>> identityMatrixData = getIdentityMatrixData();
         updateMatrixGrid(true, identityMatrixData); // true indicates it's an identity matrix
-
-        matrix.setToIdentity(); // Resets the matrix to an identity matrix
-        MatrixFileHandler.setMatrix(FilePath.MATRIX_PATH.getPath(), matrix);
         System.out.println("After Setting (in handleClearButton): \n" + MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath()));
+    }
+
+    private List<List<String>> getIdentityMatrixData() {
+        if (MIH.isPositiveIntValid(sizeColsField) && MIH.isPositiveIntValid(sizeRowsField)) {
+            int numRows = Integer.parseInt(sizeRowsField.getText());
+            int numCols = Integer.parseInt(sizeColsField.getText());
+
+            List<List<String>> identityMatrixData = new ArrayList<>();
+            for (int row = 0; row < numRows; row++) {
+                List<String> rowData = new ArrayList<>();
+                for (int col = 0; col < numCols; col++) {
+                    // For an identity matrix, you'd check if row == col for 1.0, else 0.0
+                    double cellValue = Double.parseDouble((row == col) ? "1.0" : "0.0"); // Identity matrix logic
+                    rowData.add(String.valueOf(cellValue));
+                }
+                identityMatrixData.add(rowData);
+            }
+            return identityMatrixData;
+        } else {
+            temporarilyUpdateDirections("Invalid input for indentity matrix dimensions");
+            return null;
+        }
     }
 
 
@@ -401,9 +410,6 @@ public class MatrixController implements DataManipulation {
 
                 TextField cell = new TextField();
                 cell.getStyleClass().add("textfield-grid-cell");
-                cell.setMinHeight(50);
-                cell.setMinWidth(50);
-                cell.setAlignment(Pos.CENTER);
                 cell.setEditable(true);
 
                 double cellValue;

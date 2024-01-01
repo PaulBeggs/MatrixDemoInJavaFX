@@ -4,11 +4,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import matrix.model.Matrix;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -16,21 +15,69 @@ import java.util.Objects;
 public class ThemeController {
 
     @FXML
-    private Button lightBtnMode;
+    ImageView imgMode;
     @FXML
-    private Button darkBtnMode;
+    Button startApp;
+    @FXML
+    Button themeBtnMode;
+    @FXML
+    ImageView fractionMode;
+    @FXML
+    Button fractionBtnMode;
+    private boolean isLightMode = true;
+    private boolean isFraction = true;
 
     @FXML
     public void initialize() {
-        lightBtnMode.setOnAction(event -> {
-            MatrixApp.setSelectedTheme("light");
-            switchToMainScene();
-        });
+        MatrixApp.setSelectedTheme("light");
+        MatrixApp.setFractionMode(isFraction);
 
-        darkBtnMode.setOnAction(event -> {
-            MatrixApp.setSelectedTheme("dark");
+        startApp.setOnAction(event -> {
             switchToMainScene();
         });
+    }
+
+    @FXML
+    public void changeTheme() {
+        isLightMode = !isLightMode;
+        if (isLightMode) {
+            MatrixApp.setSelectedTheme("light");
+            imgMode.setImage(new Image(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/colored moon.png")).toExternalForm()));
+            if (isFraction) {
+                fractionMode.setImage(new Image(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/fraction.png")).toExternalForm()));
+            } else {
+                fractionMode.setImage(new Image(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/decimal.png")).toExternalForm()));
+            }
+        } else {
+            MatrixApp.setSelectedTheme("dark");
+            imgMode.setImage(new Image(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/colored sun.png")).toExternalForm()));
+            if (isFraction) {
+                fractionMode.setImage(new Image(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/fraction white.png")).toExternalForm()));
+            } else {
+                fractionMode.setImage(new Image(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/decimal white.png")).toExternalForm()));
+            }
+        }
+        MatrixApp.applyTheme(imgMode.getScene());
+    }
+
+    @FXML
+    public void changeFraction() {
+        isFraction = !isFraction;
+        if (isFraction) {
+            MatrixApp.setFractionMode(true);
+            if (isLightMode) {
+                fractionMode.setImage(new Image(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/fraction.png")).toExternalForm()));
+            } else {
+                fractionMode.setImage(new Image(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/fraction white.png")).toExternalForm()));
+            }
+        } else {
+            MatrixApp.setFractionMode(true);
+            if (isLightMode) {
+                fractionMode.setImage(new Image(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/decimal.png")).toExternalForm()));
+            } else {
+                fractionMode.setImage(new Image(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/decimal white.png")).toExternalForm()));
+            }
+        }
     }
 
     private void switchToMainScene() {

@@ -3,6 +3,7 @@ package matrix.model;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import matrix.fileManaging.FilePath;
 import matrix.fileManaging.MatrixFileHandler;
@@ -169,9 +170,6 @@ public class MatrixView {
     private TextField createAndConfigureCell(String value, int row, int col, String filePath, boolean isEditable) {
         TextField cell = new TextField();
         cell.getStyleClass().add("textfield-grid-cell");
-        cell.setMinHeight(50);
-        cell.setMinWidth(50);
-        cell.setAlignment(Pos.CENTER);
         cell.setEditable(isEditable);
 
         cell.setText(value);
