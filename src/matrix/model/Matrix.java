@@ -4,8 +4,9 @@ import java.util.Arrays;
 
 public class Matrix implements MatrixOperations {
 
+    private boolean isIdentity;
     private double[][] matrix;
-    private int sign;
+    private int sign = 1;
     private int numCols;
     private int numRows;
 
@@ -17,8 +18,6 @@ public class Matrix implements MatrixOperations {
         this.numRows = numRows;
         this.numCols = numCols;
 
-        System.out.println("the numrows and numcols inside the matrix constructor: \n" + numRows);
-        System.out.println(numCols);
         this.matrix = new double[numRows][numCols];
     }
 

@@ -1,5 +1,5 @@
 .root {
-    -primary-color: #E7E7E7; /* Define a looked-up color */
+    -primary-color: #E7E7E7;
     -secondary-color: #FFFFFF;
     -third-color: #F0F0F0;
     -text-color: black;
@@ -8,15 +8,25 @@
 }
 
 .textfield-grid-cell {
-    -fx-border-color: red; /* Border color */
-    -fx-border-width: 1; /* Border width */
-    -fx-background-color: -third-color; /* Background color */
-    -fx-text-fill: -text-color; /* Text color */
+    -fx-min-height: 70;
+    -fx-min-width: 120;
+
+    -fx-pref-height: 70;
+    -fx-pref-width: 120;
+
+    -fx-alignment: center;
+
+    -fx-border-color: red;
+    -fx-border-width: .75;
+
+    -fx-background-color: -third-color;
+    -fx-text-fill: -text-color;
 }
 
 .button {
-    -fx-background-color: -third-color; /* black background */
-    -fx-text-fill: -text-color; /* White text */
+    -fx-cursor: hand;
+    -fx-background-color: -third-color;
+    -fx-text-fill: -text-color;
 }
 
 // Background color of the whole context menu
@@ -60,10 +70,9 @@
 }
 
 .text-area {
-    -fx-background-color: red; /* Light gray background */
-    -fx-control-inner-background: -third-color; /* For text field background */
-    -fx-text-fill: -text-color; /* Light text for dark mode */
-    /* Add other styles for dark mode here */
+    -fx-background-color: red;
+    -fx-control-inner-background: -third-color;
+    -fx-text-fill: -text-color;
 }
 
 .text-field {

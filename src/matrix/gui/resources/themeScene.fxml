@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -12,14 +10,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane fx:id="parent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="primary-color" stylesheets="@../../../styles/intro.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="matrix.gui.ThemeController">
+<BorderPane fx:id="parent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="matrix.gui.ThemeController">
    <center>
-      <HBox prefHeight="130.0" prefWidth="310.0" BorderPane.alignment="CENTER">
+      <HBox BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="lightBtnMode" minHeight="150.0" minWidth="150.0" mnemonicParsing="false" HBox.hgrow="ALWAYS">
+            <Button fx:id="themeBtnMode" minHeight="150.0" minWidth="150.0" mnemonicParsing="false" onAction="#changeTheme" prefHeight="150.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
                <graphic>
-                  <ImageView fx:id="lightImgMode" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imgMode" fitHeight="150.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@colored sun.png" />
                      </image>
@@ -31,49 +28,41 @@
                <HBox.margin>
                   <Insets />
                </HBox.margin>
-               <styleClass>
-                  <String fx:value="primary-color" />
-                  <String fx:value="round-border" />
-               </styleClass>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="darkBtnMode" minHeight="150.0" minWidth="150.0" mnemonicParsing="false" prefHeight="150.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
+            <Button fx:id="fractionBtnMode" minHeight="150.0" minWidth="150.0" mnemonicParsing="false" onAction="#changeFraction" prefHeight="150.0" prefWidth="150.0" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
                <graphic>
-                  <ImageView fx:id="DarkImgMode" fitHeight="128.0" fitWidth="145.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="fractionMode" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@colored moon.png" />
+                        <Image url="@fraction.png" />
                      </image>
-                     <viewport>
-                        <Rectangle2D />
-                     </viewport>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
                </graphic>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-               <styleClass>
-                  <String fx:value="primary-color" />
-                  <String fx:value="round-border" />
-               </styleClass>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
             </Button>
          </children>
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
       </HBox>
    </center>
    <top>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="secondary-color" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="labelMode" styleClass="title-label" text="Select a Theme" textFill="WHITE">
+            <Label styleClass="title-label" text="Select Preferences">
                <font>
                   <Font size="24.0" />
                </font>
@@ -85,6 +74,13 @@
       </HBox>
    </top>
    <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+      <Insets bottom="10.0" top="10.0" />
    </padding>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="startApp" mnemonicParsing="false" text="Start Application" />
+         </children>
+      </HBox>
+   </bottom>
 </BorderPane>

@@ -1,36 +1,83 @@
 package matrix.model;
 
-import javafx.animation.Animation;
-import javafx.scene.control.ProgressBar;
+import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 import matrix.fileManaging.FilePath;
 import matrix.fileManaging.MatrixFileHandler;
 import matrix.operators.MatrixDeterminantOperations;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TriangularizationView {
-    ProgressBar progressBar;
-    TextField signTextField;
-    GridPane matrixGrid = new GridPane();
+    GridPane matrixGrid;
     private Matrix matrix;
-    private List<List<TextField>> matrixTextFields;
-    private TriangularizationView tV;
-    private Stage stage;
-    private MatrixDeterminantOperations MDO;
-    private Animation animation;
+    private List<List<TextField>> matrixTextFields = new ArrayList<>();
     private int currentStep;
     private List<Integer> signChanges;
     private int sign = 1;
-    private BigDecimal determinant;
 
-    public TriangularizationView(Matrix matrix) {
+    public TriangularizationView(Matrix matrix, GridPane matrixGridFromController) {
         this.matrix = matrix;
+        this.matrixGrid = matrixGridFromController;
+
         this.signChanges = new ArrayList<>();
+    }
+
+    public void updateViews(String matrixKey) {
+        Matrix matrix = MatrixFileHandler.getMatrix(matrixKey); // Assume getMatrix fetches from hashmap
+        if (matrix != null) {
+            List<List<String>> matrixData = convertMatrixToList(matrix);
+            System.out.println("This is the matrixData inside of updateViews (TriangularizationViews): \n" + matrixData);
+            populateMatrixGrid(matrixData);
+        }
+    }
+
+    private List<List<String>> convertMatrixToList(Matrix matrix) {
+        List<List<String>> matrixData = new ArrayList<>();
+        for (int i = 0; i < matrix.getRows(); i++) {
+            List<String> row = new ArrayList<>();
+            for (int j = 0; j < matrix.getCols(); j++) {
+                row.add(String.format("%.1f", matrix.getValue(i, j)));
+            }
+            matrixData.add(row);
+        }
+        return matrixData;
+    }
+
+    private void populateMatrixGrid(List<List<String>> matrixData) {
+        matrixGrid.getChildren().clear();
+        matrixTextFields.clear(); // Clear previous TextFields if any
+
+        for (int row = 0; row < matrixData.size(); row++) {
+            List<String> rowData = matrixData.get(row);
+            List<TextField> rowList = new ArrayList<>();
+
+            for (int col = 0; col < rowData.size(); col++) {
+                TextField cell = createCell(rowData.get(col), row, col);
+                matrixGrid.add(cell, col, row);
+                rowList.add(cell);
+            }
+
+            matrixTextFields.add(rowList);
+        }
+    }
+
+    private TextField createCell(String value, int row, int col) {
+        TextField cell = new TextField();
+        cell.getStyleClass().add("textfield-grid-cell");
+        cell.setEditable(false);
+        cell.setText(value);
+
+        return cell;
     }
 
     public void setMatrixGrid(GridPane matrixGrid) {
@@ -41,44 +88,7 @@ public class TriangularizationView {
         this.matrixTextFields = matrixTextFields;
     }
 
-    public void updateViews() {
-        List<List<String>> matrixData = MatrixFileHandler.loadMatrixFromFile(FilePath.MATRIX_PATH.getPath());
-        if (matrixData != null) {
 
-            if (!matrixData.isEmpty() && !matrixData.getFirst().isEmpty()) {
-                this.matrix = new Matrix(matrixData.size(), matrixData.getFirst().size());
-
-            } else {
-                System.out.println("Error: matrixData is empty");
-
-            }
-            System.out.println("matrix data inside ");
-        }
-    }
-
-    public void updateMatrixFromUI() {
-        matrixTextFields = getMatrixTextFields();
-        for (int row = 0; row < matrixTextFields.size(); row++) {
-            for (int col = 0; col < matrixTextFields.get(row).size(); col++) {
-                String textValue = matrixTextFields.get(row).get(col).getText();
-                try {
-//                    System.out.println("These are the numCols and numRows within MatrixView: \n" + col);
-//                    System.out.println(row);
-                    double numericValue = Double.parseDouble(textValue);
-                    matrix.setValue(row, col, numericValue);
-                } catch (NumberFormatException e) {
-                    e.getMessage();
-                }
-            }
-        }
-    }
-
-    public BigDecimal getDeterminantValue() {
-        return determinant;
-    }
-    public void setDeterminantValue(BigDecimal determinant) {
-        this.determinant = determinant;
-    }
     public void setCurrentStep(int currentStep) {
         this.currentStep = currentStep;
     }

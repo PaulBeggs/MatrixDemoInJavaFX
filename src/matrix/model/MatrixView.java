@@ -3,6 +3,7 @@ package matrix.model;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import matrix.fileManaging.FilePath;
 import matrix.fileManaging.MatrixFileHandler;
@@ -41,8 +42,7 @@ public class MatrixView {
             }
             System.out.println("matrix data inside MatrixViews: \n" + matrixData);
             populateMatrixFromData(fileName, isEditable);
-            MatrixFileHandler.setMatrix(fileName, matrix);
-            saveToFile(fileName, matrixType);
+//            saveToFile(fileName, matrixType);
         }
     }
 
@@ -161,20 +161,15 @@ public class MatrixView {
 
             TextField cell = createAndConfigureCell(cellValue, row, col, filePath, isEditable);
             matrixGrid.add(cell, col, row);
-            setMatrixGrid(matrixGrid); // Assuming this updates the grid layout or similar
+            setMatrixGrid(matrixGrid);
             rowList.add(cell);
         }
-
-
         return rowList;
     }
 
     private TextField createAndConfigureCell(String value, int row, int col, String filePath, boolean isEditable) {
         TextField cell = new TextField();
         cell.getStyleClass().add("textfield-grid-cell");
-        cell.setMinHeight(50);
-        cell.setMinWidth(50);
-        cell.setAlignment(Pos.CENTER);
         cell.setEditable(isEditable);
 
         cell.setText(value);
@@ -208,19 +203,19 @@ public class MatrixView {
         }
     }
 
-    public void saveToFile(String matrixFileName, MatrixType matrixType) {
-        List<List<String>> matrixData = new ArrayList<>();
-        for (int row = 0; row < matrix.getRows(); row++) {
-            List<String> rowData = new ArrayList<>();
-            for (int col = 0; col < matrix.getCols(); col++) {
-                rowData.add(String.valueOf(matrix.getValue(row, col)));
-            }
-            matrixData.add(rowData);
-        }
-        //System.out.println("after saveToFile inside matrixView");
-        //textFieldToString(matrixTextFields);
-        MatrixFileHandler.saveMatrixDataToFile(matrixFileName, BigDecimal.valueOf(0), matrixData, matrixType);
-    }
+//    public void saveToFile(String matrixFileName, MatrixType matrixType) {
+//        List<List<String>> matrixData = new ArrayList<>();
+//        for (int row = 0; row < matrix.getRows(); row++) {
+//            List<String> rowData = new ArrayList<>();
+//            for (int col = 0; col < matrix.getCols(); col++) {
+//                rowData.add(String.valueOf(matrix.getValue(row, col)));
+//            }
+//            matrixData.add(rowData);
+//        }
+//        //System.out.println("after saveToFile inside matrixView");
+//        //textFieldToString(matrixTextFields);
+//        MatrixFileHandler.saveMatrixDataToFile(matrixFileName, BigDecimal.valueOf(0), matrixData, matrixType);
+//    }
 
 
 

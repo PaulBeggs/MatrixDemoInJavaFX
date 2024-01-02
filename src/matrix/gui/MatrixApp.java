@@ -19,6 +19,7 @@ import java.util.Set;
 public class MatrixApp extends Application {
     public static Stage primaryStage;
     public static String selectedTheme = "light";
+    public static boolean fractionMode = true;
 
     @Override
     public void start(Stage stage) {
@@ -28,6 +29,7 @@ public class MatrixApp extends Application {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/themeScene.fxml")));
             Scene scene = new Scene(root);
             setupGlobalEscapeHandler(scene);
+            applyTheme(scene);
             primaryStage.setScene(scene);
             primaryStage.setTitle("Select Theme");
             primaryStage.show();
@@ -48,7 +50,7 @@ public class MatrixApp extends Application {
 
 
     public static Stage getPrimaryStage() {
-        System.out.println("This is the primary stage: \n" + primaryStage);
+//        System.out.println("This is the primary stage: \n" + primaryStage);
         return primaryStage;
     }
 
@@ -57,8 +59,16 @@ public class MatrixApp extends Application {
         selectedTheme = theme;
     }
 
+    public static void setFractionMode(boolean modeBoolean) {
+        fractionMode = modeBoolean;
+    }
+
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public static boolean isFractionMode() {
+        return fractionMode;
     }
 
     public static void setupGlobalEscapeHandler(Scene scene) {
