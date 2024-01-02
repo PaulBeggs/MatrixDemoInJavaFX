@@ -42,7 +42,7 @@ public class MatrixView {
             }
             System.out.println("matrix data inside MatrixViews: \n" + matrixData);
             populateMatrixFromData(fileName, isEditable);
-            saveToFile(fileName, matrixType);
+//            saveToFile(fileName, matrixType);
         }
     }
 
@@ -203,19 +203,19 @@ public class MatrixView {
         }
     }
 
-    public void saveToFile(String matrixFileName, MatrixType matrixType) {
-        List<List<String>> matrixData = new ArrayList<>();
-        for (int row = 0; row < matrix.getRows(); row++) {
-            List<String> rowData = new ArrayList<>();
-            for (int col = 0; col < matrix.getCols(); col++) {
-                rowData.add(String.valueOf(matrix.getValue(row, col)));
-            }
-            matrixData.add(rowData);
-        }
-        //System.out.println("after saveToFile inside matrixView");
-        //textFieldToString(matrixTextFields);
-        MatrixFileHandler.saveMatrixDataToFile(matrixFileName, BigDecimal.valueOf(0), matrixData, matrixType);
-    }
+//    public void saveToFile(String matrixFileName, MatrixType matrixType) {
+//        List<List<String>> matrixData = new ArrayList<>();
+//        for (int row = 0; row < matrix.getRows(); row++) {
+//            List<String> rowData = new ArrayList<>();
+//            for (int col = 0; col < matrix.getCols(); col++) {
+//                rowData.add(String.valueOf(matrix.getValue(row, col)));
+//            }
+//            matrixData.add(rowData);
+//        }
+//        //System.out.println("after saveToFile inside matrixView");
+//        //textFieldToString(matrixTextFields);
+//        MatrixFileHandler.saveMatrixDataToFile(matrixFileName, BigDecimal.valueOf(0), matrixData, matrixType);
+//    }
 
 
 

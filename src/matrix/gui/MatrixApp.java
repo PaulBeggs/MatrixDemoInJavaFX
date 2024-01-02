@@ -67,6 +67,10 @@ public class MatrixApp extends Application {
         launch(args);
     }
 
+    public static boolean isFractionMode() {
+        return fractionMode;
+    }
+
     public static void setupGlobalEscapeHandler(Scene scene) {
         scene.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ESCAPE) {

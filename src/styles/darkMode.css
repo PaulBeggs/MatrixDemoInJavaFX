@@ -24,6 +24,7 @@
 }
 
 .button {
+    -fx-cursor: hand;
     -fx-background-color: -third-color; /* black background */
     -fx-text-fill: -text-color; /* White text */
 }

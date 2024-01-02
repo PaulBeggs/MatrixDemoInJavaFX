@@ -526,35 +526,4 @@ public class MatrixController implements DataManipulation {
     public void handleFastFactsButton() {
 
     }
-
-    private TriangularizationResult triangularizeMatrix(Matrix matrix) {
-        if (matrix == null || matrix.getRows() != matrix.getCols()) {
-            // Non-square or null matrix cannot be triangularized
-            return new TriangularizationResult(false, null);
-        }
-
-        // Perform the triangularization process
-        Matrix triangularMatrix = performTriangularization(matrix);
-
-        // Return the result
-        return new TriangularizationResult(true, triangularMatrix);
-    }
-
-    private Matrix performTriangularization(Matrix matrix) {
-        // Implement the logic similar to makeTriangular()
-        // Create and return the triangular matrix
-        return matrix;
-    }
-
-    class TriangularizationResult {
-        private final boolean canBeTriangularized;
-        private final Matrix triangularMatrix;
-
-        public TriangularizationResult(boolean canBeTriangularized, Matrix triangularMatrix) {
-            this.canBeTriangularized = canBeTriangularized;
-            this.triangularMatrix = triangularMatrix;
-        }
-
-        // Getters and possibly setters
-    }
 }
