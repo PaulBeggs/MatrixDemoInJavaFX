@@ -1,19 +1,18 @@
 package matrix.fileManaging;
 
 import matrix.model.Matrix;
+import matrix.model.MatrixCell;
 
 import java.io.*;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static matrix.fileManaging.MatrixType.*;
 
 public class MatrixFileHandler {
     private static final Map<String, Matrix> matrices = new HashMap<>();
 
-    public static void saveMatrixDataToFile(String fileName, BigDecimal determinant, List<List<String>> matrixData, MatrixType matrixType) {
+    public static void saveMatrixDataToFile (String fileName, BigDecimal determinant, List<List<String>> matrixData, MatrixType matrixType) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false))) {
             for (List<String> row : matrixData) {
                 String line = String.join(" ", row);
@@ -40,18 +39,55 @@ public class MatrixFileHandler {
         }
     }
 
-    public static List<List<String>> loadMatrixFromFile(String filePath) {
-        List<List<String>> matrixData;
+    public static List<List<String>> loadMatrixDataFromFile (String filePath) {
+        List<List<String>> matrixData = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            matrixData = reader.lines()
-                    .map(line -> List.of(line.split(" ")))
-                    .toList();
-            //System.out.println("Matrix data: \n" + matrixData);
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (!line.isBlank()) { // Avoid processing empty lines
+                    List<String> rowData = Arrays.asList(line.trim().split("\\s+")); // Handles varying amounts of whitespace
+                    matrixData.add(rowData);
+                }
+            }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error reading matrix from file: " + filePath, e);
         }
         return matrixData;
+    }
+
+    public static List<List<String>> loadMatrixDataFromMatrix (Matrix matrix) {
+        System.out.println("this is the matrix that is having its data parsed: \n" + matrix);
+        if (matrix == null) {
+            throw new IllegalArgumentException("Matrix cannot be null");
+        }
+
+        List<List<String>> matrixData = new ArrayList<>();
+        for (int row = 0; row < matrix.getRows(); row++) {
+            List<String> rowData = new ArrayList<>();
+            for (int col = 0; col < matrix.getCols(); col++) {
+                rowData.add(String.valueOf(matrix.getValue(row, col)));
+            }
+            matrixData.add(rowData);
+        }
+        return matrixData;
+    }
+
+    public static Matrix loadMatrixFromFile (String filePath) {
+        List<List<String>> matrixData = loadMatrixDataFromFile(filePath);
+
+        int numRows = matrixData.size();
+        int numCols = matrixData.getFirst().size();
+        Matrix matrix = new Matrix(numRows, numCols);
+
+        for (int row = 0; row < numRows; row++) {
+            for (int col = 0; col < numCols; col++) {
+                double value = Double.parseDouble(matrixData.get(row).get(col));
+                matrix.setValue(row, col, value);
+            }
+        }
+
+        return matrix;
     }
 
     public static Matrix getMatrix(String key) {
@@ -59,23 +95,6 @@ public class MatrixFileHandler {
     }
 
     public static void setMatrix(String key, Matrix matrix) {
-//        System.out.println("SetMatrix has been invoked. This is the matrix and key being saved: \n" + matrix + key);
         matrices.put(key, matrix);
-    }
-
-    public static void populateFileIfEmpty(String filePath) {
-        File file = new File(filePath);
-
-        try {
-            // Check if the file is empty
-            if (file.length() == 0) {
-                // If the file is empty, write "0.0" to it
-                try (FileWriter writer = new FileWriter(file)) {
-                    writer.write("0.0");
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

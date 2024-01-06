@@ -31,7 +31,7 @@ public class DeterminantPopUpController {
     TextField signTextField;
     @FXML
     GridPane matrixGrid;
-    private List<List<TextField>> matrixTextFields;
+    private MatrixCell[][] matrixCells;
     private Matrix matrix;
     private TriangularizationView view;
     private boolean clockOn;
@@ -47,7 +47,6 @@ public class DeterminantPopUpController {
         setUpTriangularizationViews();
         operations.calculateDeterminant();
         System.out.println("this is the initial matrix inside of the popup controller: \n" + matrix);
-        matrixTextFields = new ArrayList<>();
         setStage(stage);
         view.updateViews("initial");
         handleTimer();
@@ -114,13 +113,16 @@ public class DeterminantPopUpController {
         this.stage = stage;
     }
 
-    public void setMatrixTextFields(List<List<TextField>> matrixTextFields) {
-        this.matrixTextFields = matrixTextFields;
+    public MatrixCell[][] getMatrixCells() {
+        return matrixCells;
+    }
+    public void setMatrixCells (MatrixCell[][] matrixCells) {
+        this.matrixCells = matrixCells;
     }
 
     public void uploadFromFile() {
         matrix = MatrixFileHandler.getMatrix("initial");
-        setMatrixTextFields(matrixTextFields);
+        setMatrixCells(matrixCells);
         setMatrixGrid(matrixGrid);
     }
 }

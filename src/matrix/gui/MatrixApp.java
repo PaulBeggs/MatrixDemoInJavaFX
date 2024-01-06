@@ -43,7 +43,7 @@ public class MatrixApp extends Application {
 
     public static void applyTheme(Scene scene) {
         scene.getStylesheets().clear();
-        System.out.println("(Inside applyTheme) This is the selected theme: \n" + selectedTheme);
+//        System.out.println("(Inside applyTheme) This is the selected theme: \n" + selectedTheme);
         String cssFile = selectedTheme.equals("dark") ? "/styles/darkMode.css" : "/styles/lightMode.css";
         scene.getStylesheets().add(Objects.requireNonNull(MatrixApp.class.getResource(cssFile)).toExternalForm());
     }
@@ -55,7 +55,6 @@ public class MatrixApp extends Application {
     }
 
     public static void setSelectedTheme(String theme) {
-        System.out.println("(Inside setSelectedScene) This is the selected theme: \n" + selectedTheme);
         selectedTheme = theme;
     }
 

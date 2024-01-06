@@ -24,14 +24,12 @@ public class ThemeController {
     ImageView fractionMode;
     @FXML
     Button fractionBtnMode;
-    private boolean isLightMode = true;
+    private boolean isLightMode = false;
     private boolean isFraction = true;
 
     @FXML
     public void initialize() {
-        MatrixApp.setSelectedTheme("light");
-        MatrixApp.setFractionMode(isFraction);
-
+        updateTheme();
         startApp.setOnAction(event -> {
             switchToMainScene();
         });
@@ -40,44 +38,42 @@ public class ThemeController {
     @FXML
     public void changeTheme() {
         isLightMode = !isLightMode;
-        if (isLightMode) {
-            MatrixApp.setSelectedTheme("light");
-            imgMode.setImage(new Image(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/colored moon.png")).toExternalForm()));
-            if (isFraction) {
-                fractionMode.setImage(new Image(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/fraction.png")).toExternalForm()));
-            } else {
-                fractionMode.setImage(new Image(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/decimal.png")).toExternalForm()));
-            }
-        } else {
-            MatrixApp.setSelectedTheme("dark");
-            imgMode.setImage(new Image(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/colored sun.png")).toExternalForm()));
-            if (isFraction) {
-                fractionMode.setImage(new Image(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/fraction white.png")).toExternalForm()));
-            } else {
-                fractionMode.setImage(new Image(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/decimal white.png")).toExternalForm()));
-            }
-        }
+        updateTheme();
         MatrixApp.applyTheme(imgMode.getScene());
     }
 
     @FXML
     public void changeFraction() {
         isFraction = !isFraction;
-        if (isFraction) {
-            MatrixApp.setFractionMode(true);
-            if (isLightMode) {
-                fractionMode.setImage(new Image(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/fraction.png")).toExternalForm()));
-            } else {
-                fractionMode.setImage(new Image(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/fraction white.png")).toExternalForm()));
-            }
-        } else {
-            MatrixApp.setFractionMode(true);
-            if (isLightMode) {
-                fractionMode.setImage(new Image(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/decimal.png")).toExternalForm()));
-            } else {
-                fractionMode.setImage(new Image(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/decimal white.png")).toExternalForm()));
-            }
-        }
+        MatrixApp.setFractionMode(isFraction);
+        updateFractionModeImage(isLightMode, isFraction);
+    }
+
+    private void updateTheme() {
+        String theme = isLightMode ? "light" : "dark";
+        setTheme(theme);
+        updateModeImage(isLightMode);
+        updateFractionModeImage(isLightMode, isFraction);
+    }
+
+    private void setTheme(String theme) {
+        MatrixApp.setSelectedTheme(theme);
+    }
+
+    private void updateModeImage(boolean isLightMode) {
+        String imagePath = isLightMode ? "/matrix/gui/resources/colored moon.png" : "/matrix/gui/resources/colored sun.png";
+        imgMode.setImage(loadImage(imagePath));
+    }
+
+    private void updateFractionModeImage(boolean isLightMode, boolean isFraction) {
+        String fractionImagePath = isLightMode
+                ? (isFraction ? "/matrix/gui/resources/fraction.png" : "/matrix/gui/resources/decimal.png")
+                : (isFraction ? "/matrix/gui/resources/fraction white.png" : "/matrix/gui/resources/decimal white.png");
+        fractionMode.setImage(loadImage(fractionImagePath));
+    }
+
+    private Image loadImage(String path) {
+        return new Image(Objects.requireNonNull(getClass().getResource(path)).toExternalForm());
     }
 
     private void switchToMainScene() {

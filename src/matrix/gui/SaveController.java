@@ -10,14 +10,12 @@ import matrix.fileManaging.FilePath;
 import matrix.fileManaging.MatrixType;
 import matrix.model.Matrix;
 import matrix.fileManaging.MatrixFileHandler;
+import matrix.model.MatrixCell;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SaveController {
     @FXML
@@ -25,6 +23,7 @@ public class SaveController {
     @FXML
     private ChoiceBox<String> matrixSelectionComboBox;
     private List<List<TextField>> matrixTextFields;
+    private MatrixCell[][] matrixCells;
     private Stage stage;
     private BigDecimal determinantValue;
     private Matrix triangularMatrix;
@@ -52,6 +51,13 @@ public class SaveController {
     public void setMatrixTextFields(List<List<TextField>> matrixTextFields) {
         this.matrixTextFields = matrixTextFields;
     }
+
+    public MatrixCell[][] getMatrixCells() {
+        return matrixCells;
+    }
+    public void setMatrixCells (MatrixCell[][] matrixCells) {
+        this.matrixCells = matrixCells;
+    }
     public void setDeterminantValue(BigDecimal determinantValue) {
         this.determinantValue = determinantValue;
     }
@@ -77,7 +83,7 @@ public class SaveController {
                                 + fileName + ".txt", BigDecimal.valueOf(0), matrixData, MatrixType.REGULAR);
                 case "Determinant Matrix" -> {
                     if (getDeterminant() != null) {
-                        matrixData = MatrixFileHandler.loadMatrixFromFile(FilePath.TRIANGULAR_PATH.getPath());
+                        matrixData = MatrixFileHandler.loadMatrixDataFromFile(FilePath.TRIANGULAR_PATH.getPath());
                         MatrixFileHandler.saveMatrixDataToFile("savedMatrices/determinants/"
                                 + fileName + ".txt", determinantValue, matrixData, MatrixType.DETERMINANT);
                     } else {
@@ -107,12 +113,15 @@ public class SaveController {
     public List<List<String>> getMatrixDataFromTextFields() {
         List<List<String>> matrixData = new ArrayList<>();
 
-        for (List<TextField> row : this.matrixTextFields) {
-            List<String> rowData = row.stream().map(TextField::getText).collect(Collectors.toList());
+        for (int row = 0; row < matrixCells.length; row++) {
+            List<String> rowData = new ArrayList<>();
+            for (int col = 0; col < matrixCells[row].length; col++) {
+                rowData.add(matrixCells[row][col].getTextField().getText());
+            }
             matrixData.add(rowData);
         }
-        System.out.println("This is the matrixData inside of the SaveController: \n" + matrixData);
 
+        System.out.println("This is the matrixData inside of the SaveController: \n" + matrixData);
         return matrixData;
     }
 

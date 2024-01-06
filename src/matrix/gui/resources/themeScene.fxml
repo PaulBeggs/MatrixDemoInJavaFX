@@ -18,7 +18,7 @@
                <graphic>
                   <ImageView fx:id="imgMode" fitHeight="150.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@colored sun.png" />
+                        <Image url="@colored moon.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -79,7 +79,10 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="startApp" mnemonicParsing="false" text="Start Application" />
+            <Button fx:id="startApp" mnemonicParsing="false" text="Start Application">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
          </children>
       </HBox>
    </bottom>

@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 public class TriangularizationView {
     GridPane matrixGrid;
+    MatrixCell[][] matrixCells;
     private Matrix matrix;
     private List<List<TextField>> matrixTextFields = new ArrayList<>();
     private int currentStep;
@@ -83,12 +84,6 @@ public class TriangularizationView {
     public void setMatrixGrid(GridPane matrixGrid) {
         this.matrixGrid = matrixGrid;
     }
-
-    public void setMatrixTextFields(List<List<TextField>> matrixTextFields) {
-        this.matrixTextFields = matrixTextFields;
-    }
-
-
     public void setCurrentStep(int currentStep) {
         this.currentStep = currentStep;
     }
@@ -110,9 +105,11 @@ public class TriangularizationView {
     public GridPane getMatrixGrid() {
         return matrixGrid;
     }
-
-    public List<List<TextField>> getMatrixTextFields() {
-        return matrixTextFields;
+    public MatrixCell[][] getMatrixCells() {
+        return matrixCells;
+    }
+    public void setMatrixCells (MatrixCell[][] matrixCells) {
+        this.matrixCells = matrixCells;
     }
     public void setMatrix(Matrix matrix) {
         this.matrix = matrix;
