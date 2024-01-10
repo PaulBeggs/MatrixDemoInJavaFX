@@ -5,8 +5,10 @@ import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import matrix.fileManaging.FilePath;
 import matrix.fileManaging.MatrixFileHandler;
+import matrix.gui.MatrixApp;
 import matrix.operators.MatrixDeterminantOperations;
 
 import java.io.BufferedReader;
@@ -21,104 +23,48 @@ public class TriangularizationView {
     GridPane matrixGrid;
     MatrixCell[][] matrixCells;
     private Matrix matrix;
-    private List<List<TextField>> matrixTextFields = new ArrayList<>();
     private int currentStep;
     private List<Integer> signChanges;
-    private int sign = 1;
 
-    public TriangularizationView(Matrix matrix, GridPane matrixGridFromController) {
-        this.matrix = matrix;
+    public TriangularizationView(GridPane matrixGridFromController) {
+        this.matrix = MatrixFileHandler.getMatrix("initial");
         this.matrixGrid = matrixGridFromController;
 
         this.signChanges = new ArrayList<>();
     }
 
     public void updateViews(String matrixKey) {
-        Matrix matrix = MatrixFileHandler.getMatrix(matrixKey); // Assume getMatrix fetches from hashmap
+        matrix = MatrixFileHandler.getMatrix(matrixKey);
         if (matrix != null) {
-            List<List<String>> matrixData = convertMatrixToList(matrix);
-            System.out.println("This is the matrixData inside of updateViews (TriangularizationViews): \n" + matrixData);
-            populateMatrixGrid(matrixData);
+            populateMatrixFromData();
+            resizeMatrix();
         }
     }
 
-    private List<List<String>> convertMatrixToList(Matrix matrix) {
-        List<List<String>> matrixData = new ArrayList<>();
-        for (int i = 0; i < matrix.getRows(); i++) {
-            List<String> row = new ArrayList<>();
-            for (int j = 0; j < matrix.getCols(); j++) {
-                row.add(String.format("%.1f", matrix.getValue(i, j)));
-            }
-            matrixData.add(row);
-        }
-        return matrixData;
-    }
-
-    private void populateMatrixGrid(List<List<String>> matrixData) {
+    public void populateMatrixFromData() {
         matrixGrid.getChildren().clear();
-        matrixTextFields.clear(); // Clear previous TextFields if any
 
-        for (int row = 0; row < matrixData.size(); row++) {
-            List<String> rowData = matrixData.get(row);
-            List<TextField> rowList = new ArrayList<>();
+        // Use the provided matrix to populate the UI
+        int numRows = matrix.getRows();
+        int numCols = matrix.getCols();
 
-            for (int col = 0; col < rowData.size(); col++) {
-                TextField cell = createCell(rowData.get(col), row, col);
-                matrixGrid.add(cell, col, row);
-                rowList.add(cell);
+        matrixCells = new MatrixCell[numRows][numCols];
+        for (int row = 0; row < numRows; row++) {
+            for (int col = 0; col < numCols; col++) {
+                double cellValue = matrix.getValue(row, col);
+                matrixCells[row][col] = new MatrixCell(row, col, String.valueOf(cellValue), false);
+                matrixGrid.add(matrixCells[row][col].getTextField(), col, row);
             }
-
-            matrixTextFields.add(rowList);
         }
     }
 
-    private TextField createCell(String value, int row, int col) {
-        TextField cell = new TextField();
-        cell.getStyleClass().add("textfield-grid-cell");
-        cell.setEditable(false);
-        cell.setText(value);
-
-        return cell;
+    private void resizeMatrix() {
+        Stage mainstage = MatrixApp.getPrimaryStage();
+        mainstage.sizeToScene();
     }
 
-    public void setMatrixGrid(GridPane matrixGrid) {
-        this.matrixGrid = matrixGrid;
-    }
-    public void setCurrentStep(int currentStep) {
-        this.currentStep = currentStep;
-    }
-    public int getCurrentStep() {
-        return currentStep;
-    }
-    public Integer getSign() {
-        return sign;
-    }
-    public void setSign(int sign) {
-        this.sign = sign;
-    }
-    public List<Integer> compileSignChanges() {
-        return signChanges;
-    }
-    public void updateSignChanges(int sign) {
-        signChanges.add(sign);
-    }
-    public GridPane getMatrixGrid() {
-        return matrixGrid;
-    }
-    public MatrixCell[][] getMatrixCells() {
-        return matrixCells;
-    }
-    public void setMatrixCells (MatrixCell[][] matrixCells) {
-        this.matrixCells = matrixCells;
-    }
-    public void setMatrix(Matrix matrix) {
-        this.matrix = matrix;
-    }
-    public Matrix getMatrix() {
-        return matrix;
-    }
-
-    public void update (int currentStep) {
-        setCurrentStep(currentStep);
-    }
+    public void setCurrentStep(int currentStep) {this.currentStep = currentStep;}
+    public void setMatrix(Matrix matrix) {this.matrix = matrix;}
+    public Matrix getMatrix() {return matrix;}
+    public void update (int currentStep) {setCurrentStep(currentStep);}
 }

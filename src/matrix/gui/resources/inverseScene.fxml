@@ -1,32 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="668.0" prefWidth="955.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="matrix.gui.InverseController">
+<BorderPane fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="matrix.gui.InverseController">
    <left>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="625.0" prefWidth="136.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Multiplier" />
-            <TextField fx:id="multiplier" />
-            <Label text="Source Row" />
-            <TextField fx:id="sourceRow" />
-            <Label text="Target Row" />
-            <TextField fx:id="targetRow" />
-            <Button fx:id="compute" mnemonicParsing="false" onAction="#handleInvertingFunctionality" text="Compute" />
+            <Label alignment="CENTER" prefWidth="116.0" styleClass="title-label" text="Columns">
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </Label>
+            <TextField fx:id="sizeColsField" promptText="Columns" styleClass="text-field" />
+            <Button fx:id="identityButton" mnemonicParsing="false" onAction="#handleRefFunctionality" prefWidth="116.0" text="REF">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="RREF" mnemonicParsing="false" onAction="#handleRRefFunctionality" prefWidth="116.0" text="RREF">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="invert" mnemonicParsing="false" onAction="#handleInvertingFunctionality" prefWidth="116.0" text="Invert Matrix">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <HBox prefHeight="25.0" prefWidth="114.0" spacing="5.0">
+               <children>
+                  <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSaveButton" prefWidth="58.0" text="Save">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button fx:id="loadButton" mnemonicParsing="false" onAction="#handleLoadButton" prefWidth="58.0" text="Load">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </HBox>
+            <TextArea fx:id="directions" editable="false" minHeight="130.0" minWidth="116.0" prefHeight="134.0" prefWidth="116.0" styleClass="text-area" text="&#10;" wrapText="true">
+               <VBox.margin>
+                  <Insets top="35.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Times New Roman" size="13.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </TextArea>
+            <Pane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+            <TextField fx:id="targetRow" styleClass="text-field" text="1" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Compute">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <ChoiceBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ChoiceBox>
+            <ChoiceBox fx:id="scenes" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ChoiceBox>
          </children>
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </padding>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
       </VBox>
    </left>
-   <bottom>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+   <center>
+      <HBox alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
-            <ChoiceBox fx:id="scenes" prefWidth="150.0" />
+            <GridPane fx:id="matrixGrid">
+               <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" />
+                  <ColumnConstraints halignment="CENTER" />
+                  <ColumnConstraints halignment="CENTER" />
+                  <ColumnConstraints halignment="CENTER" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints valignment="CENTER" />
+                  <RowConstraints valignment="CENTER" />
+                  <RowConstraints valignment="CENTER" />
+                  <RowConstraints valignment="CENTER" />
+               </rowConstraints>
+               <padding>
+                  <Insets bottom="15.0" left="10.0" right="15.0" top="15.0" />
+               </padding>
+            </GridPane>
+            <GridPane fx:id="identityMatrixGrid" layoutX="10.0" layoutY="10.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" />
+                  <ColumnConstraints halignment="CENTER" />
+                  <ColumnConstraints halignment="CENTER" />
+                  <ColumnConstraints halignment="CENTER" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints valignment="CENTER" />
+                  <RowConstraints valignment="CENTER" />
+                  <RowConstraints valignment="CENTER" />
+                  <RowConstraints valignment="CENTER" />
+               </rowConstraints>
+               <padding>
+                  <Insets bottom="15.0" left="10.0" right="15.0" top="15.0" />
+               </padding>
+            </GridPane>
          </children>
       </HBox>
-   </bottom>
+   </center>
 </BorderPane>

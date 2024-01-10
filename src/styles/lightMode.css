@@ -1,7 +1,7 @@
 .root {
-    -primary-color: #E7E7E7;
-    -secondary-color: #FFFFFF;
-    -third-color: #F0F0F0;
+    -primary-color: white;
+    -secondary-color: #F0F0F0;
+    -third-color: #E7E7E7;
     -text-color: black;
 
     -fx-background-color: -primary-color;
@@ -24,46 +24,64 @@
 }
 
 .button {
-    -fx-cursor: hand;
-    -fx-background-color: -third-color;
     -fx-text-fill: -text-color;
-}
-
-// Background color of the whole context menu
-.choice-box .context-menu {
     -fx-background-color: -third-color;
+    -fx-background-radius:0;
+    -fx-border-color: -third-color;
+    -fx-border-width: 0 2 2 0;
 }
 
-// Focused item background color in the list
+.button:hover, .button:focused {
+    -fx-text-fill: -text-color;
+    -fx-background-color: -secondary-color;
+    -fx-background-radius:0;
+    -fx-border-color: red;
+    -fx-border-width: 0 2 2 0;
+}
+
+/* Focused item background color in the list */
 .choice-box .menu-item:focused {
     -fx-background-color: red;
 }
 
-// Text color of non-focused items in the list
+/* Text color of non-focused items in the list */
 .choice-box .menu-item > .label {
     -fx-text-fill: -text-color;
 }
 
-// Text color of focused item in the list
+/* Background color of the whole context menu */
+.choice-box .context-menu {
+    -fx-background-color: -third-color;
+}
+
+/* Text color of focused item in the list */
 .choice-box .menu-item:focused > .label {
     -fx-text-fill: -third-color;
 }
 
-// Background color of the control itself
+/* Background color of the control itself */
 .choice-box {
-  -fx-background-color: -third-color;
-  -fx-mark-color: red; // arrow color
+    -fx-background-color: -third-color;
+    -fx-mark-color: red;
+    -fx-text-fill: -text-color;
+    -fx-background-radius:0;
+    -fx-border-color:transparent;
+    -fx-border-width: 0 2 2 0;
 }
 
-// Selected item text color on the control itself
+/* Selected item text color on the control itself */
 .choice-box > .label {
     -fx-text-fill: -text-color;
 }
 
-.title-label {
+.choice-box:hover, .choice-box:focused {
+    -fx-background-color: -secondary-color;
+    -fx-text-color: -text-color;
     -fx-text-fill: -text-color;
+    -fx-background-radius:0;
+    -fx-border-color: red;
+    -fx-border-width: 0 2 2 0;
 }
-
 
 .title-label {
     -fx-text-fill: -text-color;
@@ -78,4 +96,18 @@
 .text-field {
     -fx-background-color: -third-color;
     -fx-text-fill: -text-color;
+    -fx-border-color: -third-color;
+    -fx-border-width: 2 2 2 2;
+}
+
+.text-field:hover, .text-field:focused {
+    -fx-background-color: -secondary-color;
+    -fx-text-fill: -text-color;
+    -fx-border-color: red;
+    -fx-border-width: 2 2 2 2;
+}
+
+.bordered-grid {
+    -fx-border-color: red;
+    -fx-border-width: .75;
 }

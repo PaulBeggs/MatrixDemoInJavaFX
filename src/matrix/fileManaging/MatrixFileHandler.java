@@ -2,6 +2,7 @@ package matrix.fileManaging;
 
 import matrix.model.Matrix;
 import matrix.model.MatrixCell;
+import matrix.model.MatrixSingleton;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -76,18 +77,37 @@ public class MatrixFileHandler {
     public static Matrix loadMatrixFromFile (String filePath) {
         List<List<String>> matrixData = loadMatrixDataFromFile(filePath);
 
-        int numRows = matrixData.size();
-        int numCols = matrixData.getFirst().size();
-        Matrix matrix = new Matrix(numRows, numCols);
+        if (matrixData.isEmpty()) {
+            return new Matrix(1,1);
+        } else {
 
-        for (int row = 0; row < numRows; row++) {
-            for (int col = 0; col < numCols; col++) {
-                double value = Double.parseDouble(matrixData.get(row).get(col));
-                matrix.setValue(row, col, value);
+            int numRows = matrixData.size();
+            int numCols = matrixData.getFirst().size();
+            Matrix matrix = new Matrix(numRows, numCols);
+
+            for (int row = 0; row < numRows; row++) {
+                for (int col = 0; col < numCols; col++) {
+                    try {
+                        double value = Double.parseDouble(matrixData.get(row).get(col));
+                        matrix.setValue(row, col, value);
+                    } catch (NumberFormatException e) {
+                        populateMatrixIfEmpty();
+                    }
+                }
             }
+            return matrix;
         }
+    }
 
-        return matrix;
+    public static void populateMatrixIfEmpty() {
+        // Set matrix dimensions to 1x1 and value to 0.0
+        double defaultValue = 0.0;
+        List<List<String>> defaultMatrixData = List.of(
+                List.of(String.valueOf(defaultValue))
+        );
+
+        // Save the default matrix data to the file
+        MatrixFileHandler.saveMatrixDataToFile(FilePath.MATRIX_PATH.getPath(), BigDecimal.valueOf(0), defaultMatrixData, REGULAR);
     }
 
     public static Matrix getMatrix(String key) {

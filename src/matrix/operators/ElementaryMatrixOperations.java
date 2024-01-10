@@ -9,28 +9,32 @@ import matrix.model.MatrixOperations;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class ElementaryMatrixOperations implements MatrixOperations {
-    private Matrix matrix;
+public class ElementaryMatrixOperations {
+    private final Matrix matrix;
 
     public ElementaryMatrixOperations(Matrix matrix) {
         this.matrix = matrix;
     }
 
-    public void swapRows(int row1, int row2) {
+    public void swapRows(int row1, int row2, boolean save) {
         if (matrix != null && matrix.isValidRow(row1) && matrix.isValidRow(row2)) {
             double[] temp = matrix.getDoubleMatrix()[row1];
             matrix.getDoubleMatrix()[row1] = matrix.getDoubleMatrix()[row2];
             matrix.getDoubleMatrix()[row2] = temp;
-            saveMatrix();
+            if (save) {
+                saveMatrix();
+            }
         } else {
             System.out.println("Invalid row indices or matrix is null");
         }
     }
 
-    public void multiplyRow(int row, double multiplier) {
+    public void multiplyRow(int row, double multiplier, boolean save) {
         if (matrix != null && matrix.isValidRow(row)) {
             for (int col = 0; col < matrix.getCols(); col++) {
                 matrix.getDoubleMatrix()[row][col] *= multiplier;
+            }
+            if (save) {
                 saveMatrix();
             }
         } else {
@@ -38,12 +42,14 @@ public class ElementaryMatrixOperations implements MatrixOperations {
         }
     }
 
-    public void addRows(int sourceRow, int targetRow, double multiplier) {
+    public void addRows(int sourceRow, int targetRow, double multiplier, boolean save) {
         if (matrix != null && matrix.isValidRow(sourceRow) && matrix.isValidRow(targetRow)) {
             for (int col = 0; col < matrix.getCols(); col++) {
                 matrix.getDoubleMatrix()[targetRow][col] += multiplier * matrix.getDoubleMatrix()[sourceRow][col];
             }
-            saveMatrix();
+            if (save) {
+                saveMatrix();
+            }
         } else {
             System.out.println("Invalid row indices or matrix is null");
         }
@@ -52,25 +58,5 @@ public class ElementaryMatrixOperations implements MatrixOperations {
     private void saveMatrix() {
         List<List<String>> matrixData = MatrixFileHandler.loadMatrixDataFromMatrix(matrix);
         MatrixFileHandler.saveMatrixDataToFile(FilePath.MATRIX_PATH.getPath(), BigDecimal.valueOf(0), matrixData, MatrixType.REGULAR);
-    }
-
-    @Override
-    public double[][] getDoubleMatrix() {
-        return new double[0][];
-    }
-
-    @Override
-    public int getRows() {
-        return 0;
-    }
-
-    @Override
-    public int getCols() {
-        return 0;
-    }
-
-    @Override
-    public boolean isValidRow(int row) {
-        return row >= 0 && row < matrix.getRows();
     }
 }

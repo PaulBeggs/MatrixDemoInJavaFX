@@ -4,30 +4,45 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4abf2f47-9852-4e6c-b90b-d7b7b33c5173" name="Changes" comment="Updated the Theme Controller. This is before editing the rest of the controllers to adapt with the new fraction-decimal changes.">
-      <change afterPath="$PROJECT_DIR$/SavedMatrices/determinants/determinant value.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SavedMatrices/determinants/this is a test too.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/model/MatrixCell.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/model/MatrixSingleton.java" afterDir="false" />
+    <list default="true" id="4abf2f47-9852-4e6c-b90b-d7b7b33c5173" name="Changes" comment="Updated theme controller, &#10;Added a singleton class to handle the different instances of the matrix across different scenes,&#10;Changed MatrixController to reflect the changes with the singleton class,&#10;Updated some parts of MatrixFileHandler, but not much; nothing worth commenting on,&#10;Also, greatly reduced redundancy inside the MatrixView class. I hope with those changes, the code will be much more readable,&#10;fin.">
+      <change afterPath="$PROJECT_DIR$/src/matrix/gui/resources/multiplicationScene.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/matrix/operators/MatrixInvertingOperationsTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/augmented/augmented_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/ref/ref_data.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/determinants/determinant value.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/determinants/this is a test too.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/rref/rref_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/rref/rref_data.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/fileManaging/FilePath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/fileManaging/FilePath.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/fileManaging/MatrixFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/fileManaging/MatrixFileHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/fileManaging/MatrixType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/fileManaging/MatrixType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/DataManipulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DataManipulation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/DeterminantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DeterminantController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/DeterminantPopUpController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DeterminantPopUpController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/MatrixApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MatrixApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/InverseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/InverseController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/RREFController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MultiplicationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/SaveController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/SaveController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/ThemeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/ThemeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/RREFScene.fxml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/determinantAnimation.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/determinantAnimation.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/determinantScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/determinantScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/inverseScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/inverseScene.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/matrixGUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/matrixGUI.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/themeScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/themeScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/model/Matrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/model/Matrix.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/model/MatrixCell.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/model/MatrixCell.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/model/MatrixSingleton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/model/MatrixSingleton.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/model/MatrixView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/model/MatrixView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/model/TriangularizationView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/model/TriangularizationView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/operators/ElementaryMatrixOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/operators/ElementaryMatrixOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/operators/MatrixDeterminantOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/operators/MatrixDeterminantOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/operators/MatrixInverseOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/operators/MatrixInvertingOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/operators/MatrixRREF.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/operators/MatrixMultiplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/operators/UserInputToOutputOperands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/operators/UserInputToOutputOperands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/darkMode.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/darkMode.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/lightMode.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/lightMode.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +69,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Testing-branch-12/23/23" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -93,30 +108,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Application.DecimalToFraction.executor&quot;: &quot;Run&quot;,
-    &quot;Application.MatrixApp.executor&quot;: &quot;Run&quot;,
-    &quot;Application.UserInputToOutputOperands.executor&quot;: &quot;Run&quot;,
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;ShowUsagesActions.previewPropertyKey&quot;: &quot;true&quot;,
-    &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/paulb/IdeaProjects/MatrixDemoInJavaFX&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.tabs&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Application.DecimalToFraction.executor": "Run",
+    "Application.MatrixApp.executor": "Run",
+    "Application.MatrixInvertingOperationsTest.executor": "Run",
+    "Application.UserInputToOutputOperands.executor": "Run",
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ShowUsagesActions.previewPropertyKey": "true",
+    "create.test.in.the.same.root": "true",
+    "git-widget-placeholder": "continued-work-on-gui-and-animation",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/paulb/IdeaProjects/Testing Branch for the MatrixDemo",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "editor.preferences.tabs"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\paulb\IdeaProjects\MatrixGUI_2\src\matrix\gui\resources" />
@@ -158,6 +174,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="MatrixInvertingOperationsTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="matrix.operators.MatrixInvertingOperationsTest" />
+      <module name="MatrixGUI_2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="matrix.operators.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="UserInputToOutputOperands" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="matrix.operators.UserInputToOutputOperands" />
       <module name="MatrixGUI_2" />
@@ -172,6 +201,7 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.MatrixInvertingOperationsTest" />
       <item itemvalue="Application.UserInputToOutputOperands" />
       <item itemvalue="Application.MatrixApp" />
     </list>
@@ -179,9 +209,9 @@
       <list>
         <item itemvalue="Application.MatrixApp" />
         <item itemvalue="Application.UserInputToOutputOperands" />
+        <item itemvalue="Application.MatrixInvertingOperationsTest" />
         <item itemvalue="Application.MatrixApp" />
         <item itemvalue="Application.UserInputToOutputOperands" />
-        <item itemvalue="Application.MatrixApp" />
       </list>
     </recent_temporary>
   </component>
@@ -273,7 +303,15 @@
       <option name="project" value="LOCAL" />
       <updated>1704148953031</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Updated theme controller, &#10;Added a singleton class to handle the different instances of the matrix across different scenes,&#10;Changed MatrixController to reflect the changes with the singleton class,&#10;Updated some parts of MatrixFileHandler, but not much; nothing worth commenting on,&#10;Also, greatly reduced redundancy inside the MatrixView class. I hope with those changes, the code will be much more readable,&#10;fin.">
+      <option name="closed" value="true" />
+      <created>1704574796774</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1704574796774</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -298,7 +336,8 @@
     <MESSAGE value="Finished the different themes." />
     <MESSAGE value="Matrix Controller and Determinant Controller can accurately manipulate and store data." />
     <MESSAGE value="Updated the Theme Controller. This is before editing the rest of the controllers to adapt with the new fraction-decimal changes." />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated the Theme Controller. This is before editing the rest of the controllers to adapt with the new fraction-decimal changes." />
+    <MESSAGE value="Updated theme controller, &#10;Added a singleton class to handle the different instances of the matrix across different scenes,&#10;Changed MatrixController to reflect the changes with the singleton class,&#10;Updated some parts of MatrixFileHandler, but not much; nothing worth commenting on,&#10;Also, greatly reduced redundancy inside the MatrixView class. I hope with those changes, the code will be much more readable,&#10;fin." />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated theme controller, &#10;Added a singleton class to handle the different instances of the matrix across different scenes,&#10;Changed MatrixController to reflect the changes with the singleton class,&#10;Updated some parts of MatrixFileHandler, but not much; nothing worth commenting on,&#10;Also, greatly reduced redundancy inside the MatrixView class. I hope with those changes, the code will be much more readable,&#10;fin." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/FinalProject_iml$DecimalToFraction.ic" NAME="DecimalToFraction Coverage Results" MODIFIED="1703359890785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">

@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -52,11 +53,12 @@
                      </cursor></Button>
                </children>
             </HBox>
-            <Button fx:id="fastFactsButton" mnemonicParsing="false" onAction="#handleFastFactsButton" prefWidth="116.0" text="Fast Facts">
+            <Button fx:id="transposeButton" mnemonicParsing="false" onAction="#handleTransposeButton" prefWidth="116.0" text="Transpose">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <TextArea fx:id="directions" editable="false" minHeight="130.0" minWidth="116.0" prefHeight="134.0" prefWidth="116.0" styleClass="text-area" text="&#10;" wrapText="true">
+            <Pane VBox.vgrow="ALWAYS" />
+            <TextArea fx:id="directions" editable="false" maxHeight="130.0" minHeight="130.0" minWidth="116.0" prefHeight="134.0" prefWidth="116.0" styleClass="text-area" text="&#10;" wrapText="true" VBox.vgrow="NEVER">
                <VBox.margin>
                   <Insets top="35.0" />
                </VBox.margin>
@@ -67,6 +69,7 @@
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
             </TextArea>
+            <Pane VBox.vgrow="ALWAYS" />
             <Label alignment="CENTER" prefHeight="18.0" prefWidth="116.0" styleClass="title-label" text="Target Row" textAlignment="CENTER">
                <VBox.margin>
                   <Insets top="30.0" />

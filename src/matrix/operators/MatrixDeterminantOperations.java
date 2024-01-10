@@ -10,20 +10,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MatrixDeterminantOperations {
-
+    private List<String> operationSummary;
     private final Matrix matrix;
     private final DecimalFormat decimalFormat = new DecimalFormat("#.#####");
-    private int steps;
+    private int steps = 1, operationsStep = 1;
 
     public MatrixDeterminantOperations(Matrix matrix) {
         this.matrix = matrix;
+        this.operationSummary = new ArrayList<>();
     }
 
     public BigDecimal calculateDeterminant() {
         if (matrix.getRows() != matrix.getCols()) {
             System.out.println("Determinant is not defined for non-square matrices.");
-            return BigDecimal.valueOf(.12319620031999);
+            throw new IllegalArgumentException("Determinant not defined for non-square matrices");
         }
+
         saveMatrixState("initial");
         if (!isUpperTriangular() && !isLowerTriangular()) {
             System.out.println("Matrix before 'Triangularization': \n" + matrix);
@@ -46,8 +48,11 @@ public class MatrixDeterminantOperations {
                 double x = matrix.getDoubleMatrix()[i][j];
                 double y = matrix.getDoubleMatrix()[i - 1][j];
                 multiplyRow(i, (-y / x));
+//                operationSummary.add(operationsStep++ + ", Multiplied row " + (i + 1) + " by " + (-y / x) + "\n");
                 addRow(i, i - 1);
+                operationSummary.add(operationsStep++ + ", Added row " + (i + 1) + " to row " + (i + 1) + "\n");
                 multiplyRow(i, (-x / y));
+//                operationSummary.add(operationsStep++ + ", Multiplied row " + (i + 1) + " by " + (-x / y) + "\n");
 
                 saveMatrixState("step_" + steps++);
             }
@@ -122,8 +127,10 @@ public class MatrixDeterminantOperations {
                 double tmp1 = matrix.getDoubleMatrix()[i][col];
                 double tmp2 = matrix.getDoubleMatrix()[k][col];
 
-                if (Math.abs(tmp1) < Math.abs(tmp2))
+                if (Math.abs(tmp1) < Math.abs(tmp2)) {
+                    operationSummary.add(operationsStep++ + ", Swapped row " + (i + 1) + " with row " + (k + 1) + "\n");
                     swapRow(i, k);
+                }
             }
         }
     }
@@ -135,14 +142,12 @@ public class MatrixDeterminantOperations {
                 double[] temp = matrix.getDoubleMatrix()[row1];
                 matrix.getDoubleMatrix()[row1] = matrix.getDoubleMatrix()[row2];
                 matrix.getDoubleMatrix()[row2] = temp;
-                matrix.setSign(matrix.getSign() * -1);
             }
         }
+        saveMatrixState("step_" + steps++);
     }
 
-    private BigDecimal normalizeZero(BigDecimal value) {
-        return (value.compareTo(BigDecimal.ZERO) == 0) ? BigDecimal.ZERO : value;
-    }
+    private BigDecimal normalizeZero(BigDecimal value) {return (value.compareTo(BigDecimal.ZERO) == 0) ? BigDecimal.ZERO : value;}
 
     private List<List<String>> formatMatrix() {
         List<List<String>> formattedMatrix = new ArrayList<>();
@@ -180,5 +185,9 @@ public class MatrixDeterminantOperations {
     public int getTotalSteps() {
         System.out.println("These are the amount of steps needed (getTotalSteps): \n" + steps);
         return steps;
+    }
+
+    public List<String> getOperationSummary() {
+        return operationSummary;
     }
 }

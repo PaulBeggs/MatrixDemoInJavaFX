@@ -12,23 +12,16 @@ public class MatrixSingleton {
 
     private MatrixSingleton() {}
 
-    public static void resizeInstance(int numRows, int numCols) {
-        if (instance == null || instance.getRows() != numRows || instance.getCols() != numCols) {
-
-            instance = new Matrix(numRows, numCols);
-        }
-    }
-
-        public static Matrix getInstance() {
+    // Use to handle the main matrix instance across different classes.
+    public static Matrix getInstance() {
         if (instance == null) {
             // Load from file or create a new Matrix
             System.out.println("Instance is null");
-            instance = MatrixFileHandler.loadMatrixFromFile(FilePath.MATRIX_PATH.getPath()); // Implement this method to load from file
+            instance = MatrixFileHandler.loadMatrixFromFile(FilePath.MATRIX_PATH.getPath());
         }
-        System.out.println("Current instance: \n" + instance);
         return instance;
     }
-
+    // Save the instance directly to the matrix data file.
     public static void saveMatrix() {
         if (instance != null) {
             List<List<String>> matrixData = MatrixFileHandler.loadMatrixDataFromMatrix(instance);
@@ -37,10 +30,16 @@ public class MatrixSingleton {
         }
     }
 
+    // If the matrix dimensions are not accurate, then generate a new instance with the specified rows and columns.
+    public static void resizeInstance(int numRows, int numCols) {
+        if (instance == null || instance.getRows() != numRows || instance.getCols() != numCols) {
+            instance = new Matrix(numRows, numCols);
+        }
+    }
+
+    // Use sparsely. This is only to be used when the matrix is initialized.
     public static void setInstance(Matrix newMatrix) {
         instance = newMatrix;
     }
-
-    // Add methods to update the matrix, which in turn update the UI or vice versa
 }
 

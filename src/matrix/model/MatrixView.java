@@ -1,34 +1,30 @@
 package matrix.model;
 
-import javafx.scene.control.TextField;
-
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+import matrix.gui.MatrixApp;
 
 public class MatrixView {
-    private BorderPane borderPane;
     private MatrixCell[][] matrixCells;
-    private GridPane matrixGrid;
-    private TextField sizeRowsField, sizeColsField;
+    private final GridPane matrixGrid;
 
-    public MatrixView(GridPane matrixGridFromController, MatrixCell[][] matrixCells, BorderPane borderPane) {
+    public MatrixView(GridPane matrixGridFromController, MatrixCell[][] matrixCells) {
         this.matrixGrid = matrixGridFromController;
         this.matrixCells = matrixCells;
-        this.borderPane = borderPane;
     }
 
 
-    public void updateViews(boolean isEditable) {
-        Matrix matrix = MatrixSingleton.getInstance();
+    public void updateViews(boolean isEditable, Matrix matrix) {
         System.out.println("returned matrix from updatedViews: \n" + matrix);
         if (matrix != null && matrix.getRows() > 0 && matrix.getCols() > 0) {
-            populateMatrixFromData(matrix, isEditable);
+            populateMatrixFromData(isEditable, matrix);
+            resizeMatrix();
         } else {
             System.out.println("Error: Matrix is null or empty.");
         }
     }
 
-    public void populateMatrixFromData(Matrix matrix, boolean isEditable) {
+    public void populateMatrixFromData(boolean isEditable, Matrix matrix) {
         matrixGrid.getChildren().clear();
 
         // Use the provided matrix to populate the UI
@@ -45,9 +41,8 @@ public class MatrixView {
         }
     }
 
-    public void setSizeColsField(TextField sizeColsField) {this.sizeColsField = sizeColsField;}
-    public void setSizeRowsField(TextField sizeRowsField) {this.sizeRowsField = sizeRowsField;}
-    public void setMatrixGrid(GridPane matrixGrid) {this.matrixGrid = matrixGrid;}
-    public void setMatrixCells (MatrixCell[][] matrixCells) {this.matrixCells = matrixCells;}
-
+    private void resizeMatrix() {
+        Stage mainstage = MatrixApp.getPrimaryStage();
+        mainstage.sizeToScene();
+    }
 }

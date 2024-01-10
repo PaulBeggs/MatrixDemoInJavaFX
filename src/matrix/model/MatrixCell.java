@@ -43,22 +43,7 @@ public class MatrixCell {
         });
     }
 
-//    private void saveMatrix() {
-//        List<List<String>> matrixData = MatrixFileHandler.loadMatrixDataFromMatrix(matrix);
-//        MatrixFileHandler.saveMatrixDataToFile(FilePath.MATRIX_PATH.getPath(),
-//                BigDecimal.valueOf(0), matrixData, MatrixType.REGULAR);
-//        System.out.println("The matrix should be saved correctly within the matrixcell class: \n" + matrix);
-//    }
-
-    public TextField getTextField() {
-        return textField;
-    }
-
-    public int getRow() {
-        return row;
-    }
-
-    public int getCol() {
-        return col;
-    }
+    public TextField getTextField() {return textField;}
+    public int getRow() {return row;}
+    public int getCol() {return col;}
 }

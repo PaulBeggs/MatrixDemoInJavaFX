@@ -1,6 +1,7 @@
 package matrix.gui;
 
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
@@ -35,7 +36,6 @@ public class DeterminantPopUpController {
     private Matrix matrix;
     private TriangularizationView view;
     private boolean clockOn;
-    private Stage stage;
     private MatrixDeterminantOperations operations;
     Timeline timeline;
     AtomicInteger counter = new AtomicInteger();
@@ -47,11 +47,9 @@ public class DeterminantPopUpController {
         setUpTriangularizationViews();
         operations.calculateDeterminant();
         System.out.println("this is the initial matrix inside of the popup controller: \n" + matrix);
-        setStage(stage);
         view.updateViews("initial");
         handleTimer();
     }
-
 
     private void updateSignChangesDisplay() {
         String signChanges = String.valueOf((matrix.getSign()));
@@ -59,7 +57,7 @@ public class DeterminantPopUpController {
     }
 
     private void setUpTriangularizationViews() {
-        this.view = new TriangularizationView(matrix, matrixGrid);
+        this.view = new TriangularizationView(matrixGrid);
     }
 
     private void handleTimer() {
@@ -68,19 +66,30 @@ public class DeterminantPopUpController {
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), (ActionEvent t) -> {
             if (totalSteps == 0) {
-
+                view.updateViews("initial");
             } else {
                 String stepKey = "step_" + counter.getAndIncrement();
                 System.out.println("Animating: " + stepKey);
-//            updateSignChangesDisplay();
-
                 view.updateViews(stepKey);
             }
-
         }));
 
         timeline.setCycleCount(totalSteps);
+
+        // Set the onFinished event handler for the timeline
+        timeline.setOnFinished(e -> {
+            // Create a PauseTransition for a delay
+            PauseTransition delay = new PauseTransition(Duration.seconds(3));
+            delay.setOnFinished(event -> displayConsoleSummary()); // Call your method to display the summary
+            delay.play();
+        });
+
         start.setOnAction((t) -> timeline.play());
+    }
+
+    private void displayConsoleSummary() {
+        List<String> summary = operations.getOperationSummary();
+        System.out.println(summary);
     }
 
     @FXML
@@ -97,25 +106,42 @@ public class DeterminantPopUpController {
         handleProgressBar();
     }
 
+    @FXML
+    public void handleResetButton() {
+        view.updateViews("initial");
+        handleTimer();
+    }
+
+    @FXML
+    public void handleSummarizeStepsButton() {
+        List<String> stepSummary = operations.getOperationSummary();
+        displaySummary(stepSummary);
+    }
+
+    public void displaySummary(List<String> summary) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Matrix Transformation Summary");
+        alert.setHeaderText("Steps to Make Matrix Triangular");
+
+        TextArea textArea = new TextArea();
+        textArea.setEditable(false);
+        textArea.setText(String.join("\n", summary));
+
+        alert.getDialogPane().setContent(textArea);
+        alert.showAndWait();
+    }
+
     public void setMatrixGrid(GridPane matrixGrid) {
         this.matrixGrid = matrixGrid;
     }
 
-    @FXML
     private void handleProgressBar() {
         if (!clockOn) {
-            progressBar.setOpacity(100);
+            progressBar.setOpacity(75);
         }
-        progressBar.setOpacity(0);
+        progressBar.setOpacity(40);
     }
 
-        public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    public MatrixCell[][] getMatrixCells() {
-        return matrixCells;
-    }
     public void setMatrixCells (MatrixCell[][] matrixCells) {
         this.matrixCells = matrixCells;
     }

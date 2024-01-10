@@ -40,16 +40,14 @@ public class Matrix implements MatrixOperations {
         }
     }
 
-    public void setToIdentity() {
-        for (int i = 0; i < this.numRows; i++) {
-            for (int j = 0; j < this.numCols; j++) {
-                if (i == j) {
-                    this.matrix[i][j] = 1; // Set diagonal elements to 1
-                } else {
-                    this.matrix[i][j] = 0; // Set off-diagonal elements to 0
-                }
+    public Matrix copy() {
+        Matrix copiedMatrix = new Matrix(this.getRows(), this.getCols());
+        for (int i = 0; i < this.getRows(); i++) {
+            for (int j = 0; j < this.getCols(); j++) {
+                copiedMatrix.setValue(i, j, this.getValue(i, j));
             }
         }
+        return copiedMatrix;
     }
 
     @Override

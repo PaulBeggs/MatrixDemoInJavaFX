@@ -25,7 +25,6 @@ public class UserInputToOutputOperands {
         return numerator + "/" + denominator;
     }
 
-
     public static String sqrtWithMode(String input, boolean fractionMode) {
         if (input.startsWith("/sqrt(") && input.endsWith(")")) {
             String insideParenthesis = input.substring(6, input.length() - 1);
