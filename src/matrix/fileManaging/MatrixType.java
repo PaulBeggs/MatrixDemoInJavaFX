@@ -3,9 +3,9 @@ package matrix.fileManaging;
 public enum MatrixType {
     DETERMINANT,
     TRIANGULAR,
-    REGULAR,
     IDENTITY,
+    REGULAR,
     INVERSE,
-    REF,
-    RREF
+    RREF,
+    REF
 }

@@ -1,8 +1,10 @@
-package matrix.model;
+package matrix.view;
 
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import matrix.gui.MatrixApp;
+import matrix.model.Matrix;
+import matrix.model.MatrixCell;
 
 public class MatrixView {
     private MatrixCell[][] matrixCells;
@@ -12,7 +14,6 @@ public class MatrixView {
         this.matrixGrid = matrixGridFromController;
         this.matrixCells = matrixCells;
     }
-
 
     public void updateViews(boolean isEditable, Matrix matrix) {
         System.out.println("returned matrix from updatedViews: \n" + matrix);
@@ -34,8 +35,8 @@ public class MatrixView {
         matrixCells = new MatrixCell[numRows][numCols];
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
-                double cellValue = matrix.getValue(row, col);
-                matrixCells[row][col] = new MatrixCell(row, col, String.valueOf(cellValue), isEditable);
+                String cellValue = matrix.getValue(row, col);
+                matrixCells[row][col] = new MatrixCell(row, col, cellValue, isEditable);
                 matrixGrid.add(matrixCells[row][col].getTextField(), col, row);
             }
         }

@@ -12,27 +12,29 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import matrix.fileManaging.FilePath;
 import matrix.fileManaging.MatrixType;
-import matrix.model.Matrix;
+import matrix.model.*;
 import matrix.fileManaging.MatrixFileHandler;
-import matrix.model.MatrixCell;
-import matrix.model.MatrixSingleton;
-import matrix.model.MatrixView;
 import javafx.fxml.FXML;
 
+import matrix.utility.BigDecimalUtil;
 import matrix.operators.ElementaryMatrixOperations;
 import matrix.operators.MatrixInputHandler;
+import matrix.utility.MatrixUtil;
+import matrix.utility.UniversalListeners;
+import matrix.view.MatrixView;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.math.RoundingMode;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 
 public class MatrixController implements DataManipulation {
     @FXML
@@ -50,6 +52,7 @@ public class MatrixController implements DataManipulation {
     @FXML
     GridPane matrixGrid;
     private MatrixView matrixView;
+    private int steps = 1;
     private MatrixCell[][] matrixCells;
     private final MatrixInputHandler MIH = new MatrixInputHandler();
 
@@ -65,7 +68,9 @@ public class MatrixController implements DataManipulation {
         setupOperationsDropdown();
         setupScenesDropdown();
         setupDirectionText();
-        Matrix matrix = MatrixSingleton.getInstance();
+        System.out.println("(initialize) Accessing the singleton inside of the matrix cells (matrixController): ");
+        System.out.println("Accessed " + steps++ + " in order.");
+        Matrix matrix = MatrixSingleton.getDisplayInstance();
         matrixView.updateViews(true, matrix);
         setInitTextFieldData();
     }
@@ -115,83 +120,111 @@ public class MatrixController implements DataManipulation {
         updateMatrixGrid(true, getIdentityMatrixData()); // true indicates it's an identity matrix
     }
 
-    private List<List<String>> getNewMatrixData() {
-        while (true) {
-            if (MIH.isPositiveIntValid(sizeColsField) && MIH.isPositiveIntValid(sizeRowsField)) {
-                int numRows = Integer.parseInt(sizeRowsField.getText());
-                int numCols = Integer.parseInt(sizeColsField.getText());
+    private void updateMatrixGrid(Boolean identityCheck, List<List<String>> matrixData) {
+        Matrix newMatrix = new Matrix(matrixData.size(), matrixData.getFirst().size());
+        MatrixSingleton.resizeInstance(matrixData.size(), matrixData.getFirst().size());
+        matrixGrid.getChildren().clear();
 
-                List<List<String>> matrixData = new ArrayList<>();
-                for (int row = 0; row < numRows; row++) {
-                    List<String> rowData = new ArrayList<>();
-                    for (int col = 0; col < numCols; col++) {
-                        // For a regular matrix, initialize with random/default values
-                        double cellValue = Math.floor(Math.random() * 10); // or another initialization logic
-                        rowData.add(String.valueOf(cellValue));
-                    }
-                    matrixData.add(rowData);
-                }
-                return matrixData;
-            } else {
-                System.out.println("Invalid input for matrix dimensions.");
-                temporarilyUpdateDirections("Invalid input for matrix dimensions.");
-                sizeColsField.setText("1");
-                sizeRowsField.setText("1");
-            }
+        setupMatrixCells(newMatrix, matrixData, identityCheck);
+
+        System.out.println("this is the matrix after updating: \n" + newMatrix);
+        System.out.println("These are the matrix cells: \n" + MatrixUtil.matrixCellsToString(matrixCells));
+        MatrixSingleton.setInstance(newMatrix);
+        MatrixSingleton.saveMatrix();
+        matrixView.updateViews(true, newMatrix);
+    }
+
+    private List<List<String>> getNewMatrixData() {
+        if (MIH.isPositiveIntValid(sizeColsField) && MIH.isPositiveIntValid(sizeRowsField)) {
+            int numRows = Integer.parseInt(sizeRowsField.getText());
+            int numCols = Integer.parseInt(sizeColsField.getText());
+            return generateMatrixData(numRows, numCols, (row, col) -> BigDecimalUtil.getCellValueBasedOnMode());
+        } else {
+            System.out.println("Invalid input for matrix dimensions.");
+            temporarilyUpdateDirections("Invalid input for matrix dimensions.");
+            sizeColsField.setText("1");
+            sizeRowsField.setText("1");
+            // Return a default matrix with a single cell containing "0"
+            return List.of(List.of("0"));
         }
     }
 
     private List<List<String>> getIdentityMatrixData() {
-        while (true) {
-            if (MIH.isPositiveIntValid(sizeColsField) && MIH.isPositiveIntValid(sizeRowsField)) {
-                int numRows = Integer.parseInt(sizeRowsField.getText());
-                int numCols = Integer.parseInt(sizeColsField.getText());
+        if (MIH.isPositiveIntValid(sizeColsField) && MIH.isPositiveIntValid(sizeRowsField)) {
+            int numRows = Integer.parseInt(sizeRowsField.getText());
+            int numCols = Integer.parseInt(sizeColsField.getText());
+            return generateMatrixData(numRows, numCols, (row, col) -> (Objects.equals(row, col)) ? "1.0" : "0.0");
+        } else {
+            temporarilyUpdateDirections("Invalid input for identity matrix dimensions");
+            sizeColsField.setText("1");
+            sizeRowsField.setText("1");
+            return Collections.emptyList(); // Return an empty list if inputs are invalid
+        }
+    }
 
-                List<List<String>> identityMatrixData = new ArrayList<>();
-                for (int row = 0; row < numRows; row++) {
-                    List<String> rowData = new ArrayList<>();
-                    for (int col = 0; col < numCols; col++) {
-                        // For an identity matrix, check if row == col for 1.0, else 0.0
-                        rowData.add((row == col) ? "1.0" : "0.0"); // Directly add as string
-                    }
-                    identityMatrixData.add(rowData);
-                }
-                return identityMatrixData;
-            } else {
-                temporarilyUpdateDirections("Invalid input for identity matrix dimensions");
-                sizeColsField.setText("1");
-                sizeRowsField.setText("1");
+    private List<List<String>> generateMatrixData(int numRows, int numCols, BiFunction<Integer, Integer, String> cellValueFunction) {
+        List<List<String>> matrixData = new ArrayList<>();
+        for (int row = 0; row < numRows; row++) {
+            List<String> rowData = new ArrayList<>();
+            for (int col = 0; col < numCols; col++) {
+                rowData.add(cellValueFunction.apply(row, col));
+            }
+            matrixData.add(rowData);
+        }
+        return matrixData;
+    }
+
+    @Override
+    public void update() {
+        List<List<String>> matrixData = MatrixFileHandler.loadMatrixDataFromFile(FilePath.MATRIX_PATH.getPath());
+
+        if (!matrixData.isEmpty()) {
+            populateMatrixUI(matrixData);
+        } else {
+            System.out.println("Populating matrix because it is empty...");
+            MatrixFileHandler.populateMatrixIfEmpty();
+        }
+    }
+
+    private void populateMatrixUI(List<List<String>> matrixData) {
+        System.out.println("(populate) Accessing the singleton inside of the matrix cells (matrixController): \n");
+        System.out.println("Accessed " + steps++ + " in order.");
+        Matrix matrix = MatrixSingleton.getDisplayInstance();
+        MatrixSingleton.resizeInstance(matrixData.size(), matrixData.getFirst().size());
+        setupMatrixCells(matrix, matrixData, false);
+        System.out.println("This is the matrix that is initially created: \n" + matrix);
+        System.out.println("These are the matrix cells: \n" + MatrixUtil.matrixCellsToString(matrixCells));
+    }
+
+
+    private void setupMatrixCells(Matrix matrix, List<List<String>> matrixData, boolean identityCheck) {
+        int numRows = matrixData.size();
+        int numCols = matrixData.getFirst().size();
+        matrixCells = new MatrixCell[numRows][numCols];
+
+        for (int row = 0; row < numRows; row++) {
+            for (int col = 0; col < numCols; col++) {
+                String cellValue = formatCellValue(matrixData.get(row).get(col), identityCheck, row == col);
+                matrixCells[row][col] = new MatrixCell(row, col, cellValue, true);
+                matrix.setValue(row, col, cellValue);
             }
         }
     }
 
-    private void updateMatrixGrid(Boolean identityCheck, List<List<String>> matrixData) {
-        int numRows = matrixData.size();
-        int numCols = matrixData.getFirst().size();
-
-        Matrix newMatrix = new Matrix(numRows, numCols);
-//        System.out.println("pre-updated matrix before instance is retrieved: \n" + newMatrix);
-        MatrixSingleton.resizeInstance(numRows, numCols);
-
-        matrixGrid.getChildren().clear();
-        this.matrixCells = new MatrixCell[numRows][numCols];
-
-        for (int row = 0; row < numRows; row++) {
-            for (int col = 0; col < numCols; col++) {
-                double cellValue = identityCheck && row == col ? 1.0 :
-                        (identityCheck ? 0.0 : Double.parseDouble(matrixData.get(row).get(col)));
-
-                matrixCells[row][col] = new MatrixCell(row, col, String.valueOf(cellValue), true);
-                matrixGrid.add(matrixCells[row][col].getTextField(), col, row);
-                newMatrix.setValue(row, col, cellValue);
+    private String formatCellValue(String value, boolean identityCheck, boolean isDiagonal) {
+        if (identityCheck) {
+            return isDiagonal ? "1" : "0";
+        }
+//        System.out.println("Format matrix fraction mode setting: \n" + MatrixApp.isFractionMode());
+        if (MatrixApp.isFractionMode()) {
+            if (value.contains("/")) {
+                // Handle fraction conversion
+                return BigDecimalUtil.convertFractionToDecimal(value).toPlainString();
+            } else {
+                return BigDecimalUtil.convertRepeatingDecimalToFraction(value);
             }
         }
-        System.out.println("this is the matrix after updating: \n" + newMatrix);
-        System.out.println("These are the matrix cells: \n" + matrixCellsToString(matrixCells));
-        MatrixSingleton.setInstance(newMatrix);
-        MatrixSingleton.saveMatrix(); // Save Matrix to File.
-        Matrix matrix = MatrixSingleton.getInstance();
-        matrixView.updateViews(true, matrix);
+        return BigDecimalUtil.convertStringToFormattedFraction(value);
     }
 
     private void saveIdentityCopy(List<List<String>> identityMatrixData) {
@@ -203,15 +236,18 @@ public class MatrixController implements DataManipulation {
 
         MatrixCell[][] iMatrixCells = new MatrixCell[numRows][numCols];
 
+        BigDecimal one = BigDecimal.ONE;
+        BigDecimal zero = BigDecimal.ZERO;
+
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
-                double cellValue = row == col ? 1.0 : 0.0;
+                BigDecimal cellValue = row == col ? one : zero;
 
-                iMatrixCells[row][col] = new MatrixCell(row, col, String.valueOf(cellValue), true);
-                iMatrix.setValue(row, col, cellValue);
+                iMatrixCells[row][col] = new MatrixCell(row, col, cellValue.toPlainString(), true);
+                iMatrix.setValue(row, col, cellValue.toPlainString());
             }
         }
-        MatrixFileHandler.saveMatrixDataToFile(FilePath.IDENTITY_PATH.getPath(), BigDecimal.ZERO, identityMatrixData, MatrixType.IDENTITY);
+        MatrixFileHandler.saveMatrixDataToFile(FilePath.IDENTITY_PATH.getPath(), "0", identityMatrixData, MatrixType.IDENTITY);
     }
 
     @Override
@@ -233,7 +269,7 @@ public class MatrixController implements DataManipulation {
         }
 
         Scene saveScene = new Scene(root);
-        MatrixApp.setupGlobalEscapeHandler(saveScene);
+        UniversalListeners.setupGlobalEscapeHandler(saveScene);
         MatrixApp.applyTheme(saveScene);
         saveStage.setScene(saveScene);
         saveStage.showAndWait();
@@ -260,7 +296,6 @@ public class MatrixController implements DataManipulation {
 
             // Convert the loaded data into a Matrix object
             updateMatrixGrid(false, matrixData);
-            updateMatrixFromMatrixCells(matrixCells); // Update the shared instance
         }
     }
     
@@ -271,11 +306,11 @@ public class MatrixController implements DataManipulation {
 
     @FXML
     private void performOperation() {
-        Matrix matrix = MatrixSingleton.getInstance();
+        Matrix matrix = MatrixSingleton.getDisplayInstance();
         ElementaryMatrixOperations EMO = new ElementaryMatrixOperations(matrix);
         String selectedOption = operations.getValue();
 
-        if (!MIH.isRowValid(targetRow, matrix.getRows()) || !MIH.isRowValid(sourceRow, matrix.getRows())) {
+        if (MIH.isRowValid(targetRow, matrix.getRows()) || MIH.isRowValid(sourceRow, matrix.getRows())) {
             System.out.println("At least one row is invalid. Fix it to proceed.");
             temporarilyUpdateDirections("At least one row is invalid. Fix it to proceed.");
             return;
@@ -286,13 +321,13 @@ public class MatrixController implements DataManipulation {
 
         switch (selectedOption) {
             case "Swap Rows":
-                EMO.swapRows(targetRowIndex, sourceRowIndex, true);
+                EMO.swapRows(targetRowIndex, sourceRowIndex);
                 break;
             case "Multiply Rows":
-                handleRowOperation(targetRowIndex, multiplier, (index, value) -> EMO.multiplyRow(index, value, true));
+                handleRowOperation(targetRowIndex, multiplier, EMO::multiplyRow);
                 break;
             case "Add Rows":
-                handleRowOperation(targetRowIndex, multiplier, (index, value) -> EMO.addRows(targetRowIndex, sourceRowIndex, value, true));
+                handleRowOperation(targetRowIndex, multiplier, (index, value) -> EMO.addRows(targetRowIndex, sourceRowIndex, value));
                 break;
             default:
                 throw new IllegalStateException("How did you fuck this up?");
@@ -300,78 +335,32 @@ public class MatrixController implements DataManipulation {
         matrixView.updateViews(true, matrix);
     }
 
-    private void handleRowOperation(int targetRowIndex, TextField multiplierField, BiConsumer<Integer, Double> operationFunction) {
+    private void handleRowOperation(int targetRowIndex, TextField multiplierField, BiConsumer<Integer, BigDecimal> operationFunction) {
         if (!MIH.isDoubleValid(multiplierField)) {
             System.out.println("Invalid Multiplier. Please enter a valid double.");
             temporarilyUpdateDirections("Invalid Multiplier. Please enter a valid double.");
             return;
         }
-        double value = Double.parseDouble(multiplierField.getText());
-        operationFunction.accept(targetRowIndex, value);
+
+        String input = multiplierField.getText();
+        BigDecimal value;
+        try {
+            if (MatrixApp.isFractionMode() && input.contains("/")) {
+                value = BigDecimalUtil.convertFractionToDecimal(input);
+            } else {
+                value = new BigDecimal(input);
+            }
+            operationFunction.accept(targetRowIndex, value);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid number format");
+            // Handle the error, e.g., show an error message
+        }
     }
+
 
     @FXML
     public void handleTransposeButton() {
 
-    }
-
-    @Override
-    public void update() {
-        List<List<String>> matrixData = MatrixFileHandler.loadMatrixDataFromFile(FilePath.MATRIX_PATH.getPath());
-
-        if (!matrixData.isEmpty()) {
-            populateMatrixUI(matrixData);
-        } else {
-            MatrixFileHandler.populateMatrixIfEmpty();
-        }
-    }
-
-    private void populateMatrixUI(List<List<String>> matrixData) {
-        int numRows = matrixData.size();
-        int numCols = matrixData.getFirst().size();
-
-        // Initialize Matrix model with the loaded data
-        Matrix matrix = MatrixSingleton.getInstance();
-
-        // Ensure the shared matrix has the correct dimensions
-        MatrixSingleton.resizeInstance(numRows, numCols);
-
-        for (int row = 0; row < numRows; row++) {
-            for (int col = 0; col < numCols; col++) {
-                try {
-                    double cellValue = Double.parseDouble(matrixData.get(row).get(col));
-                    matrix.setValue(row, col, cellValue);
-                } catch (NumberFormatException e) {
-                    MatrixFileHandler.populateMatrixIfEmpty();
-                }
-            }
-        }
-        System.out.println("This is the matrix that is initially created: \n" + matrix);
-
-        // Create MatrixCells with the initialized Matrix model
-        matrixCells = new MatrixCell[numRows][numCols];
-        for (int row = 0; row < numRows; row++) {
-            for (int col = 0; col < numCols; col++) {
-                String cellValue = matrixData.get(row).get(col);
-                matrixCells[row][col] = new MatrixCell(row, col, cellValue, true);
-            }
-        }
-        System.out.println("These are the matrix cells: \n" + matrixCellsToString(matrixCells));
-    }
-
-    private void updateMatrixFromMatrixCells(MatrixCell[][] matrixCells) {
-        Matrix matrix = MatrixSingleton.getInstance();
-        for (int row = 0; row < matrixCells.length; row++) {
-            for (int col = 0; col < matrixCells[row].length; col++) {
-                String cellValue = matrixCells[row][col].getTextField().getText();
-                try {
-                    double numericValue = Double.parseDouble(cellValue);
-                    matrix.setValue(row, col, numericValue);
-                } catch (NumberFormatException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
     }
 
     // Method to update the directions text area
@@ -425,17 +414,15 @@ public class MatrixController implements DataManipulation {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public String matrixCellsToString(MatrixCell[][] matrixCells) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < matrixCells.length; i++) {
-            for (int j = 0; j < matrixCells[i].length; j++) {
-                String cellValue = matrixCells[i][j].getTextField().getText();
-                sb.append(String.format("(%d,%d): %s ", i, j, cellValue));
-            }
-            sb.append("\n"); // New line at the end of each row
-        }
-        return sb.toString();
+//        sizeColsField.setOnKeyPressed(event -> {
+//            if (event.getCode() == KeyCode.ENTER) {
+//                handleIdentityButton();
+//            }
+//        });
+//        sizeRowsField.setOnKeyPressed(event -> {
+//            if (event.getCode() == KeyCode.ENTER) {
+//                handleIdentityButton();
+//            }
+//        });
     }
 }

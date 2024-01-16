@@ -8,6 +8,9 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import matrix.fileManaging.FilePath;
+import matrix.utility.FileUtil;
+import matrix.utility.UniversalListeners;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -81,8 +84,12 @@ public class ThemeController {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/matrixGUI.fxml")));
             Scene scene = new Scene(root);
 
-            MatrixApp.setupGlobalEscapeHandler(scene);
+            UniversalListeners.addEnterKeyHandlerToChildren(root);
+            UniversalListeners.setupGlobalEscapeHandler(scene);
+
             MatrixApp.applyTheme(scene);
+            MatrixApp.setFractionMode(isFraction);
+            FileUtil.ensureNumbersAreUpdated(FilePath.MATRIX_PATH.getPath());
             Stage primaryStage = MatrixApp.getPrimaryStage();
 
             primaryStage.setTitle("Matrix GUI");

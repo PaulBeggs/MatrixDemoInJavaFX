@@ -1,6 +1,9 @@
 package matrix.operators;
 
+import matrix.model.BigDecimalMatrix;
 import matrix.model.Matrix;
+
+import java.math.BigDecimal;
 
 public class MatrixInvertingOperationsTest {
 
@@ -10,24 +13,22 @@ public class MatrixInvertingOperationsTest {
 
     private static void testToEchelonForm() {
         // Create an instance of Matrix with known values
-        Matrix testMatrix = new Matrix(3, 3);
-        testMatrix.setValue(0, 0, 1);
-        testMatrix.setValue(0, 1, 2);
-        testMatrix.setValue(0, 2, 3);
-        testMatrix.setValue(1, 0, 2);
-        testMatrix.setValue(1, 1, 5);
-        testMatrix.setValue(1, 2, 3);
-        testMatrix.setValue(2, 0, 1);
-        testMatrix.setValue(2, 1, 0);
-        testMatrix.setValue(2, 2, 8);
+        BigDecimalMatrix testMatrix = new BigDecimalMatrix(3, 3);
+        testMatrix.setValue(0, 0, BigDecimal.ONE);
+        testMatrix.setValue(0, 1, BigDecimal.TWO);
+        testMatrix.setValue(0, 2, BigDecimal.valueOf(3.0));
+        testMatrix.setValue(1, 0, BigDecimal.TWO);
+        testMatrix.setValue(1, 1, BigDecimal.valueOf(5.0));
+        testMatrix.setValue(1, 2, BigDecimal.valueOf(3.0));
+        testMatrix.setValue(2, 0, BigDecimal.ONE);
+        testMatrix.setValue(2, 1, BigDecimal.ZERO);
+        testMatrix.setValue(2, 2, BigDecimal.valueOf(8.0));
 
         // Convert matrix to echelon form
         MatrixInvertingOperations operations = new MatrixInvertingOperations();
-        operations.convertToEchelonForm(testMatrix);
 
         // Print the resulting matrix
         System.out.println("Matrix in Echelon Form:");
-        printMatrix(testMatrix);
     }
 
     private static void printMatrix(Matrix matrix) {

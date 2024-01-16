@@ -10,4 +10,8 @@ module MatrixDemoInJavaFX {
     opens matrix.model;
     opens matrix.operators;
     opens matrix.fileManaging;
+    exports matrix.view;
+    opens matrix.view;
+    exports matrix.utility;
+    opens matrix.utility;
 }

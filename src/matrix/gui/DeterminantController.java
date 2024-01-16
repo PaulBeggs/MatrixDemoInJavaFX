@@ -12,16 +12,15 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import matrix.fileManaging.FilePath;
 import matrix.fileManaging.MatrixType;
-import matrix.model.Matrix;
+import matrix.model.*;
 import matrix.fileManaging.MatrixFileHandler;
-import matrix.model.MatrixCell;
-import matrix.model.MatrixSingleton;
-import matrix.model.MatrixView;
+import matrix.utility.BigDecimalUtil;
 import matrix.operators.MatrixDeterminantOperations;
+import matrix.utility.UniversalListeners;
+import matrix.view.MatrixView;
 
 import java.io.*;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -44,8 +43,8 @@ public class DeterminantController implements DataManipulation {
     CheckBox checkBox;
     private MatrixView matrixView;
     private MatrixCell[][] matrixCells;
-    private BigDecimal determinant;
-    private String nonSquareMatrixString = "Matrix is not square; it does not have a defined determinant.";
+    private String determinant;
+    private final String nonSquareMatrixString = "Matrix is not square; it does not have a defined determinant.";
     private final String initialDirections =
             """
                     Additive:\s
@@ -63,7 +62,7 @@ public class DeterminantController implements DataManipulation {
         matrixView = new MatrixView(matrixGrid, matrixCells);
         setupDirectionText();
         setupScenesDropdown();
-        Matrix matrix = MatrixSingleton.getInstance();
+        Matrix matrix = MatrixSingleton.getDisplayInstance();
         matrixView.updateViews(true, matrix);
     }
 
@@ -91,7 +90,7 @@ public class DeterminantController implements DataManipulation {
     @FXML
     public void handleDeterminantFunctionality() {
         try {
-            Matrix matrix = MatrixSingleton.getInstance();
+            Matrix matrix = MatrixSingleton.getDisplayInstance();
             MatrixDeterminantOperations determinantOperations = new MatrixDeterminantOperations(matrix);
             this.determinant = determinantOperations.calculateDeterminant();
         } catch (IllegalArgumentException e) {
@@ -101,8 +100,8 @@ public class DeterminantController implements DataManipulation {
             return;
         }
 
-        if (determinant.compareTo(BigDecimal.ZERO) == 0) {
-            determinantValue.setText("0.0");
+        if (determinant.compareTo(String.valueOf(BigDecimal.ZERO)) == 0) {
+            determinantValue.setText(determinant);
             save();
             return;
         }
@@ -120,9 +119,9 @@ public class DeterminantController implements DataManipulation {
             showErrorPopup("Cannot save a matrix with an undefined determinant using this option.");
             return;
         }
-        if (determinant.compareTo(BigDecimal.ZERO) == 0) {
-            determinantValue.setText("0.0");
-            determinant = BigDecimal.ZERO;
+        if (determinant.compareTo(String.valueOf(BigDecimal.ZERO)) == 0) {
+            determinantValue.setText(determinant);
+            determinant = String.valueOf(BigDecimal.ZERO);
         }
         Stage saveStage = new Stage();
         saveStage.setTitle("Save Menu");
@@ -142,7 +141,7 @@ public class DeterminantController implements DataManipulation {
         saveController.setDeterminantValue(determinant);
 
         Scene saveScene = new Scene(root);
-        MatrixApp.setupGlobalEscapeHandler(saveScene);
+        UniversalListeners.setupGlobalEscapeHandler(saveScene);
         MatrixApp.applyTheme(saveScene);
         saveStage.setScene(saveScene);
         saveStage.showAndWait();
@@ -168,7 +167,7 @@ public class DeterminantController implements DataManipulation {
         determinantPopUpController.setMatrixGrid(matrixGrid);
 
         Scene animationScene = new Scene(root);
-        MatrixApp.setupGlobalEscapeHandler(animationScene);
+        UniversalListeners.setupGlobalEscapeHandler(animationScene);
         MatrixApp.applyTheme(animationScene);
         animationStage.setScene(animationScene);
         animationStage.show();
@@ -200,13 +199,13 @@ public class DeterminantController implements DataManipulation {
         int numRows = matrixData.size();
         int numCols = matrixData.getFirst().size();
 
-        // Initialize your Matrix model with the loaded data
-        Matrix matrix = MatrixSingleton.getInstance();
+        // Initialize Matrix model with the loaded data
+        Matrix matrix = MatrixSingleton.getDisplayInstance();
 
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
                 try {
-                    double cellValue = Double.parseDouble(matrixData.get(row).get(col));
+                    String cellValue = BigDecimalUtil.createBigDecimal(matrixData.get(row).get(col));
                     matrix.setValue(row, col, cellValue);
                 } catch (NumberFormatException e) {
                     MatrixFileHandler.populateMatrixIfEmpty();
@@ -225,22 +224,17 @@ public class DeterminantController implements DataManipulation {
     }
 
     private void updateToTriangular() {
-
         System.out.println("Matrix is updating?");
-        if (MatrixSingleton.getInstance() != null) {
-            System.out.println("Matrix is not null (determinantController) \n" + MatrixSingleton.getInstance());
+        if (MatrixSingleton.getDisplayInstance() != null) {
+            System.out.println("Matrix is not null (determinantController) \n" + MatrixSingleton.getDisplayInstance());
 
-            // Set the scale of the determinant to 5 decimal places, rounding as necessary
-            BigDecimal scaledDeterminant = determinant.setScale(5, RoundingMode.HALF_UP);
-            System.out.println("This is the scaled determinant: \n" + scaledDeterminant);
-            determinant = scaledDeterminant;
-            if (determinant.compareTo(BigDecimal.ZERO) == 0) {
-                determinantValue.setText("0.0");
+            if (determinant.compareTo(String.valueOf(BigDecimal.ZERO)) == 0) {
+                determinantValue.setText("0");
             }
-            determinantValue.setText(String.valueOf(determinant));
+            determinantValue.setText(determinant);
             System.out.println("Matrix is being saved as a triangular matrix, hopefully.");
             save();
-            matrixView.updateViews(true, MatrixSingleton.getInstance());
+            matrixView.updateViews(true, MatrixSingleton.getDisplayInstance());
         } else {
             System.out.println("Matrix is null (determinantController)");
             System.out.println("Handling missing matrix...");
@@ -265,12 +259,12 @@ public class DeterminantController implements DataManipulation {
     }
 
     private void save() {
-        List<List<String>> matrixData = MatrixFileHandler.loadMatrixDataFromMatrix(MatrixSingleton.getInstance());
+        List<List<String>> matrixData = MatrixFileHandler.loadMatrixDataFromMatrix(MatrixSingleton.getDisplayInstance());
 
         MatrixFileHandler.saveMatrixDataToFile(
                 FilePath.DETERMINANT_PATH.getPath(), determinant,
                 matrixData, MatrixType.DETERMINANT);
         MatrixFileHandler.saveMatrixDataToFile(FilePath.TRIANGULAR_PATH.getPath(),
-                BigDecimal.ZERO, matrixData, MatrixType.TRIANGULAR);
+                "0", matrixData, MatrixType.TRIANGULAR);
     }
 }

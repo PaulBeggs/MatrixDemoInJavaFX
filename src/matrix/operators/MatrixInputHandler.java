@@ -37,16 +37,16 @@ public class MatrixInputHandler {
         try {
             int row = Integer.parseInt(textField.getText()) - 1;
             if (row >= 0 && row < numRows) {
-                return true;
+                return false;
             } else {
                 System.out.println("Invalid row selection. Please choose a valid row.");
                 Platform.runLater(textField::clear);
-                return false;
+                return true;
             }
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please enter a valid integer.");
             Platform.runLater(textField::clear);
-            return false;
+            return true;
         }
     }
 }

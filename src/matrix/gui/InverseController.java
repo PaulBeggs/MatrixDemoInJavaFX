@@ -5,11 +5,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import matrix.fileManaging.FilePath;
 import matrix.fileManaging.MatrixFileHandler;
-import matrix.model.Matrix;
-import matrix.model.MatrixCell;
-import matrix.model.MatrixSingleton;
-import matrix.model.MatrixView;
+import matrix.model.*;
+import matrix.utility.BigDecimalUtil;
 import matrix.operators.MatrixInvertingOperations;
+import matrix.view.MatrixView;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,9 +34,6 @@ public class InverseController implements DataManipulation {
     GridPane identityMatrixGrid;
     private MatrixCell[][] matrixCells;
     private MatrixView matrixView;
-    private final String initialDirections =
-            """
-                    Click 'REF' to produce the Reduced Echelon Form of the matrix. Use the other buttons accordingly.""";
 
     @FXML
     private void initialize() {
@@ -45,7 +41,7 @@ public class InverseController implements DataManipulation {
         matrixView = new MatrixView(matrixGrid, matrixCells);
         setupScenesDropdown();
         setupDirectionText();
-        Matrix matrix = MatrixSingleton.getInstance();
+        Matrix matrix = MatrixSingleton.getDisplayInstance();
         matrixView.updateViews(true, matrix);
     }
 
@@ -100,7 +96,7 @@ public class InverseController implements DataManipulation {
         int numCols = matrixData.getFirst().size();
 
         // Initialize Matrix model with the loaded data
-        Matrix matrix = MatrixSingleton.getInstance();
+        Matrix matrix = MatrixSingleton.getDisplayInstance();
 
         // Ensure the shared matrix has the correct dimensions
         MatrixSingleton.resizeInstance(numRows, numCols);
@@ -108,7 +104,7 @@ public class InverseController implements DataManipulation {
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
                 try {
-                    double cellValue = Double.parseDouble(matrixData.get(row).get(col));
+                    String cellValue = BigDecimalUtil.createBigDecimal(matrixData.get(row).get(col));
                     matrix.setValue(row, col, cellValue);
                 } catch (NumberFormatException e) {
                     MatrixFileHandler.populateMatrixIfEmpty();
@@ -143,6 +139,8 @@ public class InverseController implements DataManipulation {
     }
 
     private void setupDirectionText() {
+        String initialDirections = """
+                Click 'REF' to produce the Reduced Echelon Form of the matrix. Use the other buttons accordingly.""";
         directions.setText(initialDirections);
         directions.setWrapText(true);
         directions.setEditable(false);

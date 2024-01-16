@@ -1,6 +1,5 @@
 package matrix.gui;
 
-import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -9,12 +8,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.util.Duration;
-import matrix.fileManaging.FileUtil;
+import matrix.utility.FileUtil;
+import matrix.utility.UniversalListeners;
 
 import java.io.IOException;
 import java.util.Objects;
-import java.util.Set;
 
 public class MatrixApp extends Application {
     public static Stage primaryStage;
@@ -28,18 +26,18 @@ public class MatrixApp extends Application {
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/themeScene.fxml")));
             Scene scene = new Scene(root);
-            setupGlobalEscapeHandler(scene);
+            UniversalListeners.setupGlobalEscapeHandler(scene);
+//            UniversalListeners.addEnterKeyHandlerToChildren(root);
             applyTheme(scene);
+            setFractionMode(fractionMode);
             primaryStage.setScene(scene);
             primaryStage.setTitle("Select Theme");
             primaryStage.show();
             primaryStage.setOnCloseRequest(event -> closeApps());
         } catch (IOException e) {
-            e.printStackTrace();
             System.out.println("Couldn't load the theme selection scene.");
         }
     }
-
 
     public static void applyTheme(Scene scene) {
         scene.getStylesheets().clear();
@@ -48,38 +46,10 @@ public class MatrixApp extends Application {
         scene.getStylesheets().add(Objects.requireNonNull(MatrixApp.class.getResource(cssFile)).toExternalForm());
     }
 
-
-    public static Stage getPrimaryStage() {
-//        System.out.println("This is the primary stage: \n" + primaryStage);
-        return primaryStage;
-    }
-
-    public static void setSelectedTheme(String theme) {
-        selectedTheme = theme;
-    }
-
-    public static void setFractionMode(boolean modeBoolean) {
-        fractionMode = modeBoolean;
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    public static boolean isFractionMode() {
-        return fractionMode;
-    }
-
-    public static void setupGlobalEscapeHandler(Scene scene) {
-        scene.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
-            if (keyEvent.getCode() == KeyCode.ESCAPE) {
-                closeApps();
-            }
-        });
-    }
-
-    public static void closeApps() {
-        Platform.exit(); // Immediately close the UI
-        System.exit(130); // Exit the JVM
-    }
+    public static Stage getPrimaryStage() {return primaryStage;}
+    public static void setSelectedTheme(String theme) {selectedTheme = theme;}
+    public static void setFractionMode(boolean modeBoolean) {fractionMode = modeBoolean;}
+    public static boolean isFractionMode() {return fractionMode;}
+    public static void main(String[] args) {launch(args);}
+    public static void closeApps() {Platform.exit(); System.exit(130);}
 }

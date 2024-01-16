@@ -5,23 +5,16 @@ import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import matrix.fileManaging.FilePath;
 import matrix.fileManaging.MatrixFileHandler;
 import matrix.model.*;
 import javafx.fxml.FXML;
 import matrix.operators.MatrixDeterminantOperations;
+import matrix.view.TriangularizationView;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 public class DeterminantPopUpController {
     @FXML
@@ -52,8 +45,8 @@ public class DeterminantPopUpController {
     }
 
     private void updateSignChangesDisplay() {
-        String signChanges = String.valueOf((matrix.getSign()));
-        signTextField.setText(signChanges);
+//        String signChanges = String.valueOf((matrix.getSign()));
+//        signTextField.setText(signChanges);
     }
 
     private void setUpTriangularizationViews() {
@@ -61,35 +54,35 @@ public class DeterminantPopUpController {
     }
 
     private void handleTimer() {
-        int totalSteps = operations.getTotalSteps();
-        System.out.println("These are the total steps (handleTimer): \n" + totalSteps);
-
-        timeline = new Timeline(new KeyFrame(Duration.seconds(1), (ActionEvent t) -> {
-            if (totalSteps == 0) {
-                view.updateViews("initial");
-            } else {
-                String stepKey = "step_" + counter.getAndIncrement();
-                System.out.println("Animating: " + stepKey);
-                view.updateViews(stepKey);
-            }
-        }));
-
-        timeline.setCycleCount(totalSteps);
-
-        // Set the onFinished event handler for the timeline
-        timeline.setOnFinished(e -> {
-            // Create a PauseTransition for a delay
-            PauseTransition delay = new PauseTransition(Duration.seconds(3));
-            delay.setOnFinished(event -> displayConsoleSummary()); // Call your method to display the summary
-            delay.play();
-        });
-
-        start.setOnAction((t) -> timeline.play());
+//        int totalSteps = operations.getTotalSteps();
+//        System.out.println("These are the total steps (handleTimer): \n" + totalSteps);
+//
+//        timeline = new Timeline(new KeyFrame(Duration.seconds(1), (ActionEvent t) -> {
+//            if (totalSteps == 0) {
+//                view.updateViews("initial");
+//            } else {
+//                String stepKey = "step_" + counter.getAndIncrement();
+//                System.out.println("Animating: " + stepKey);
+//                view.updateViews(stepKey);
+//            }
+//        }));
+//
+//        timeline.setCycleCount(totalSteps);
+//
+//        // Set the onFinished event handler for the timeline
+//        timeline.setOnFinished(e -> {
+//            // Create a PauseTransition for a delay
+//            PauseTransition delay = new PauseTransition(Duration.seconds(3));
+//            delay.setOnFinished(event -> displayConsoleSummary()); // Call your method to display the summary
+//            delay.play();
+//        });
+//
+//        start.setOnAction((t) -> timeline.play());
     }
 
     private void displayConsoleSummary() {
-        List<String> summary = operations.getOperationSummary();
-        System.out.println(summary);
+//        List<String> summary = operations.getOperationSummary();
+//        System.out.println(summary);
     }
 
     @FXML
@@ -114,8 +107,8 @@ public class DeterminantPopUpController {
 
     @FXML
     public void handleSummarizeStepsButton() {
-        List<String> stepSummary = operations.getOperationSummary();
-        displaySummary(stepSummary);
+//        List<String> stepSummary = operations.getOperationSummary();
+//        displaySummary(stepSummary);
     }
 
     public void displaySummary(List<String> summary) {
