@@ -5,17 +5,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.stage.Stage;
 import matrix.fileManaging.FilePath;
 import matrix.fileManaging.MatrixType;
 import matrix.model.Matrix;
 import matrix.fileManaging.MatrixFileHandler;
 import matrix.model.MatrixCell;
-import matrix.utility.BigDecimalUtil;
 
 import java.io.File;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SaveController {
@@ -23,11 +19,15 @@ public class SaveController {
     private TextField fileNameField;
     @FXML
     private ChoiceBox<String> matrixSelectionComboBox;
-    private String determinantValue;
+    private List<List<TextField>> matrixTextFields;
+    private MatrixCell[][] matrixCells;
+    private Double determinantValue;
     private Matrix triangularMatrix;
 
     @FXML
     public void initialize() {
+        setMatrixTextFields(matrixTextFields);
+
         matrixSelectionComboBox.getItems().addAll("Default Matrix", "Determinant Matrix", "Triangular Matrix");
         matrixSelectionComboBox.setValue("Default Matrix");
 
@@ -38,10 +38,20 @@ public class SaveController {
         });
     }
 
-    public void setDeterminantValue(String determinantValue) {
+    public void setMatrixTextFields(List<List<TextField>> matrixTextFields) {
+        this.matrixTextFields = matrixTextFields;
+    }
+
+    public MatrixCell[][] getMatrixCells() {
+        return matrixCells;
+    }
+    public void setMatrixCells (MatrixCell[][] matrixCells) {
+        this.matrixCells = matrixCells;
+    }
+    public void setDeterminantValue(Double determinantValue) {
         this.determinantValue = determinantValue;
     }
-    public String getDeterminant() {
+    public Double getDeterminant() {
         return determinantValue;
     }
     public Matrix getTriangularMatrix() {
@@ -62,7 +72,7 @@ public class SaveController {
                 case "Default Matrix" -> {
                     matrixData = MatrixFileHandler.loadMatrixDataFromFile(FilePath.MATRIX_PATH.getPath());
                     MatrixFileHandler.saveMatrixDataToFile("savedMatrices/matrices/"
-                            + fileName + ".txt", "0", matrixData, MatrixType.REGULAR);
+                            + fileName + ".txt", 0, matrixData, MatrixType.REGULAR);
 
                     MatrixApp.getPrimaryStage().close();
                 }

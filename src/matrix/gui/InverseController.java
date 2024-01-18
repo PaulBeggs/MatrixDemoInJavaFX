@@ -6,8 +6,6 @@ import javafx.scene.layout.GridPane;
 import matrix.fileManaging.FilePath;
 import matrix.fileManaging.MatrixFileHandler;
 import matrix.model.*;
-import matrix.utility.BigDecimalUtil;
-import matrix.operators.MatrixInvertingOperations;
 import matrix.view.MatrixView;
 
 import java.io.IOException;
@@ -41,32 +39,32 @@ public class InverseController implements DataManipulation {
         matrixView = new MatrixView(matrixGrid, matrixCells);
         setupScenesDropdown();
         setupDirectionText();
-        Matrix matrix = MatrixSingleton.getDisplayInstance();
+        Matrix matrix = MatrixSingleton.getInstance();
         matrixView.updateViews(true, matrix);
     }
 
     @FXML
     public void handleRefFunctionality() {
-        MatrixInvertingOperations MIO = new MatrixInvertingOperations();
-        MIO.toEchelonForm();
-        Matrix matrix = MatrixFileHandler.getMatrix("REF");
-        matrixView.updateViews(false, matrix);
+//        Matrix matrix = MatrixSingleton.getInstance();
+//        matrix.toEchelonForm();
+//        Matrix matrix = MatrixFileHandler.getMatrix("REF");
+//        matrixView.updateViews(false, matrix);
     }
 
     @FXML
     public void handleRRefFunctionality() {
-        MatrixInvertingOperations MIO = new MatrixInvertingOperations();
-        MIO.toReducedEchelonForm();
-        Matrix matrix = MatrixFileHandler.getMatrix("RREF");
-        matrixView.updateViews(false, matrix);
+//        MatrixInvertingOperations MIO = new MatrixInvertingOperations();
+//        MIO.toReducedEchelonForm();
+//        Matrix matrix = MatrixFileHandler.getMatrix("RREF");
+//        matrixView.updateViews(false, matrix);
     }
 
     @FXML
     public void handleInvertingFunctionality() {
-        MatrixInvertingOperations MIO = new MatrixInvertingOperations();
-        MIO.invert();
-        Matrix matrix = MatrixFileHandler.getMatrix("inverse");
-        matrixView.updateViews(true, matrix);
+//        MatrixInvertingOperations MIO = new MatrixInvertingOperations();
+//        MIO.invert();
+//        Matrix matrix = MatrixFileHandler.getMatrix("inverse");
+//        matrixView.updateViews(true, matrix);
     }
 
     @Override
@@ -96,7 +94,7 @@ public class InverseController implements DataManipulation {
         int numCols = matrixData.getFirst().size();
 
         // Initialize Matrix model with the loaded data
-        Matrix matrix = MatrixSingleton.getDisplayInstance();
+        Matrix matrix = MatrixSingleton.getInstance();
 
         // Ensure the shared matrix has the correct dimensions
         MatrixSingleton.resizeInstance(numRows, numCols);
@@ -104,7 +102,7 @@ public class InverseController implements DataManipulation {
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
                 try {
-                    String cellValue = BigDecimalUtil.createBigDecimal(matrixData.get(row).get(col));
+                    String cellValue = matrixData.get(row).get(col);
                     matrix.setValue(row, col, cellValue);
                 } catch (NumberFormatException e) {
                     MatrixFileHandler.populateMatrixIfEmpty();

@@ -16,20 +16,18 @@ import matrix.model.*;
 import matrix.fileManaging.MatrixFileHandler;
 import javafx.fxml.FXML;
 
-import matrix.utility.BigDecimalUtil;
-import matrix.operators.ElementaryMatrixOperations;
 import matrix.operators.MatrixInputHandler;
-import matrix.utility.MatrixUtil;
-import matrix.utility.UniversalListeners;
+import matrix.operators.MatrixUtil;
 import matrix.view.MatrixView;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -70,7 +68,7 @@ public class MatrixController implements DataManipulation {
         setupDirectionText();
         System.out.println("(initialize) Accessing the singleton inside of the matrix cells (matrixController): ");
         System.out.println("Accessed " + steps++ + " in order.");
-        Matrix matrix = MatrixSingleton.getDisplayInstance();
+        Matrix matrix = MatrixSingleton.getInstance();
         matrixView.updateViews(true, matrix);
         setInitTextFieldData();
     }
@@ -138,14 +136,16 @@ public class MatrixController implements DataManipulation {
         if (MIH.isPositiveIntValid(sizeColsField) && MIH.isPositiveIntValid(sizeRowsField)) {
             int numRows = Integer.parseInt(sizeRowsField.getText());
             int numCols = Integer.parseInt(sizeColsField.getText());
-            return generateMatrixData(numRows, numCols, (row, col) -> BigDecimalUtil.getCellValueBasedOnMode());
+            return generateMatrixData(numRows, numCols, (row, col) -> {
+                int cellValue = (int) Math.floor(Math.random() * 10);
+                return String.valueOf(cellValue);
+            });
         } else {
             System.out.println("Invalid input for matrix dimensions.");
             temporarilyUpdateDirections("Invalid input for matrix dimensions.");
             sizeColsField.setText("1");
             sizeRowsField.setText("1");
-            // Return a default matrix with a single cell containing "0"
-            return List.of(List.of("0"));
+            return Collections.emptyList(); // Return an empty list if inputs are invalid
         }
     }
 
@@ -189,8 +189,8 @@ public class MatrixController implements DataManipulation {
     private void populateMatrixUI(List<List<String>> matrixData) {
         System.out.println("(populate) Accessing the singleton inside of the matrix cells (matrixController): \n");
         System.out.println("Accessed " + steps++ + " in order.");
-        Matrix matrix = MatrixSingleton.getDisplayInstance();
-        MatrixSingleton.resizeInstance(matrixData.size(), matrixData.getFirst().size());
+        Matrix matrix = MatrixSingleton.getInstance();
+        MatrixSingleton.resizeInstance(matrixData.size(), matrixData.get(0).size());
         setupMatrixCells(matrix, matrixData, false);
         System.out.println("This is the matrix that is initially created: \n" + matrix);
         System.out.println("These are the matrix cells: \n" + MatrixUtil.matrixCellsToString(matrixCells));
@@ -215,16 +215,24 @@ public class MatrixController implements DataManipulation {
         if (identityCheck) {
             return isDiagonal ? "1" : "0";
         }
-//        System.out.println("Format matrix fraction mode setting: \n" + MatrixApp.isFractionMode());
-        if (MatrixApp.isFractionMode()) {
-            if (value.contains("/")) {
-                // Handle fraction conversion
-                return BigDecimalUtil.convertFractionToDecimal(value).toPlainString();
-            } else {
-                return BigDecimalUtil.convertRepeatingDecimalToFraction(value);
+        return value;
+    }
+
+    private void updateMatrixFromMatrixCells(MatrixCell[][] matrixCells) {
+        System.out.println("Accessing the singleton inside of the matrix cells (matrixController): ");
+        System.out.println("Accessed " + steps++ + " in order. \n");
+        Matrix matrix = MatrixSingleton.getInstance();
+        for (int row = 0; row < matrixCells.length; row++) {
+            for (int col = 0; col < matrixCells[row].length; col++) {
+                String cellValue = matrixCells[row][col].getTextField().getText();
+                try {
+                    matrix.setValue(row, col, cellValue);
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid number format in cell [" + row + "][" + col + "]");
+                    throw new RuntimeException(e);
+                }
             }
         }
-        return BigDecimalUtil.convertStringToFormattedFraction(value);
     }
 
     private void saveIdentityCopy(List<List<String>> identityMatrixData) {
@@ -236,18 +244,15 @@ public class MatrixController implements DataManipulation {
 
         MatrixCell[][] iMatrixCells = new MatrixCell[numRows][numCols];
 
-        BigDecimal one = BigDecimal.ONE;
-        BigDecimal zero = BigDecimal.ZERO;
-
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
-                BigDecimal cellValue = row == col ? one : zero;
+                String cellValue = row == col ? "1" : "0";
 
-                iMatrixCells[row][col] = new MatrixCell(row, col, cellValue.toPlainString(), true);
-                iMatrix.setValue(row, col, cellValue.toPlainString());
+                iMatrixCells[row][col] = new MatrixCell(row, col, cellValue, true);
+                iMatrix.setValue(row, col, cellValue);
             }
         }
-        MatrixFileHandler.saveMatrixDataToFile(FilePath.IDENTITY_PATH.getPath(), "0", identityMatrixData, MatrixType.IDENTITY);
+        MatrixFileHandler.saveMatrixDataToFile(FilePath.IDENTITY_PATH.getPath(), 0, identityMatrixData, MatrixType.IDENTITY);
     }
 
     @Override
@@ -269,7 +274,7 @@ public class MatrixController implements DataManipulation {
         }
 
         Scene saveScene = new Scene(root);
-        UniversalListeners.setupGlobalEscapeHandler(saveScene);
+        MatrixApp.setupGlobalEscapeHandler(saveScene);
         MatrixApp.applyTheme(saveScene);
         saveStage.setScene(saveScene);
         saveStage.showAndWait();
@@ -296,6 +301,7 @@ public class MatrixController implements DataManipulation {
 
             // Convert the loaded data into a Matrix object
             updateMatrixGrid(false, matrixData);
+            updateMatrixFromMatrixCells(matrixCells); // Update the shared instance
         }
     }
     
@@ -306,8 +312,7 @@ public class MatrixController implements DataManipulation {
 
     @FXML
     private void performOperation() {
-        Matrix matrix = MatrixSingleton.getDisplayInstance();
-        ElementaryMatrixOperations EMO = new ElementaryMatrixOperations(matrix);
+        Matrix matrix = MatrixSingleton.getInstance();
         String selectedOption = operations.getValue();
 
         if (MIH.isRowValid(targetRow, matrix.getRows()) || MIH.isRowValid(sourceRow, matrix.getRows())) {
@@ -321,13 +326,13 @@ public class MatrixController implements DataManipulation {
 
         switch (selectedOption) {
             case "Swap Rows":
-                EMO.swapRows(targetRowIndex, sourceRowIndex);
+                matrix.swapRows(targetRowIndex, sourceRowIndex);
                 break;
             case "Multiply Rows":
-                handleRowOperation(targetRowIndex, multiplier, EMO::multiplyRow);
+                handleRowOperation(targetRowIndex, multiplier, matrix::multiplyRow);
                 break;
             case "Add Rows":
-                handleRowOperation(targetRowIndex, multiplier, (index, value) -> EMO.addRows(targetRowIndex, sourceRowIndex, value));
+                handleRowOperation(targetRowIndex, multiplier, (index, value) -> matrix.addRows(targetRowIndex, sourceRowIndex, value));
                 break;
             default:
                 throw new IllegalStateException("How did you fuck this up?");
@@ -335,28 +340,23 @@ public class MatrixController implements DataManipulation {
         matrixView.updateViews(true, matrix);
     }
 
-    private void handleRowOperation(int targetRowIndex, TextField multiplierField, BiConsumer<Integer, BigDecimal> operationFunction) {
+    private void handleRowOperation(int targetRowIndex, TextField multiplierField, BiConsumer<Integer, Double> operationFunction) {
         if (!MIH.isDoubleValid(multiplierField)) {
             System.out.println("Invalid Multiplier. Please enter a valid double.");
             temporarilyUpdateDirections("Invalid Multiplier. Please enter a valid double.");
             return;
         }
-
-        String input = multiplierField.getText();
-        BigDecimal value;
+        double value = 0;
         try {
-            if (MatrixApp.isFractionMode() && input.contains("/")) {
-                value = BigDecimalUtil.convertFractionToDecimal(input);
-            } else {
-                value = new BigDecimal(input);
-            }
-            operationFunction.accept(targetRowIndex, value);
+            value = Double.parseDouble(multiplierField.getText());
+            // Use 'value' as needed
         } catch (NumberFormatException e) {
+            // Handle the case where the text is not a valid number
             System.out.println("Invalid number format");
-            // Handle the error, e.g., show an error message
         }
-    }
 
+        operationFunction.accept(targetRowIndex, value);
+    }
 
     @FXML
     public void handleTransposeButton() {
@@ -414,15 +414,5 @@ public class MatrixController implements DataManipulation {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-//        sizeColsField.setOnKeyPressed(event -> {
-//            if (event.getCode() == KeyCode.ENTER) {
-//                handleIdentityButton();
-//            }
-//        });
-//        sizeRowsField.setOnKeyPressed(event -> {
-//            if (event.getCode() == KeyCode.ENTER) {
-//                handleIdentityButton();
-//            }
-//        });
     }
 }

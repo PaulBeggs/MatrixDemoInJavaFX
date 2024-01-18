@@ -1,16 +1,11 @@
 package matrix.gui;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.util.Duration;
 import matrix.fileManaging.MatrixFileHandler;
 import matrix.model.*;
 import javafx.fxml.FXML;
-import matrix.operators.MatrixDeterminantOperations;
 import matrix.view.TriangularizationView;
 
 import java.util.List;
@@ -29,16 +24,13 @@ public class DeterminantPopUpController {
     private Matrix matrix;
     private TriangularizationView view;
     private boolean clockOn;
-    private MatrixDeterminantOperations operations;
     Timeline timeline;
     AtomicInteger counter = new AtomicInteger();
 
     @FXML
     private void initialize() {
         uploadFromFile();
-        operations = new MatrixDeterminantOperations(matrix);
         setUpTriangularizationViews();
-        operations.calculateDeterminant();
         System.out.println("this is the initial matrix inside of the popup controller: \n" + matrix);
         view.updateViews("initial");
         handleTimer();

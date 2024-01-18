@@ -1,9 +1,7 @@
-package matrix.utility;
+package matrix.operators;
 
 import matrix.model.MatrixCell;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
 
 public class MatrixUtil {
 
@@ -17,5 +15,15 @@ public class MatrixUtil {
             sb.append("\n"); // New line at the end of each row
         }
         return sb.toString();
+    }
+
+    public static String calculateSquareRoot(String sqrtExpression) {
+        try {
+            String numInsideSqrt = sqrtExpression.replace("/sqrt(", "").replace(")", "");
+            double number = Double.parseDouble(numInsideSqrt);
+            return String.valueOf(Math.sqrt(number));
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid square root expression: " + sqrtExpression, e);
+        }
     }
 }
