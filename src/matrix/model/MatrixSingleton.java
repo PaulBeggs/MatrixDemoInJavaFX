@@ -10,6 +10,7 @@ import java.util.List;
 
 public class MatrixSingleton {
     private static Matrix instance;
+    private static Matrix triangularInstance;
 
     private MatrixSingleton() {}
 
@@ -19,7 +20,6 @@ public class MatrixSingleton {
             // Load from file or create a new Matrix
             System.out.println("Instance is null");
             instance = MatrixFileHandler.loadMatrixFromFile(FilePath.MATRIX_PATH.getPath());
-
         }
         return instance;
     }
@@ -39,8 +39,13 @@ public class MatrixSingleton {
         }
     }
 
+    public static Matrix getTriangularInstance() {
+        return triangularInstance;
+    }
 
     // Use sparsely. This is only to be used when the matrix is initialized.
     public static void setInstance(Matrix newMatrix) {instance = newMatrix;}
+    public static void setTriangularInstance(Matrix newTriMatrix) {triangularInstance = newTriMatrix;}
+
 }
 

@@ -16,8 +16,10 @@ import matrix.model.*;
 import matrix.fileManaging.MatrixFileHandler;
 import javafx.fxml.FXML;
 
-import matrix.operators.MatrixInputHandler;
-import matrix.operators.MatrixUtil;
+import matrix.util.MatrixInputHandler;
+import matrix.util.MatrixUtil;
+import matrix.util.ObjectType;
+import matrix.util.TextFieldListeners;
 import matrix.view.MatrixView;
 
 import java.io.BufferedReader;
@@ -34,11 +36,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
+import static matrix.util.TextFieldListeners.objectOnlyListener;
+
 public class MatrixController implements DataManipulation {
     @FXML
     BorderPane borderPane;
     @FXML
-    Button generateButton, saveButton, operationButton, identityButton, transposeButton;
+    Button generateButton, saveButton, operationButton, identityButton, transposeButton, operationSummaryButton;
     @FXML
     TextField sizeColsField, sizeRowsField, targetRow, sourceRow, multiplier;
     @FXML
@@ -56,7 +60,7 @@ public class MatrixController implements DataManipulation {
 
     private final String initialDirections =
             """
-                    Click 'generate' to produce a Matrix. The cells are editable; use 'tab' to go through each cell and add an entry.""";
+                    "Click 'generate' to produce a matrix. The cells are editable; use the 'Tab' key to navigate through each cell and add an entry.""";
 
     @FXML
     private void initialize() {
@@ -74,11 +78,12 @@ public class MatrixController implements DataManipulation {
     }
 
     private void setupTextFieldListeners() {
+        // static import of MatrixUtil and ObjectType to cut down on clutter.
         objectOnlyListener(sourceRow, ObjectType.INTEGER);
         objectOnlyListener(targetRow, ObjectType.INTEGER);
         objectOnlyListener(sizeRowsField, ObjectType.INTEGER);
         objectOnlyListener(sizeColsField, ObjectType.INTEGER);
-        objectOnlyListener(multiplier, ObjectType.DOUBLE);
+        TextFieldListeners.addEnterListener(multiplier);
     }
 
     private void setupOperationsDropdown() {
@@ -153,7 +158,7 @@ public class MatrixController implements DataManipulation {
         if (MIH.isPositiveIntValid(sizeColsField) && MIH.isPositiveIntValid(sizeRowsField)) {
             int numRows = Integer.parseInt(sizeRowsField.getText());
             int numCols = Integer.parseInt(sizeColsField.getText());
-            return generateMatrixData(numRows, numCols, (row, col) -> (Objects.equals(row, col)) ? "1.0" : "0.0");
+            return generateMatrixData(numRows, numCols, (row, col) -> (Objects.equals(row, col)) ? "1" : "0");
         } else {
             temporarilyUpdateDirections("Invalid input for identity matrix dimensions");
             sizeColsField.setText("1");
@@ -304,11 +309,6 @@ public class MatrixController implements DataManipulation {
             updateMatrixFromMatrixCells(matrixCells); // Update the shared instance
         }
     }
-    
-    private enum ObjectType {
-        INTEGER,
-        DOUBLE
-    }
 
     @FXML
     private void performOperation() {
@@ -337,6 +337,7 @@ public class MatrixController implements DataManipulation {
             default:
                 throw new IllegalStateException("How did you fuck this up?");
         }
+        MatrixSingleton.saveMatrix();
         matrixView.updateViews(true, matrix);
     }
 
@@ -354,12 +355,23 @@ public class MatrixController implements DataManipulation {
             // Handle the case where the text is not a valid number
             System.out.println("Invalid number format");
         }
-
         operationFunction.accept(targetRowIndex, value);
     }
 
     @FXML
     public void handleTransposeButton() {
+        Matrix matrix = MatrixSingleton.getInstance();
+        matrix.transpose();
+        MatrixSingleton.saveMatrix();
+        matrixView.updateViews(true, matrix);
+        String rows = String.valueOf(matrix.getRows());
+        String cols = String.valueOf(matrix.getCols());
+        sizeRowsField.setText(rows);
+        sizeColsField.setText(cols);
+    }
+
+    @FXML
+    public void handleOperationSummary() {
 
     }
 
@@ -373,25 +385,6 @@ public class MatrixController implements DataManipulation {
             Platform.runLater(() -> directions.setText(initialDirections));
             executorService.shutdown(); // Important to shut down the executor to prevent resource leaks
         }, 6, TimeUnit.SECONDS);
-    }
-
-    private void objectOnlyListener(TextField textField, ObjectType objectType) {
-        textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            String regex = switch (objectType) {
-                case INTEGER -> "-?\\d*"; // Allows negative integers
-                case DOUBLE -> "-?\\d*(\\.\\d*)?"; // Allows negative doubles and decimals
-            };
-
-            if (!newValue.matches(regex)) {
-                // The newValue is not a valid format, so don't change the text field.
-                // This is to prevent invalid inputs like "--" or "3.-" or multiple dots.
-                if (newValue.isEmpty()) {
-                    textField.setText(""); // If the new value is empty, allow it to clear the field
-                } else {
-                    textField.setText(oldValue); // Otherwise, revert to the old value
-                }
-            }
-        });
     }
 
     public void setInitTextFieldData() {

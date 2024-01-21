@@ -1,6 +1,9 @@
 package matrix.model;
 
 import javafx.scene.control.TextField;
+import matrix.gui.MatrixApp;
+import matrix.util.MatrixUtil;
+import matrix.util.TextFieldListeners;
 
 public class MatrixCell {
     private final TextField textField;
@@ -19,29 +22,10 @@ public class MatrixCell {
     private void setupTextField(boolean isEditable) {
         textField.getStyleClass().add("textfield-grid-cell");
         textField.setEditable(isEditable);
-
-        textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*(\\.\\d*)?")) {
-                textField.setText(newValue.replaceAll("[^\\d.]", ""));
-            } else {
-                try {
-                    double newCellValue = Double.parseDouble(newValue);
-                    matrix.setValue(row, col, String.valueOf(newCellValue)); // Update the Matrix object
-                    System.out.println("Did the matrix update properly? \n" + matrix);
-                    MatrixSingleton.saveMatrix();
-                } catch (NumberFormatException e) {
-                    textField.setText(oldValue);
-                }
-            }
-        });
+        TextFieldListeners.addEnterListener(textField, matrix, row, col);
+        TextFieldListeners.addTextPropertyListener(textField, matrix, row, col);
     }
 
-//    private void saveMatrix() {
-//        List<List<String>> matrixData = MatrixFileHandler.loadMatrixDataFromMatrix(matrix);
-//        MatrixFileHandler.saveMatrixDataToFile(FilePath.MATRIX_PATH.getPath(),
-//                BigDecimal.valueOf(0), matrixData, MatrixType.REGULAR);
-//        System.out.println("The matrix should be saved correctly within the matrixcell class: \n" + matrix);
-//    }
 
     public TextField getTextField() {return textField;}
     public int getRow() {return row;}

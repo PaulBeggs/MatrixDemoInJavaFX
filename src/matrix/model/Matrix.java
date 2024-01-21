@@ -1,12 +1,17 @@
 package matrix.model;
 
+import matrix.util.MatrixUtil;
+
 import java.util.Arrays;
 
 import static java.lang.Double.parseDouble;
 import static java.lang.String.*;
+import static matrix.gui.MatrixApp.isFractionMode;
+import static matrix.util.ExpressionEvaluator.evaluate;
+import static matrix.util.MatrixUtil.*;
 
 public class Matrix implements MatrixOperations {
-    private final String[][] data;
+    private String[][] data;
     private int numCols;
     private int numRows;
     private int sign = 1;
@@ -24,14 +29,26 @@ public class Matrix implements MatrixOperations {
 
     public Matrix(String[][] data) {this.data = data;}
     @Override
-    public String[][] getDisplayMatrix() {return data;}
+    public String[][] getMatrix() {return data;}
 
     @Override
     public void swapRows(int row1, int row2) {
         if (data != null && isValidRow(row1) && isValidRow(row2)) {
-            String[] temp = data[row1];
-            data[row1] = data[row2];
-            data[row2] = temp;
+            if (isFractionMode()) {
+                // Convert each element in both rows from decimal to fraction before swapping
+                for (int i = 0; i < data[row1].length; i++) {
+                    String temp = convertDecimalToFraction(data[row1][i]);
+                    data[row1][i] = convertDecimalToFraction(data[row2][i]);
+                    data[row2][i] = temp;
+                }
+            } else {
+                // Convert each element in both rows from fraction to decimal before swapping
+                for (int i = 0; i < data[row1].length; i++) {
+                    String temp = formatToTenDigits(parseDouble(convertFractionToDecimal(data[row1][i])));
+                    data[row1][i] = formatToTenDigits(parseDouble(convertFractionToDecimal(data[row2][i])));
+                    data[row2][i] = temp;
+                }
+            }
         } else {
             throw new IllegalArgumentException("Invalid row indices for swapping: " + row1 + ", " + row2);
         }
@@ -41,8 +58,24 @@ public class Matrix implements MatrixOperations {
     public void multiplyRow(int row, double scalar) {
         if (isValidRow(row)) {
             for (int col = 0; col < getCols(); col++) {
-                double currentValue = parseDouble(data[row][col]);
-                data[row][col] = valueOf(currentValue * scalar);
+                try {
+                    double currentValue = evaluate(data[row][col]); // Evaluate the current value
+                    System.out.println("Current value: " + currentValue + " from: " + Arrays.deepToString(data) + " at " + row + ", " + col);
+                    System.out.println();
+                    double multipliedValue = currentValue * scalar;  // Multiply by the scalar
+                    System.out.println("multiplied Value: " + multipliedValue);
+
+                    // Convert the result to the appropriate format
+                    String result = isFractionMode() ?
+                            convertDecimalToFraction(String.valueOf(multipliedValue)) :
+                            formatToTenDigits(parseDouble(convertFractionToDecimal(String.valueOf(multipliedValue))));
+
+                    System.out.println("result: " + result);
+
+                    data[row][col] = result; // Assign the result back to the row
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("Problem parsing at column " + col + " in row " + row);
+                }
             }
         } else {
             System.out.println("Invalid row index: " + row);
@@ -52,20 +85,37 @@ public class Matrix implements MatrixOperations {
     public void addRows(int sourceRow, int targetRow, double multiplier) {
         if (isValidRow(sourceRow) && isValidRow(targetRow)) {
             for (int col = 0; col < getCols(); col++) {
-                double value1 = parseDouble(data[sourceRow][col]);
-                double value2 = parseDouble(data[targetRow][col]);
-                data[targetRow][col] = valueOf((value1 * multiplier) + value2);
+                try {
+                    double value1 = evaluate(data[sourceRow][col]); // Evaluate the value in sourceRow
+                    double value2 = evaluate(data[targetRow][col]); // Evaluate the value in targetRow
+                    double sum = (value1 * multiplier) + value2;    // Calculate the sum
+
+                    // Convert the result to the appropriate format
+                    String result = isFractionMode() ?
+                            convertDecimalToFraction(String.valueOf(sum)) :
+                            formatToTenDigits(parseDouble(convertFractionToDecimal(String.valueOf(sum))));
+
+                    data[targetRow][col] = result; // Assign the result to the target row
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("Trouble parsing the input at column " + col + ".");
+                }
             }
         } else {
             System.out.println("Invalid row indices: " + sourceRow + ", " + targetRow);
         }
     }
 
-    public String getValue(int row, int col) {return this.data[row][col];}
+    public String getStringValue(int row, int col) {return this.data[row][col];}
 
     public void setValue(int row, int col, String value) {
         if (isValidRow(row) && isValidColumn(col)) {
-            this.data[row][col] = value;
+            if (isFractionMode()) {
+                this.data[row][col] = convertDecimalToFraction(value);
+            } else {
+                this.data[row][col] = convertFractionToDecimal(value);
+            }
+        } else {
+            System.out.println("Invalid row & col indices: " + row + ", " + col);
         }
     }
 
@@ -79,11 +129,29 @@ public class Matrix implements MatrixOperations {
         Matrix copiedMatrix = new Matrix(this.getRows(), this.getCols());
         for (int i = 0; i < this.getRows(); i++) {
             for (int j = 0; j < this.getCols(); j++) {
-                copiedMatrix.setValue(i, j, this.getValue(i, j));
+                copiedMatrix.setValue(i, j, this.getStringValue(i, j));
             }
         }
         return copiedMatrix;
     }
+
+    public void transpose() {
+        // Create a temporary matrix to hold the transposed data
+        String[][] tempData = new String[numCols][numRows];
+
+        // Perform the transposition
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j++) {
+                tempData[j][i] = this.data[i][j];
+            }
+        }
+
+        this.data = tempData;
+        int temp = numRows;
+        numRows = numCols;
+        numCols = temp;
+    }
+
 
     @Override
     public int getRows() {return this.data.length;}
@@ -128,7 +196,7 @@ public class Matrix implements MatrixOperations {
 
     private int findPivotColumn(int row) {
         for (int j = 0; j < getCols(); j++) {
-            if (parseDouble(getValue(row, j)) != 0) {
+            if (parseDouble(getStringValue(row, j)) != 0) {
                 return j; // Pivot column found
             }
         }
@@ -138,8 +206,8 @@ public class Matrix implements MatrixOperations {
     private int findPivotRow(int p) {
         int maxRow = p;
         for (int i = p + 1; i < getRows(); i++) {
-            double currentVal = Math.abs(parseDouble(getValue(i, p)));
-            double maxVal = Math.abs(parseDouble(getValue(maxRow, p)));
+            double currentVal = Math.abs(parseDouble(getStringValue(i, p)));
+            double maxVal = Math.abs(parseDouble(getStringValue(maxRow, p)));
             if (currentVal - maxVal > 0) {
                 maxRow = i;
             }
@@ -148,7 +216,7 @@ public class Matrix implements MatrixOperations {
     }
 
     private void normalizePivotRow(int p) {
-        double pivotValue = parseDouble(getValue(p, p));
+        double pivotValue = parseDouble(getStringValue(p, p));
         if (Double.compare(pivotValue, 0) != 0) {
             multiplyRow(p, 1.0 / pivotValue);
 
@@ -158,11 +226,11 @@ public class Matrix implements MatrixOperations {
     private void eliminateBelow(int p) {
         int numCols = getCols();
         for (int i = p + 1; i < getRows(); i++) {
-            double factor = parseDouble(getValue(i, p)) / parseDouble(getValue(p, p));
+            double factor = parseDouble(getStringValue(i, p)) / parseDouble(getStringValue(p, p));
             if (Double.compare(factor, 0) != 0) {
                 for (int j = 0; j < numCols; j++) {
-                    double valueToAdd = factor * -parseDouble(getValue(p, j));
-                    setValue(i, j, getValue(i, j) + valueToAdd);
+                    double valueToAdd = factor * -parseDouble(getStringValue(p, j));
+                    setValue(i, j, getStringValue(i, j) + valueToAdd);
                 }
             }
         }
@@ -170,7 +238,7 @@ public class Matrix implements MatrixOperations {
 
     private void eliminateAbove(int pivotRow, int pivotCol) {
         for (int i = 0; i < pivotRow; i++) {
-            double factor = parseDouble(getValue(i, pivotCol));
+            double factor = parseDouble(getStringValue(i, pivotCol));
             if (Double.compare(factor, 0) != 0); {
                 addRows(pivotRow, i, -factor);
             }
@@ -180,18 +248,21 @@ public class Matrix implements MatrixOperations {
     // The method, "getRows()" is used interchangeably for "getCols()" as this matrix will always need
     // to be rectangular to have a defined determinant. Therefore, the dimensions will be equal.
 
-    public double calculateDeterminant() {
+    public String calculateDeterminant() {
+        System.out.println("Matrix before 'Triangularization':");
+        MatrixUtil.printStringMatrix(data);
+
         if (!isSquare()) {
             System.out.println("Determinant is not defined for non-square matrices.");
             throw new IllegalArgumentException("Determinant is not defined for non-square matrices.");
         }
 
         if (!isUpperTriangular() && ! isLowerTriangular()) {
-            System.out.println("Matrix before 'Triangularization': \n" + Arrays.deepToString(data));
             makeTriangular();
         }
-        double deter = multiplyDiameter() * getSign();
-        System.out.println("Triangular matrix \n: " + Arrays.deepToString(data));
+        String deter = MatrixUtil.formatToTenDigits(multiplyDiameter() * getSign());
+        System.out.println("Triangular matrix:");
+        MatrixUtil.printStringMatrix(data);
         return deter;
     }
 
@@ -246,7 +317,7 @@ public class Matrix implements MatrixOperations {
             double value1 = parseDouble(data[row1][col]);
             double value2 = parseDouble(data[row2][col]);
 
-            data[row1][col] = valueOf(value1 + value2);
+            data[row1][col] = String.valueOf(value1 + value2);
         }
     }
 

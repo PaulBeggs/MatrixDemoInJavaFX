@@ -17,7 +17,7 @@ public class ThemeController {
     @FXML
     ImageView imgMode;
     @FXML
-    Button startApp;
+    Button startApp, openCalculator;
     @FXML
     Button themeBtnMode;
     @FXML
@@ -31,7 +31,18 @@ public class ThemeController {
     public void initialize() {
         updateTheme();
         startApp.setOnAction(event -> {
-            switchToMainScene();
+            try {
+                switchToMainScene();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        openCalculator.setOnAction(event -> {
+            try {
+                switchToCalculatorScene();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 
@@ -76,23 +87,35 @@ public class ThemeController {
         return new Image(Objects.requireNonNull(getClass().getResource(path)).toExternalForm());
     }
 
-    private void switchToMainScene() {
-        try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/matrixGUI.fxml")));
-            Scene scene = new Scene(root);
+    private void switchToMainScene() throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/matrixGUI.fxml")));
+        Scene scene = new Scene(root);
 
-            MatrixApp.setupGlobalEscapeHandler(scene);
-            MatrixApp.applyTheme(scene);
-            MatrixApp.setFractionMode(isFraction);
-            Stage primaryStage = MatrixApp.getPrimaryStage();
+        Stage primaryStage = getStage(scene);
 
-            primaryStage.setTitle("Matrix GUI");
+        primaryStage.setTitle("Matrix GUI");
 
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Couldn't load the main scene.");
-        }
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+
+    private void switchToCalculatorScene() throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/calculatorScene.fxml")));
+        Scene scene = new Scene(root);
+
+        Stage primaryStage = getStage(scene);
+
+        primaryStage.setTitle("Calculator");
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    private Stage getStage(Scene scene) {
+        MatrixApp.setupGlobalEscapeHandler(scene);
+        MatrixApp.applyTheme(scene);
+        MatrixApp.setFractionMode(isFraction);
+        return MatrixApp.getPrimaryStage();
     }
 }

@@ -2,7 +2,7 @@ package matrix.fileManaging;
 
 public enum FilePath {
     REF_PATH("SavedMatrices/ref/ref_data.txt"),
-//    CUSTOM_PATH("SavedMatrices/custom/custom_data.txt"),
+    CALCULATOR_PATH("SavedMatrices/calculator/calculator_data.txt"),
     DETERMINANT_PATH("SavedMatrices/determinants/determinant_result.txt"),
 //    EIGEN_PATH("SavedMatrices/eigen/eigen_data.txt"),
     IDENTITY_PATH("SavedMatrices/matrices/identity.txt"),

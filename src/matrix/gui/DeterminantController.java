@@ -87,20 +87,20 @@ public class DeterminantController implements DataManipulation {
     public void handleDeterminantFunctionality() {
         try {
             Matrix matrix = MatrixSingleton.getInstance();
-            this.determinant = matrix.calculateDeterminant();
+            if (matrix.isSquare()) {
+                this.determinant = Double.valueOf(matrix.calculateDeterminant());
+                determinantValue.setText(String.valueOf(determinant));
+                save();
+                matrixView.updateViews(true, MatrixSingleton.getInstance());
+            } else {
+                temporarilyUpdateDirections("Matrix is not square; it does not have a defined determinant.");
+                showErrorPopup("Matrix is not square; it does not have a defined determinant.");
+            }
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            temporarilyUpdateDirections(nonSquareMatrixString);
-            showErrorPopup("Matrix is not square. I cannot transform it into a triangular matrix, nor can I find the determinant.");
+            e.getMessage();
             return;
         }
 
-        if (Double.compare(determinant, 0) == 0) {
-            determinantValue.setText("0.0");
-            save();
-            return;
-        }
-        updateToTriangular();
         if (checkBox.isSelected()) {
             showDeterminantAnimation();
         }
@@ -215,30 +215,6 @@ public class DeterminantController implements DataManipulation {
                 String cellValue = matrixData.get(row).get(col);
                 matrixCells[row][col] = new MatrixCell(row, col, cellValue, true);
             }
-        }
-    }
-
-    private void updateToTriangular() {
-        System.out.println("Matrix is updating?");
-        if (MatrixSingleton.getInstance() != null) {
-            System.out.println("Matrix is not null (determinantController) \n" + MatrixSingleton.getInstance());
-
-            double scaledDeterminant = MatrixSingleton.getInstance().calculateDeterminant();
-
-            System.out.println("This is the scaled determinant: \n" + scaledDeterminant);
-            determinant = scaledDeterminant;
-            if (Double.compare(determinant, 0) == 0) {
-                determinantValue.setText("0.0");
-            }
-            determinantValue.setText(String.valueOf(determinant));
-            System.out.println("Matrix is being saved as a triangular matrix, hopefully.");
-            save();
-            matrixView.updateViews(true, MatrixSingleton.getInstance());
-        } else {
-            System.out.println("Matrix is null (determinantController)");
-            System.out.println("Handling missing matrix...");
-            MatrixFileHandler.populateMatrixIfEmpty();
-            temporarilyUpdateDirections("Matrix not found. Generate a matrix first.");
         }
     }
 

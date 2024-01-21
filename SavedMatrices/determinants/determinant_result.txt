@@ -1,6 +1,6 @@
-7 6
-NaN NaN
+5 4
+6 10
 
-Determinant: NaN
+Determinant: -50.0
 
 --------------

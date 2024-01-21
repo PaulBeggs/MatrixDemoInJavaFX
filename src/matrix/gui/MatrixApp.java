@@ -19,23 +19,18 @@ public class MatrixApp extends Application {
     public static boolean fractionMode = true;
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws IOException {
         FileUtil.ensureAllFilesExist();
         primaryStage = stage;
-        try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/themeScene.fxml")));
-            Scene scene = new Scene(root);
-            setupGlobalEscapeHandler(scene);
-            applyTheme(scene);
-            setFractionMode(fractionMode);
-            primaryStage.setScene(scene);
-            primaryStage.setTitle("Select Theme");
-            primaryStage.show();
-            primaryStage.setOnCloseRequest(event -> closeApps());
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Couldn't load the theme selection scene.");
-        }
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/themeScene.fxml")));
+        Scene scene = new Scene(root);
+        setupGlobalEscapeHandler(scene);
+        applyTheme(scene);
+        setFractionMode(fractionMode);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Select Theme");
+        primaryStage.show();
+        primaryStage.setOnCloseRequest(event -> closeApps());
     }
 
     public static void setupGlobalEscapeHandler(Scene scene) {
@@ -47,10 +42,10 @@ public class MatrixApp extends Application {
     }
     public static void applyTheme(Scene scene) {
         scene.getStylesheets().clear();
-//        System.out.println("(Inside applyTheme) This is the selected theme: \n" + selectedTheme);
         String cssFile = selectedTheme.equals("dark") ? "/styles/darkMode.css" : "/styles/lightMode.css";
         scene.getStylesheets().add(Objects.requireNonNull(MatrixApp.class.getResource(cssFile)).toExternalForm());
     }
+
     public static Stage getPrimaryStage() {return primaryStage;}
     public static void setSelectedTheme(String theme) {selectedTheme = theme;}
     public static void setFractionMode(boolean modeBoolean) {fractionMode = modeBoolean;}

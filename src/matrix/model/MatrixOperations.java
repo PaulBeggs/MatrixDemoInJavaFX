@@ -2,7 +2,7 @@ package matrix.model;
 
 public interface MatrixOperations {
     // Method to get the display matrix
-    String[][] getDisplayMatrix();
+    String[][] getMatrix();
 
     // Method to swap rows in both matrices
     void swapRows(int row1, int row2);

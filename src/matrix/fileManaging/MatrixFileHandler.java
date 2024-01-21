@@ -1,8 +1,6 @@
 package matrix.fileManaging;
 
-import matrix.gui.MatrixApp;
 import matrix.model.Matrix;
-import matrix.operators.MatrixUtil;
 
 import java.io.*;
 import java.util.*;
@@ -67,7 +65,7 @@ public class MatrixFileHandler {
         for (int row = 0; row < matrix.getRows(); row++) {
             List<String> rowData = new ArrayList<>();
             for (int col = 0; col < matrix.getCols(); col++) {
-                rowData.add(String.valueOf(matrix.getValue(row, col)));
+                rowData.add(matrix.getStringValue(row, col));
             }
             matrixData.add(rowData);
         }
@@ -83,8 +81,8 @@ public class MatrixFileHandler {
 
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
-                double value = Double.parseDouble(matrixData.get(row).get(col));
-                matrix.setValue(row, col, String.valueOf(value));
+                String value = matrixData.get(row).get(col);
+                matrix.setValue(row, col, value);
             }
         }
 
