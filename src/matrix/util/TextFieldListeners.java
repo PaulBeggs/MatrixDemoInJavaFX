@@ -43,8 +43,8 @@ public class TextFieldListeners {
 
     public static void addTextPropertyListener(TextField textField, Matrix matrix, int row, int col) {
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("([-+]?\\d*(\\.\\d*)?)|(/sqrt\\([-+]?\\d+\\))|(/)") && !newValue.isEmpty()) {
-                textField.setText(newValue.replaceAll("[^\\d.\\-+/sqrt()]", ""));
+            if (!newValue.matches("(-?\\d+\\.?\\d*(E-?\\d+)?)|([+\\-*^/()])")) {
+                textField.setText(newValue.replaceAll("[^\\d.\\-+*/^()]", ""));
             } else {
                 try {
                     String valueToSet = newValue.isEmpty() ? "0" : newValue;
@@ -58,12 +58,13 @@ public class TextFieldListeners {
         });
     }
 
+
     private static String calculateExpression(String inputField) {
         String result;
         if (MatrixApp.isFractionMode()) {
             result = String.valueOf(MatrixUtil.convertDecimalToFraction(String.valueOf(ExpressionEvaluator.evaluate(inputField))));
         } else {
-            result = MatrixUtil.convertFractionToDecimal(String.valueOf(ExpressionEvaluator.evaluate(inputField)));
+            result = MatrixUtil.convertFractionToDecimalString(String.valueOf(ExpressionEvaluator.evaluate(inputField)));
         }
         return result;
     }

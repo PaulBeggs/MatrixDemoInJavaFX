@@ -10,6 +10,8 @@ import matrix.model.MatrixCell;
 import java.util.ArrayList;
 import java.util.List;
 
+import static matrix.fileManaging.MatrixFileHandler.matrices;
+
 public class TriangularizationView {
     GridPane matrixGrid;
     MatrixCell[][] matrixCells;
@@ -18,14 +20,14 @@ public class TriangularizationView {
     private List<Integer> signChanges;
 
     public TriangularizationView(GridPane matrixGridFromController) {
-        this.matrix = MatrixFileHandler.getMatrix("initial");
+        this.matrix = matrices.get("initial");
         this.matrixGrid = matrixGridFromController;
 
         this.signChanges = new ArrayList<>();
     }
 
     public void updateViews(String matrixKey) {
-        matrix = MatrixFileHandler.getMatrix(matrixKey);
+        this.matrix = matrices.get(matrixKey);
         if (matrix != null) {
             populateMatrixFromData();
             resizeMatrix();
@@ -42,7 +44,7 @@ public class TriangularizationView {
         matrixCells = new MatrixCell[numRows][numCols];
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
-                String cellValue = matrix.getStringValue(row, col);
+                String cellValue = matrix.getValue(row, col);
                 matrixCells[row][col] = new MatrixCell(row, col, cellValue, false);
                 matrixGrid.add(matrixCells[row][col].getTextField(), col, row);
             }

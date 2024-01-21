@@ -14,6 +14,7 @@ import matrix.fileManaging.FilePath;
 import matrix.fileManaging.MatrixType;
 import matrix.model.*;
 import matrix.fileManaging.MatrixFileHandler;
+import matrix.util.ExpressionEvaluator;
 import matrix.view.MatrixView;
 
 import java.io.*;
@@ -39,7 +40,7 @@ public class DeterminantController implements DataManipulation {
     CheckBox checkBox;
     private MatrixView matrixView;
     private MatrixCell[][] matrixCells;
-    private Double determinant;
+    private String determinant;
     private final String nonSquareMatrixString = "Matrix is not square; it does not have a defined determinant.";
     private final String initialDirections =
             """
@@ -88,10 +89,10 @@ public class DeterminantController implements DataManipulation {
         try {
             Matrix matrix = MatrixSingleton.getInstance();
             if (matrix.isSquare()) {
-                this.determinant = Double.valueOf(matrix.calculateDeterminant());
-                determinantValue.setText(String.valueOf(determinant));
+                this.determinant = (matrix.calculateDeterminant());
+                determinantValue.setText((determinant));
                 save();
-                matrixView.updateViews(true, MatrixSingleton.getInstance());
+                matrixView.updateViews(true, MatrixSingleton.getTriangularInstance());
             } else {
                 temporarilyUpdateDirections("Matrix is not square; it does not have a defined determinant.");
                 showErrorPopup("Matrix is not square; it does not have a defined determinant.");
@@ -114,9 +115,9 @@ public class DeterminantController implements DataManipulation {
             showErrorPopup("Cannot save a matrix with an undefined determinant using this option.");
             return;
         }
-        if (Double.compare(determinant, 0) == 0) {
+        if (Double.compare(ExpressionEvaluator.evaluate(determinant), 0) == 0) {
             determinantValue.setText("0.0");
-            determinant = 0.0;
+            determinant = String.valueOf(0.0);
         }
         Stage saveStage = new Stage();
         saveStage.setTitle("Save Menu");
@@ -133,7 +134,7 @@ public class DeterminantController implements DataManipulation {
         }
 
         SaveController saveController = loader.getController();
-        saveController.setDeterminantValue(determinant);
+        saveController.setDeterminantValue((determinant));
 
         Scene saveScene = new Scene(root);
         MatrixApp.setupGlobalEscapeHandler(saveScene);
@@ -240,6 +241,6 @@ public class DeterminantController implements DataManipulation {
                 FilePath.DETERMINANT_PATH.getPath(), determinant,
                 matrixData, MatrixType.DETERMINANT);
         MatrixFileHandler.saveMatrixDataToFile(FilePath.TRIANGULAR_PATH.getPath(),
-                0, matrixData, MatrixType.TRIANGULAR);
+                "0", matrixData, MatrixType.TRIANGULAR);
     }
 }

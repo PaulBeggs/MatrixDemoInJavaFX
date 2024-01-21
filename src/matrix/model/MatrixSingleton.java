@@ -3,10 +3,9 @@ package matrix.model;
 import matrix.fileManaging.FilePath;
 import matrix.fileManaging.MatrixFileHandler;
 import matrix.fileManaging.MatrixType;
-import matrix.gui.MatrixApp;
-
-import java.math.BigDecimal;
 import java.util.List;
+
+import static matrix.util.MatrixUtil.convertBackToOriginalForm;
 
 public class MatrixSingleton {
     private static Matrix instance;
@@ -28,7 +27,7 @@ public class MatrixSingleton {
         if (instance != null) {
             List<List<String>> matrixData = MatrixFileHandler.loadMatrixDataFromMatrix(instance);
             MatrixFileHandler.saveMatrixDataToFile(FilePath.MATRIX_PATH.getPath(),
-                    0, matrixData, MatrixType.REGULAR);
+                    "0", matrixData, MatrixType.REGULAR);
         }
     }
 

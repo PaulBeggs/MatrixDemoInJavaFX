@@ -1,11 +1,11 @@
 package matrix.model;
 
+import matrix.gui.MatrixApp;
 import matrix.util.MatrixUtil;
 
 import java.util.Arrays;
 
 import static java.lang.Double.parseDouble;
-import static java.lang.String.*;
 import static matrix.gui.MatrixApp.isFractionMode;
 import static matrix.util.ExpressionEvaluator.evaluate;
 import static matrix.util.MatrixUtil.*;
@@ -27,7 +27,18 @@ public class Matrix implements MatrixOperations {
         this.data = new String[numRows][numCols];
     }
 
-    public Matrix(String[][] data) {this.data = data;}
+    public Matrix(String[][] matrixData) {
+        if (matrixData == null || matrixData.length == 0 || matrixData[0].length == 0) {
+            throw new IllegalArgumentException("Matrix data cannot be null or empty.");
+        }
+        this.numRows = matrixData.length;
+        this.numCols = matrixData[0].length;
+        this.data = new String[numRows][numCols];
+        for (int i = 0; i < numRows; i++) {
+            System.arraycopy(matrixData[i], 0, this.data[i], 0, numCols);
+        }
+    }
+
     @Override
     public String[][] getMatrix() {return data;}
 
@@ -44,8 +55,8 @@ public class Matrix implements MatrixOperations {
             } else {
                 // Convert each element in both rows from fraction to decimal before swapping
                 for (int i = 0; i < data[row1].length; i++) {
-                    String temp = formatToTenDigits(parseDouble(convertFractionToDecimal(data[row1][i])));
-                    data[row1][i] = formatToTenDigits(parseDouble(convertFractionToDecimal(data[row2][i])));
+                    String temp = convertFractionToDecimalString(data[row1][i]);
+                    data[row1][i] = convertFractionToDecimalString(data[row2][i]);
                     data[row2][i] = temp;
                 }
             }
@@ -68,7 +79,7 @@ public class Matrix implements MatrixOperations {
                     // Convert the result to the appropriate format
                     String result = isFractionMode() ?
                             convertDecimalToFraction(String.valueOf(multipliedValue)) :
-                            formatToTenDigits(parseDouble(convertFractionToDecimal(String.valueOf(multipliedValue))));
+                            convertFractionToDecimalString(String.valueOf(multipliedValue));
 
                     System.out.println("result: " + result);
 
@@ -93,7 +104,7 @@ public class Matrix implements MatrixOperations {
                     // Convert the result to the appropriate format
                     String result = isFractionMode() ?
                             convertDecimalToFraction(String.valueOf(sum)) :
-                            formatToTenDigits(parseDouble(convertFractionToDecimal(String.valueOf(sum))));
+                            convertFractionToDecimalString(String.valueOf(sum));
 
                     data[targetRow][col] = result; // Assign the result to the target row
                 } catch (NumberFormatException e) {
@@ -105,14 +116,14 @@ public class Matrix implements MatrixOperations {
         }
     }
 
-    public String getStringValue(int row, int col) {return this.data[row][col];}
+    public String getValue(int row, int col) {return this.data[row][col];}
 
     public void setValue(int row, int col, String value) {
         if (isValidRow(row) && isValidColumn(col)) {
             if (isFractionMode()) {
                 this.data[row][col] = convertDecimalToFraction(value);
             } else {
-                this.data[row][col] = convertFractionToDecimal(value);
+                this.data[row][col] = convertFractionToDecimalString(value);
             }
         } else {
             System.out.println("Invalid row & col indices: " + row + ", " + col);
@@ -129,7 +140,18 @@ public class Matrix implements MatrixOperations {
         Matrix copiedMatrix = new Matrix(this.getRows(), this.getCols());
         for (int i = 0; i < this.getRows(); i++) {
             for (int j = 0; j < this.getCols(); j++) {
-                copiedMatrix.setValue(i, j, this.getStringValue(i, j));
+                String originalValue = this.getValue(i, j);
+                String copiedValue;
+
+                if (MatrixApp.isFractionMode()) {
+                    // Convert to fraction if in fraction mode
+                    copiedValue = convertFractionToDecimalString(originalValue);
+                } else {
+                    // Convert to decimal if not in fraction mode
+                    copiedValue = convertDecimalToFraction(originalValue);
+                }
+
+                copiedMatrix.setValue(i, j, copiedValue);
             }
         }
         return copiedMatrix;
@@ -164,25 +186,25 @@ public class Matrix implements MatrixOperations {
     private boolean isValidColumn(int col) {return col >= 0 && col < numCols;}
     public boolean isSquare() {return getRows() == getCols();}
 
-    public void convertToEchelonForm() {
-        int numRows = getRows();
-        int numCols = getCols();
-
-        for (int p = 0; p < Math.min(numRows, numCols); p++) {
-            int maxRow = findPivotRow(p);
-            if (maxRow != p) {
-                swapRows(p, maxRow);
-            }
-
-            normalizePivotRow(p);
-            eliminateBelow(p);
-        }
-    }
+//    public void convertToEchelonForm() {
+//        int numRows = getRows();
+//        int numCols = getCols();
+//
+//        for (int p = 0; p < Math.min(numRows, numCols); p++) {
+//            int maxRow = findPivotRow(p);
+//            if (maxRow != p) {
+//                swapRows(p, maxRow);
+//            }
+//
+//            normalizePivotRow(p);
+//            eliminateBelow(p);
+//        }
+//    }
 
 
     public void convertToReducedEchelonForm() {
         // First, convert to echelon form
-        convertToEchelonForm();
+//        convertToEchelonForm();
 
         // Then, iterate from bottom to top to make elements above pivots zero
         for (int p = getRows() - 1; p >= 0; p--) {
@@ -196,49 +218,58 @@ public class Matrix implements MatrixOperations {
 
     private int findPivotColumn(int row) {
         for (int j = 0; j < getCols(); j++) {
-            if (parseDouble(getStringValue(row, j)) != 0) {
+            if (parseDouble(getValue(row, j)) != 0) {
                 return j; // Pivot column found
             }
         }
         return -1; // No pivot in this row
     }
 
-    private int findPivotRow(int p) {
-        int maxRow = p;
-        for (int i = p + 1; i < getRows(); i++) {
-            double currentVal = Math.abs(parseDouble(getStringValue(i, p)));
-            double maxVal = Math.abs(parseDouble(getStringValue(maxRow, p)));
-            if (currentVal - maxVal > 0) {
-                maxRow = i;
+    private int findPivotRow(int startRow, int col) {
+        int pivotRow = -1;
+        double maxAbsValue = 0.0;
+        double currentValue = 0;
+        for (int row = startRow; row < numRows; row++) {
+            try {
+                currentValue = Math.abs(evaluate(data[row][col]));
+            } catch (NumberFormatException e) {
+                System.out.println("Value at [" + row + "][" + col + "]: " + data[row][col]);
+                throw new IllegalArgumentException(e);
+            }
+
+            if (currentValue > maxAbsValue) {
+                maxAbsValue = currentValue;
+                pivotRow = row;
             }
         }
-        return maxRow;
+
+        return pivotRow;
     }
 
     private void normalizePivotRow(int p) {
-        double pivotValue = parseDouble(getStringValue(p, p));
+        double pivotValue = parseDouble(getValue(p, p));
         if (Double.compare(pivotValue, 0) != 0) {
             multiplyRow(p, 1.0 / pivotValue);
 
         }
     }
 
-    private void eliminateBelow(int p) {
-        int numCols = getCols();
-        for (int i = p + 1; i < getRows(); i++) {
-            double factor = parseDouble(getStringValue(i, p)) / parseDouble(getStringValue(p, p));
-            if (Double.compare(factor, 0) != 0) {
-                for (int j = 0; j < numCols; j++) {
-                    double valueToAdd = factor * -parseDouble(getStringValue(p, j));
-                    setValue(i, j, getStringValue(i, j) + valueToAdd);
-                }
+    private void eliminateBelow(int pivotRow, int col) {
+        for (int row = pivotRow + 1; row < numRows; row++) {
+            double factor = evaluate(data[row][col]) / evaluate(data[pivotRow][col]);
+            if (factor == 0) {
+                continue;
+            }
+            for (int c = col; c < numCols; c++) {
+                double newValue = evaluate(data[row][c]) - factor * evaluate(data[pivotRow][c]);
+                data[row][c] = String.valueOf((newValue));
             }
         }
     }
 
     private void eliminateAbove(int pivotRow, int pivotCol) {
         for (int i = 0; i < pivotRow; i++) {
-            double factor = parseDouble(getStringValue(i, pivotCol));
+            double factor = evaluate(getValue(i, pivotCol));
             if (Double.compare(factor, 0) != 0); {
                 addRows(pivotRow, i, -factor);
             }
@@ -258,79 +289,52 @@ public class Matrix implements MatrixOperations {
         }
 
         if (!isUpperTriangular() && ! isLowerTriangular()) {
-            makeTriangular();
+            convertToTriangularForm();
         }
-        String deter = MatrixUtil.formatToTenDigits(multiplyDiameter() * getSign());
+        String deter = MatrixUtil.correctRoundingError(String.valueOf(multiplyDiagonal()));
         System.out.println("Triangular matrix:");
         MatrixUtil.printStringMatrix(data);
-        return deter;
+        MatrixSingleton.setTriangularInstance(copy());
+        System.out.println("This is the determinant: " + deter);
+        if (MatrixApp.isFractionMode()) {
+            return MatrixUtil.convertDecimalToFraction(deter);
+        } else {
+            return MatrixUtil.convertFractionToDecimalString(deter);
+        }
     }
 
-    public void makeTriangular() {
-        for (int col = 0; col < data.length; col++) {
-            sortCol(col);
-            for (int row = data.length - 1; row > col; row--) {
-                double element = parseDouble(data[row][col]);
-                if (Double.compare(element, 0) == 0) {
-                    continue;
+    public void convertToTriangularForm() {
+        int currentRow = 0;
+        int currentCol = 0;
+
+        while (currentRow < numRows && currentCol < numCols) {
+
+            // Find the pivot element in the current column
+            int pivotRow = findPivotRow(currentRow, currentCol);
+
+            if (pivotRow != -1) {
+                // Swap rows if necessary
+                if (pivotRow != currentRow) {
+                    swapRows(currentRow, pivotRow);
+                    setSign(-1);
                 }
+                // Eliminate elements below the pivot
+                eliminateBelow(currentRow, currentCol);
 
-                double x = parseDouble(data[row][col]);
-                double y = parseDouble(data[row - 1][col]);
-
-                multiplyRowForDeterminant(row, -y / x);
-
-                addRowsForDeterminant(row, row - 1);
-
-                multiplyRowForDeterminant(row, -x / y);
+                // Move to the next row and column
+                currentRow++;
+                currentCol++;
             }
         }
     }
 
-    private void sortCol(int paramCol) {
-        for (int row = getRows() - 1; row >= paramCol; row--) {
-            for (int col = getRows() - 1; col >= paramCol; col--) {
-                double temp1 = parseDouble(data[row][paramCol]);
-                double temp2 = parseDouble(data[col][paramCol]);
 
-                if (Double.compare(Math.abs(temp1), Math.abs(temp2)) < 0) {
-                    swapRowsForDeterminant(row, col);
-                }
-            }
+    private double multiplyDiagonal() {
+        double result = 1.0;
+        for (int i = 0; i < Math.min(numRows, numCols); i++) {
+            result *= evaluate(data[i][i]);
         }
-    }
-
-    private void swapRowsForDeterminant(int row1, int row2) {
-        setSign(getSign() * -1);
-        swapRows(row1, row2);
-    }
-
-    public void multiplyRowForDeterminant(int row, double scalar) {
-        if (Double.compare(scalar, 0) < 0) {
-            setSign(getSign() * -1);
-        }
-        multiplyRow(row, scalar);
-    }
-
-    public void addRowsForDeterminant(int row1, int row2) {
-        for (int col = 0; col < getCols(); col++) {
-            double value1 = parseDouble(data[row1][col]);
-            double value2 = parseDouble(data[row2][col]);
-
-            data[row1][col] = String.valueOf(value1 + value2);
-        }
-    }
-
-    public double multiplyDiameter() {
-        double result = 1;
-        for (int row = 0; row < getRows(); row++) {
-            for (int col = 0; col < getRows(); col++) {
-                if (row == col) {
-                    result = result * parseDouble(data[row][col]);
-                }
-            }
-        }
-        return result;
+        return result * getSign();
     }
 
     private boolean isUpperTriangular() {
@@ -339,7 +343,7 @@ public class Matrix implements MatrixOperations {
         }
         for (int row = 0; row < getRows(); row++) {
             for (int col = 0; col < row; col++) {
-                if (Double.compare(parseDouble(data[row][col]), 0) != 0) {
+                if (Double.compare((evaluate(data[row][col])), 0) != 0) {
                     return false;
                 }
             }
@@ -353,7 +357,7 @@ public class Matrix implements MatrixOperations {
         }
         for (int col = 0; col < getRows(); col++) {
             for (int row = 0; col > row; row++) {
-                if (Double.compare(parseDouble(data[row][col]), 0) != 0) {
+                if (Double.compare(evaluate(data[row][col]), 0) != 0) {
                     return false;
                 }
             }

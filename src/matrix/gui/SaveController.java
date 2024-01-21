@@ -21,7 +21,7 @@ public class SaveController {
     private ChoiceBox<String> matrixSelectionComboBox;
     private List<List<TextField>> matrixTextFields;
     private MatrixCell[][] matrixCells;
-    private Double determinantValue;
+    private String determinantValue;
     private Matrix triangularMatrix;
 
     @FXML
@@ -48,10 +48,10 @@ public class SaveController {
     public void setMatrixCells (MatrixCell[][] matrixCells) {
         this.matrixCells = matrixCells;
     }
-    public void setDeterminantValue(Double determinantValue) {
+    public void setDeterminantValue(String determinantValue) {
         this.determinantValue = determinantValue;
     }
-    public Double getDeterminant() {
+    public String getDeterminant() {
         return determinantValue;
     }
     public Matrix getTriangularMatrix() {
@@ -72,7 +72,7 @@ public class SaveController {
                 case "Default Matrix" -> {
                     matrixData = MatrixFileHandler.loadMatrixDataFromFile(FilePath.MATRIX_PATH.getPath());
                     MatrixFileHandler.saveMatrixDataToFile("savedMatrices/matrices/"
-                            + fileName + ".txt", 0, matrixData, MatrixType.REGULAR);
+                            + fileName + ".txt", "0", matrixData, MatrixType.REGULAR);
 
                     MatrixApp.getPrimaryStage().close();
                 }

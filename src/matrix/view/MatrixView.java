@@ -35,7 +35,7 @@ public class MatrixView {
         matrixCells = new MatrixCell[numRows][numCols];
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
-                String cellValue = matrix.getStringValue(row, col);
+                String cellValue = matrix.getValue(row, col);
                 matrixCells[row][col] = new MatrixCell(row, col, cellValue, isEditable);
                 matrixGrid.add(matrixCells[row][col].getTextField(), col, row);
             }

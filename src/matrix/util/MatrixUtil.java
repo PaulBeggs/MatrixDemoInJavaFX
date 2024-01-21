@@ -1,11 +1,12 @@
 package matrix.util;
 
 import matrix.gui.MatrixApp;
+import matrix.model.Matrix;
 import matrix.model.MatrixCell;
 
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-
 
 public class MatrixUtil {
 
@@ -35,14 +36,11 @@ public class MatrixUtil {
         if (decimalValue < 0) {
             return "-" + convertDecimalToFraction(String.valueOf(-decimalValue));
         }
-        if (!hasRepeatingElements(decimalValue) && input.length() >= 10) {
-            return formatToTenDigits(Double.parseDouble(input));
-        }
 
         String result = getFraction(decimalValue);
         if (result.length() >= 12) {
             System.out.println("This is the result length: " + result.length());
-            return formatToTenDigits(Double.parseDouble(input)); // The fraction is too large to be of any use.
+            return correctRoundingError(input); // The fraction is too large to be of any use.
         }
 
         return simplifyFraction(result);
@@ -82,10 +80,10 @@ public class MatrixUtil {
 
 
 
-    public static String convertFractionToDecimal(String expression) {
+    public static String convertFractionToDecimalString(String expression) {
 //        System.out.println("Convert Fraction to Decimal Expression: " + expression);
         if (expression.contains(".")) {
-            return formatToTenDigits(Double.parseDouble(expression)); // It is already a decimal.
+            return correctRoundingError(expression); // It is already a decimal.
         }
 
         if (!expression.contains("/")) {
@@ -101,13 +99,11 @@ public class MatrixUtil {
 
         double result = numerator / denominator;
 
-        return formatToTenDigits(result);
+        return correctRoundingError(String.valueOf(result));
     }
 
-    public static String formatToTenDigits(double x) {
-        DecimalFormat df = new DecimalFormat("#.##########");
-        df.setRoundingMode(RoundingMode.HALF_UP);
-        return correctRoundingError(df.format(x));
+    public static double convertFractionToDecimal(String decimal) {
+        return Double.parseDouble(convertFractionToDecimalString(decimal));
     }
 
     public static String correctRoundingError(String number) {
@@ -116,16 +112,25 @@ public class MatrixUtil {
             String decimalPart = number.substring(indexOfDot + 1);
 
             // Detect long sequences of 9s or 0s
-            if (decimalPart.matches(".*99999999.*") || decimalPart.matches(".*00000000.*")) {
-                // Find the position to round
-                int roundPosition = decimalPart.indexOf('9') != -1 ? decimalPart.indexOf('9') : decimalPart.indexOf('0');
+            if (decimalPart.matches(".*(9999999|0000000).*")) {
+                // Round the number using BigDecimal to avoid floating-point issues
+                BigDecimal num = new BigDecimal(number);
+                int scale = decimalPart.indexOf('9') != -1 ? decimalPart.indexOf('9') : decimalPart.indexOf('0');
+                num = num.setScale(scale, RoundingMode.HALF_UP);
 
-                // Round the number to the correct position
-                double scalingFactor = Math.pow(10, roundPosition);
-                return String.valueOf(correctNegativeZero(Math.round(Double.parseDouble(number) * scalingFactor) / scalingFactor));
+                return correctNegativeZero(num.stripTrailingZeros().toPlainString());
             }
         }
-        return String.valueOf(correctNegativeZero(Double.parseDouble(number)));
+
+        // Format the number to 10 decimal places if no long sequences are found
+        DecimalFormat df = new DecimalFormat("#.##########");
+        df.setRoundingMode(RoundingMode.HALF_UP);
+
+        return correctNegativeZero(df.format(Double.parseDouble(number)));
+    }
+
+    private static String correctNegativeZero(String value) {
+        return value.equals("-0.0") ? "0.0" : value;
     }
 
     public static String simplifyFraction(String fraction) {
@@ -163,95 +168,29 @@ public class MatrixUtil {
         return gcd(b, a % b);
     }
 
-    public static boolean hasRepeatingElements(double decimal) {
-        String decimalString = Double.toString(decimal);
-        int threshold = 4;
-
-        // Remove the decimal point if present
-        if (decimalString.contains(".")) {
-            decimalString = decimalString.replace(".", "");
-        }
-
-        int length = decimalString.length();
-
-        // Check for repeating elements
-        for (int i = 1; i <= length / 2; i++) {
-            if (isRepeating(decimalString, length, i, threshold)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static boolean isRepeating(String decimalString, int length, int patternLength, int threshold) {
-        for (int i = 0; i < length - patternLength * 2 + 1; i++) {
-            String pattern = decimalString.substring(i, i + patternLength);
-            boolean isRepeating = true;
-
-            for (int j = i + patternLength; j < i + patternLength * 2; j += patternLength) {
-                if (!pattern.equals(decimalString.substring(j, j + patternLength))) {
-                    isRepeating = false;
-                    break;
-                }
-            }
-
-            if (isRepeating && patternLength >= threshold) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static double correctNegativeZero(double value) {
-        return value == 0.0 ? 0.0 : value; // Converts -0.0 to 0.0
-    }
 
     public static String[][] convertToDecimalMatrix(String[][] originalMatrix) {
         String[][] decimalMatrix = new String[originalMatrix.length][];
         for (int i = 0; i < originalMatrix.length; i++) {
             decimalMatrix[i] = new String[originalMatrix[i].length];
             for (int j = 0; j < originalMatrix[i].length; j++) {
-                decimalMatrix[i][j] = convertFractionToDecimal(originalMatrix[i][j]);
+                decimalMatrix[i][j] = convertFractionToDecimalString(originalMatrix[i][j]);
             }
         }
         return decimalMatrix;
     }
 
-    public static String[][] convertBackToOriginalForm(Double[][] matrix) {
+    public static Matrix convertBackToOriginalForm(String[][] matrix) {
         String[][] originalFormMatrix = new String[matrix.length][];
         for (int i = 0; i < matrix.length; i++) {
             originalFormMatrix[i] = new String[matrix[i].length];
             for (int j = 0; j < matrix[i].length; j++) {
-                // Convert each Double element to String
-                if (MatrixApp.isFractionMode()) {
-                    originalFormMatrix[i][j] = convertDecimalToFraction(matrix[i][j].toString());
-                } else {
-                    originalFormMatrix[i][j] = matrix[i][j].toString();
-                }
+                originalFormMatrix[i][j] = MatrixApp.isFractionMode() ? convertDecimalToFraction(matrix[i][j]) : matrix[i][j]; // Assuming convertDecimalToFraction is also static
             }
         }
-        return originalFormMatrix;
+        return new Matrix(originalFormMatrix);
     }
 
-
-    public static Double[][] convertToDoubleMatrix(String[][] stringMatrix) {
-        Double[][] doubleMatrix = new Double[stringMatrix.length][];
-        for (int i = 0; i < stringMatrix.length; i++) {
-            doubleMatrix[i] = new Double[stringMatrix[i].length];
-            for (int j = 0; j < stringMatrix[i].length; j++) {
-                try {
-                    // Convert fraction to decimal before parsing
-                    String decimalString = convertFractionToDecimal(stringMatrix[i][j]);
-                    doubleMatrix[i][j] = Double.parseDouble(decimalString);
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException("Invalid number format at [" + i + "][" + j + "]: " + stringMatrix[i][j]);
-                }
-            }
-        }
-        return doubleMatrix;
-    }
 
 
     public static void main(String[] args) {
@@ -266,15 +205,10 @@ public class MatrixUtil {
         System.out.println("Decimal Matrix:");
         printStringMatrix(decimalMatrix);
 
-        // Convert the matrix to Double form
-        Double[][] doubleMatrix = convertToDoubleMatrix(matrix);
-        System.out.println("Double Matrix:");
-        printDoubleMatrix(doubleMatrix);
-
-        // Convert back to fraction form (assuming the original mode is fraction)
-        String[][] originalFormMatrix = convertBackToOriginalForm(doubleMatrix);
-        System.out.println("Matrix back in Fraction Form:");
-        printStringMatrix(originalFormMatrix);
+//        // Convert the matrix to Double form
+//        Double[][] doubleMatrix = convertToDoubleMatrix(matrix);
+//        System.out.println("Double Matrix:");
+//        printDoubleMatrix(doubleMatrix);
     }
 
     public static void printStringMatrix(String[][] matrix) {

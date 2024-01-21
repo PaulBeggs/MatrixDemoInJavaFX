@@ -3,13 +3,14 @@ package matrix.gui;
 import javafx.animation.Timeline;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import matrix.fileManaging.MatrixFileHandler;
 import matrix.model.*;
 import javafx.fxml.FXML;
 import matrix.view.TriangularizationView;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static matrix.fileManaging.MatrixFileHandler.matrices;
 
 public class DeterminantPopUpController {
     @FXML
@@ -132,7 +133,7 @@ public class DeterminantPopUpController {
     }
 
     public void uploadFromFile() {
-        matrix = MatrixFileHandler.getMatrix("initial");
+        matrix = matrices.get("initial");
         setMatrixCells(matrixCells);
         setMatrixGrid(matrixGrid);
     }

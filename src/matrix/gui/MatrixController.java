@@ -257,7 +257,7 @@ public class MatrixController implements DataManipulation {
                 iMatrix.setValue(row, col, cellValue);
             }
         }
-        MatrixFileHandler.saveMatrixDataToFile(FilePath.IDENTITY_PATH.getPath(), 0, identityMatrixData, MatrixType.IDENTITY);
+        MatrixFileHandler.saveMatrixDataToFile(FilePath.IDENTITY_PATH.getPath(), "0", identityMatrixData, MatrixType.IDENTITY);
     }
 
     @Override

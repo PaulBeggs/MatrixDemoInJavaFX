@@ -8,9 +8,9 @@ import java.util.*;
 import static matrix.fileManaging.MatrixType.*;
 
 public class MatrixFileHandler {
-    private static final Map<String, Matrix> matrices = new HashMap<>();
+    public static final Map<String, Matrix> matrices = new HashMap<>();
 
-    public static void saveMatrixDataToFile (String fileName, double determinant, List<List<String>> matrixData, MatrixType matrixType) {
+    public static void saveMatrixDataToFile (String fileName, String determinant, List<List<String>> matrixData, MatrixType matrixType) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false))) {
             for (List<String> row : matrixData) {
                 String line = String.join(" ", row);
@@ -65,7 +65,7 @@ public class MatrixFileHandler {
         for (int row = 0; row < matrix.getRows(); row++) {
             List<String> rowData = new ArrayList<>();
             for (int col = 0; col < matrix.getCols(); col++) {
-                rowData.add(matrix.getStringValue(row, col));
+                rowData.add(matrix.getValue(row, col));
             }
             matrixData.add(rowData);
         }
@@ -97,14 +97,6 @@ public class MatrixFileHandler {
         );
 
         // Save the default matrix data to the file
-        MatrixFileHandler.saveMatrixDataToFile(FilePath.MATRIX_PATH.getPath(), 0, defaultMatrixData, REGULAR);
-    }
-
-    public static Matrix getMatrix(String key) {
-        return matrices.get(key);
-    }
-
-    public static void setMatrix(String key, Matrix matrix) {
-        matrices.put(key, matrix);
+        MatrixFileHandler.saveMatrixDataToFile(FilePath.MATRIX_PATH.getPath(), "0", defaultMatrixData, REGULAR);
     }
 }
