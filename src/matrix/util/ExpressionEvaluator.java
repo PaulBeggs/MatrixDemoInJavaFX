@@ -1,10 +1,11 @@
 package matrix.util;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextArea;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static matrix.util.ErrorsAndSyntax.printSyntaxError;
 
 public class ExpressionEvaluator {
 
@@ -95,17 +96,24 @@ public class ExpressionEvaluator {
     }
 
     private static void handleExponentiation(int index, List<TokenInfo> newTokens, List<String> processedTokens) {
-//        System.out.println("Tokens inside 'Exponentiation': " + newTokens);
+        // Check if the exponentiation operation is at the start or end of the token list
         if (index == 0 || index == newTokens.size() - 1) {
-
+            printSyntaxError(newTokens, index, "Invalid expression: Exponentiation requires two operands");
             throw new IllegalArgumentException("Invalid expression: Exponentiation requires two operands");
         }
-        double base = Double.parseDouble(processedTokens.removeLast());
-        double exponent = Double.parseDouble(newTokens.get(index + 1).getToken());
-        double result = Math.pow(base, exponent);
-        processedTokens.add(String.valueOf(result));
-        System.out.println("Processed tokens after exponentiation: " + processedTokens);
+
+        try {
+            double base = Double.parseDouble(processedTokens.removeLast());
+            double exponent = Double.parseDouble(newTokens.get(index + 1).getToken());
+            double result = Math.pow(base, exponent);
+            processedTokens.add(String.valueOf(result));
+            System.out.println("Processed tokens after exponentiation: " + processedTokens);
+        } catch (NumberFormatException e) {
+            printSyntaxError(newTokens, index, "Invalid number format");
+            throw new IllegalArgumentException("Invalid number format in exponentiation");
+        }
     }
+
 
     private static void handleSquareRoot(int index, List<TokenInfo> newTokens, List<String> processedTokens) {
 //        System.out.println("Tokens inside 'Square Root': " + newTokens);
@@ -140,7 +148,7 @@ public class ExpressionEvaluator {
         double operand2 = Double.parseDouble(newTokens.get(index + 1).getToken());
         double result = token.equals("*") ? operand1 * operand2 : operand1 / operand2;
         processedTokens.add(String.valueOf(result));
-        System.out.println("Processed tokens after multiplication or division: " + processedTokens);
+//        System.out.println("Processed tokens after multiplication or division: " + processedTokens);
     }
 
 
@@ -246,58 +254,24 @@ public class ExpressionEvaluator {
             int open = expression.lastIndexOf('(');
             int close = expression.indexOf(')', open);
 
-            // Check for missing closing parenthesis
             if (close == -1) {
                 String errorMessage = "Syntax error: Opening parenthesis with no closing parenthesis";
                 printSyntaxError(expression, open, errorMessage);
                 return 0;
             }
-            // Remove the parenthesis, and recursively solve until there are no more parentheses remaining.
+
             double result = evaluate(expression.substring(open + 1, close));
             expression = expression.substring(0, open) + result + expression.substring(close + 1);
+            System.out.println("Expression after handling parenthesis: " + expression);
         }
-//        System.out.println("Expression inside the evaluate method: " + expression);
 
-        // Handle multiplication, division, and sqrt
+//        System.out.println("Expression before initial operations: " + expression);
         expression = initialOperations(expression);
 
-        // Now handle addition and subtraction
+//        System.out.println("Expression before addition/subtraction: " + expression);
         finalExpression = evaluateAdditionSubtraction(expression);
 
-        System.out.println("Final Expression: " + finalExpression);
+//        System.out.println("Final Expression: " + finalExpression);
         return finalExpression;
-    }
-
-    private static void printSyntaxError(String expression, String errorIndicator) {
-        String message = expression + "\n" + errorIndicator;
-        showErrorPopup("Syntax Error: Unrecognized input:\n" + message);
-    }
-
-    private static void printSyntaxError(String expression, int errorIndex, String errorMessage) {
-        String message = expression + "\n" +
-                " ".repeat(Math.max(0, errorIndex)) +
-                "^";
-        showErrorPopup(errorMessage + " at position " + (errorIndex + 1) + ":\n" + message);
-    }
-
-    private static void showErrorPopup(String prompt) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-
-        TextArea textArea = new TextArea(prompt);
-        textArea.setEditable(false);
-        textArea.setWrapText(true);
-        textArea.setFont(javafx.scene.text.Font.font("Monospaced"));
-
-        // Calculate the size of the TextArea based on the length of the prompt
-        int rows = Math.min(prompt.split("\n").length, 10) + 1; // Limit the number of rows
-        int columns = Math.min(prompt.length(), 80); // Limit the number of columns
-
-        textArea.setPrefRowCount(rows);
-        textArea.setPrefColumnCount(columns);
-
-        alert.getDialogPane().setContent(textArea);
-        alert.showAndWait();
     }
 }

@@ -1,8 +1,7 @@
 package matrix.model;
 
 import javafx.scene.control.TextField;
-import matrix.gui.MatrixApp;
-import matrix.util.MatrixUtil;
+import javafx.scene.control.Tooltip;
 import matrix.util.TextFieldListeners;
 
 public class MatrixCell {
@@ -24,6 +23,9 @@ public class MatrixCell {
         textField.setEditable(isEditable);
         TextFieldListeners.addEnterListener(textField, matrix, row, col);
         TextFieldListeners.addTextPropertyListener(textField, matrix, row, col);
+
+        Tooltip tooltip = new Tooltip("Row: " + (row + 1) + ", Col: " + (col + 1));
+        textField.setTooltip(tooltip);
     }
 
 

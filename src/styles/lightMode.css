@@ -3,6 +3,8 @@
     -secondary-color: #F0F0F0;
     -third-color: #E7E7E7;
     -text-color: black;
+    -hover-color: gray;
+    -focus-color: red;
 
     -fx-background-color: -primary-color;
 }
@@ -31,17 +33,25 @@
     -fx-border-width: 0 2 2 0;
 }
 
-.button:hover, .button:focused {
+.button:hover {
     -fx-text-fill: -text-color;
     -fx-background-color: -secondary-color;
     -fx-background-radius:0;
-    -fx-border-color: red;
+    -fx-border-color: -hover-color;
+    -fx-border-width: 0 2 2 0;
+}
+
+.button:focused {
+    -fx-text-fill: -text-color;
+    -fx-background-color: -secondary-color;
+    -fx-background-radius:0;
+    -fx-border-color: -focus-color;
     -fx-border-width: 0 2 2 0;
 }
 
 /* Focused item background color in the list */
 .choice-box .menu-item:focused {
-    -fx-background-color: red;
+    -fx-background-color: -focus-color;
 }
 
 /* Text color of non-focused items in the list */
@@ -62,8 +72,9 @@
 /* Background color of the control itself */
 .choice-box {
     -fx-background-color: -third-color;
-    -fx-mark-color: red;
+    -fx-mark-color: -focus-color;
     -fx-text-fill: -text-color;
+
     -fx-background-radius:0;
     -fx-border-color:transparent;
     -fx-border-width: 0 2 2 0;
@@ -74,12 +85,21 @@
     -fx-text-fill: -text-color;
 }
 
-.choice-box:hover, .choice-box:focused {
+.choice-box:hover {
     -fx-background-color: -secondary-color;
     -fx-text-color: -text-color;
     -fx-text-fill: -text-color;
-    -fx-background-radius:0;
-    -fx-border-color: red;
+    -fx-background-radius: 0;
+    -fx-border-color: -hover-color;
+    -fx-border-width: 0 2 2 0;
+}
+
+.choice-box:focused {
+    -fx-background-color: -secondary-color;
+    -fx-text-color: -text-color;
+    -fx-text-fill: -text-color;
+    -fx-background-radius: 0;
+    -fx-border-color: -focus-color;
     -fx-border-width: 0 2 2 0;
 }
 
@@ -88,7 +108,7 @@
 }
 
 .text-area {
-    -fx-background-color: red;
+    -fx-background-color: -focus-color;
     -fx-control-inner-background: -third-color;
     -fx-text-fill: -text-color;
 }
@@ -96,18 +116,25 @@
 .text-field {
     -fx-background-color: -third-color;
     -fx-text-fill: -text-color;
-    -fx-border-color: -third-color;
+    -fx-border-color: transparent;
     -fx-border-width: 2 2 2 2;
 }
 
-.text-field:hover, .text-field:focused {
+.text-field:hover {
     -fx-background-color: -secondary-color;
     -fx-text-fill: -text-color;
-    -fx-border-color: red;
+    -fx-border-color: -hover-color;
+    -fx-border-width: 2 2 2 2;
+}
+
+.text-field:focused {
+    -fx-background-color: -secondary-color;
+    -fx-text-fill: -text-color;
+    -fx-border-color: -focus-color;
     -fx-border-width: 2 2 2 2;
 }
 
 .bordered-grid {
-    -fx-border-color: red;
-    -fx-border-width: .75;
+    -fx-border-color: -focus-color;
+    -fx-border-width: 0.75;
 }

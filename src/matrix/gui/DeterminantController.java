@@ -1,27 +1,28 @@
 package matrix.gui;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import matrix.fileManaging.FilePath;
-import matrix.fileManaging.MatrixType;
-import matrix.model.*;
 import matrix.fileManaging.MatrixFileHandler;
+import matrix.fileManaging.MatrixType;
+import matrix.model.Matrix;
+import matrix.model.MatrixCell;
+import matrix.model.MatrixSingleton;
+import matrix.util.ErrorsAndSyntax;
 import matrix.util.ExpressionEvaluator;
 import matrix.view.MatrixView;
 
-import java.io.*;
-import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.io.IOException;
+import java.util.List;
 
 public class DeterminantController implements DataManipulation {
     @FXML
@@ -41,7 +42,6 @@ public class DeterminantController implements DataManipulation {
     private MatrixView matrixView;
     private MatrixCell[][] matrixCells;
     private String determinant;
-    private final String nonSquareMatrixString = "Matrix is not square; it does not have a defined determinant.";
     private final String initialDirections =
             """
                     Additive:\s
@@ -79,7 +79,8 @@ public class DeterminantController implements DataManipulation {
             try {
                 selectedScene.switchScene(event);
             } catch (IOException e) {
-                e.getMessage();
+                ErrorsAndSyntax.showErrorPopup("Cannot load the scene.");
+                throw new IllegalArgumentException(e);
             }
         });
     }
@@ -94,8 +95,8 @@ public class DeterminantController implements DataManipulation {
                 save();
                 matrixView.updateViews(true, MatrixSingleton.getTriangularInstance());
             } else {
-                temporarilyUpdateDirections("Matrix is not square; it does not have a defined determinant.");
-                showErrorPopup("Matrix is not square; it does not have a defined determinant.");
+                updateDirections();
+                ErrorsAndSyntax.showErrorPopup("Matrix is not square; it does not have a defined determinant.");
             }
         } catch (IllegalArgumentException e) {
             e.getMessage();
@@ -112,7 +113,7 @@ public class DeterminantController implements DataManipulation {
     @FXML
     public void handleSaveButton() {
         if (determinant == null) {
-            showErrorPopup("Cannot save a matrix with an undefined determinant using this option.");
+            ErrorsAndSyntax.showErrorPopup("Cannot save a matrix with an undefined determinant using this option.");
             return;
         }
         if (Double.compare(ExpressionEvaluator.evaluate(determinant), 0) == 0) {
@@ -129,15 +130,20 @@ public class DeterminantController implements DataManipulation {
         try {
             root = loader.load();
         } catch (IOException e) {
-            e.printStackTrace();
-            return;
+            ErrorsAndSyntax.showErrorPopup("Cannot load the scene.");
+            throw new IllegalArgumentException(e);
         }
+
+        Scene saveScene = new Scene(root);
+        saveScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                saveStage.close();
+            }
+        });
 
         SaveController saveController = loader.getController();
         saveController.setDeterminantValue((determinant));
 
-        Scene saveScene = new Scene(root);
-        MatrixApp.setupGlobalEscapeHandler(saveScene);
         MatrixApp.applyTheme(saveScene);
         saveStage.setScene(saveScene);
         saveStage.showAndWait();
@@ -154,8 +160,8 @@ public class DeterminantController implements DataManipulation {
         try {
             root = loader.load();
         } catch (IOException e) {
-            e.printStackTrace();
-            return;
+            ErrorsAndSyntax.showErrorPopup("Cannot load the scene.");
+            throw new IllegalArgumentException(e);
         }
 
         DeterminantPopUpController determinantPopUpController = loader.getController();
@@ -167,16 +173,6 @@ public class DeterminantController implements DataManipulation {
         MatrixApp.applyTheme(animationScene);
         animationStage.setScene(animationScene);
         animationStage.show();
-    }
-
-
-    private void showErrorPopup(String prompt) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(prompt);
-
-        alert.showAndWait();
     }
 
     @Override
@@ -219,19 +215,15 @@ public class DeterminantController implements DataManipulation {
         }
     }
 
-    private void temporarilyUpdateDirections(String newDirections) {
-        directions.setText(newDirections);
-
-        if (Objects.equals(newDirections, nonSquareMatrixString)) {
-            directions.setText(nonSquareMatrixString);
-            return;
-        }
-        // Schedule resetting the directions text area after 6 seconds
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.schedule(() -> {
-            Platform.runLater(() -> directions.setText(initialDirections));
-            executorService.shutdown(); // Important to shut down the executor to prevent resource leaks
-        }, 7, TimeUnit.SECONDS);
+    private void updateDirections() {
+        directions.setText("Matrix is not square; it does not have a defined determinant.");
+//
+//        // Schedule resetting the directions text area after 6 seconds
+//        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+//        executorService.schedule(() -> {
+//            Platform.runLater(() -> directions.setText(initialDirections));
+//            executorService.shutdown(); // Important to shut down the executor to prevent resource leaks
+//        }, 7, TimeUnit.SECONDS);
     }
 
     private void save() {

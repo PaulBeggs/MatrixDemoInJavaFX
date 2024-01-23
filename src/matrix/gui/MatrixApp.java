@@ -28,7 +28,7 @@ public class MatrixApp extends Application {
         applyTheme(scene);
         setFractionMode(fractionMode);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Select Theme");
+        primaryStage.setTitle("Select Themes");
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> closeApps());
     }

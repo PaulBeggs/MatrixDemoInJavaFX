@@ -73,15 +73,12 @@ public class SaveController {
                     matrixData = MatrixFileHandler.loadMatrixDataFromFile(FilePath.MATRIX_PATH.getPath());
                     MatrixFileHandler.saveMatrixDataToFile("savedMatrices/matrices/"
                             + fileName + ".txt", "0", matrixData, MatrixType.REGULAR);
-
-                    MatrixApp.getPrimaryStage().close();
                 }
                 case "Determinant Matrix" -> {
                     if (getDeterminant() != null) {
                         matrixData = MatrixFileHandler.loadMatrixDataFromFile(FilePath.TRIANGULAR_PATH.getPath());
                         MatrixFileHandler.saveMatrixDataToFile("savedMatrices/determinants/"
                                 + fileName + ".txt", determinantValue, matrixData, MatrixType.DETERMINANT);
-                        MatrixApp.getPrimaryStage().close();
                     } else {
                         showErrorPopup("Must find the determinant before you can save.");
 //                        System.out.println("Must find the determinant before you can save.");

@@ -1,10 +1,15 @@
 package matrix.gui;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import matrix.model.*;
-import javafx.fxml.FXML;
+import javafx.util.Duration;
+import matrix.model.Matrix;
+import matrix.model.MatrixCell;
 import matrix.view.TriangularizationView;
 
 import java.util.List;
@@ -17,8 +22,6 @@ public class DeterminantPopUpController {
     Button start, stop;
     @FXML
     ProgressBar progressBar;
-    @FXML
-    TextField signTextField;
     @FXML
     GridPane matrixGrid;
     private MatrixCell[][] matrixCells;
@@ -37,45 +40,41 @@ public class DeterminantPopUpController {
         handleTimer();
     }
 
-    private void updateSignChangesDisplay() {
-//        String signChanges = String.valueOf((matrix.getSign()));
-//        signTextField.setText(signChanges);
-    }
-
     private void setUpTriangularizationViews() {
         this.view = new TriangularizationView(matrixGrid);
     }
 
     private void handleTimer() {
-//        int totalSteps = operations.getTotalSteps();
-//        System.out.println("These are the total steps (handleTimer): \n" + totalSteps);
-//
-//        timeline = new Timeline(new KeyFrame(Duration.seconds(1), (ActionEvent t) -> {
-//            if (totalSteps == 0) {
-//                view.updateViews("initial");
-//            } else {
-//                String stepKey = "step_" + counter.getAndIncrement();
-//                System.out.println("Animating: " + stepKey);
-//                view.updateViews(stepKey);
-//            }
-//        }));
-//
-//        timeline.setCycleCount(totalSteps);
-//
-//        // Set the onFinished event handler for the timeline
-//        timeline.setOnFinished(e -> {
-//            // Create a PauseTransition for a delay
-//            PauseTransition delay = new PauseTransition(Duration.seconds(3));
-//            delay.setOnFinished(event -> displayConsoleSummary()); // Call your method to display the summary
-//            delay.play();
-//        });
-//
-//        start.setOnAction((t) -> timeline.play());
+        matrix.calculateDeterminant();
+        int totalSteps = matrix.getTotalSteps();
+        System.out.println("These are the total steps (handleTimer): \n" + totalSteps);
+
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), (ActionEvent t) -> {
+            if (totalSteps == 0) {
+                view.updateViews("initial");
+            } else {
+                String stepKey = "Matrix #" + (counter.getAndIncrement() + 1);
+                System.out.println("Animating: " + stepKey);
+                view.updateViews(stepKey);
+            }
+        }));
+
+        timeline.setCycleCount(totalSteps);
+
+        // Set the onFinished event handler for the timeline
+        timeline.setOnFinished(e -> {
+            // Create a PauseTransition for a delay
+            PauseTransition delay = new PauseTransition(Duration.seconds(3));
+            delay.setOnFinished(event -> displayConsoleSummary()); // Call your method to display the summary
+            delay.play();
+        });
+
+        start.setOnAction((t) -> timeline.play());
     }
 
     private void displayConsoleSummary() {
-//        List<String> summary = operations.getOperationSummary();
-//        System.out.println(summary);
+        List<String> summary = matrix.getOperationSummary();
+        System.out.println(summary);
     }
 
     @FXML
@@ -94,28 +93,33 @@ public class DeterminantPopUpController {
 
     @FXML
     public void handleResetButton() {
+        if (timeline != null) {
+            timeline.stop(); // Stop the current timeline if it's running
+        }
+        counter.set(0); // Reset the counter to 0
+
+        matrix = matrices.get("initial");
         view.updateViews("initial");
-        handleTimer();
+        handleTimer(); // Reinitialize and start the timer
     }
+
 
     @FXML
     public void handleSummarizeStepsButton() {
-//        List<String> stepSummary = operations.getOperationSummary();
-//        displaySummary(stepSummary);
-    }
+        List<String> stepSummary = matrix.getOperationSummary();
 
-    public void displaySummary(List<String> summary) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Matrix Transformation Summary");
         alert.setHeaderText("Steps to Make Matrix Triangular");
 
         TextArea textArea = new TextArea();
         textArea.setEditable(false);
-        textArea.setText(String.join("\n", summary));
+        textArea.setText(String.join("\n", stepSummary));
 
         alert.getDialogPane().setContent(textArea);
         alert.showAndWait();
     }
+
 
     public void setMatrixGrid(GridPane matrixGrid) {
         this.matrixGrid = matrixGrid;

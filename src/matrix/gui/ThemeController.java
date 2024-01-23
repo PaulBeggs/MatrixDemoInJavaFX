@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import matrix.util.ErrorsAndSyntax;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -15,25 +16,22 @@ import java.util.Objects;
 public class ThemeController {
 
     @FXML
-    ImageView imgMode;
+    ImageView imgMode, fractionMode;
     @FXML
-    Button startApp, openCalculator;
+    Button startApp, openCalculator, themeBtnMode, fractionBtnMode;
     @FXML
-    Button themeBtnMode;
-    @FXML
-    ImageView fractionMode;
-    @FXML
-    Button fractionBtnMode;
-    private boolean isLightMode = false;
-    private boolean isFraction = true;
+    CheckBox showInfo, convertSquareRoots;
+    private boolean isLightMode = false, isFraction = true;
 
     @FXML
     public void initialize() {
         updateTheme();
+        setToolTips();
         startApp.setOnAction(event -> {
             try {
                 switchToMainScene();
             } catch (IOException e) {
+                ErrorsAndSyntax.showErrorPopup("Cannot open the Main Scene.");
                 throw new RuntimeException(e);
             }
         });
@@ -41,6 +39,7 @@ public class ThemeController {
             try {
                 switchToCalculatorScene();
             } catch (IOException e) {
+                ErrorsAndSyntax.showErrorPopup("Cannot open the Calculator Scene.");
                 throw new RuntimeException(e);
             }
         });
@@ -117,5 +116,10 @@ public class ThemeController {
         MatrixApp.applyTheme(scene);
         MatrixApp.setFractionMode(isFraction);
         return MatrixApp.getPrimaryStage();
+    }
+
+    private void setToolTips() {
+        themeBtnMode.setTooltip(new Tooltip("Select Light or Dark theme"));
+        fractionBtnMode.setTooltip(new Tooltip("Decimals or fractions"));
     }
 }

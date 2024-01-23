@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import matrix.util.ErrorsAndSyntax;
 
 import java.io.IOException;
 
@@ -27,7 +28,8 @@ public class MultiplicationController {
             try {
                 selectedScene.switchScene(event);
             } catch (IOException e) {
-                e.printStackTrace();
+                ErrorsAndSyntax.showErrorPopup("Cannot load the scene: " + selectedScene);
+                throw new IllegalArgumentException(e);
             }
         });
     }

@@ -111,7 +111,6 @@
     -fx-background-color: -focus-color;
     -fx-control-inner-background: -third-color;
     -fx-text-fill: -text-color;
-
 }
 
 .text-field {

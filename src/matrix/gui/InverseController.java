@@ -5,7 +5,9 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import matrix.fileManaging.FilePath;
 import matrix.fileManaging.MatrixFileHandler;
+import matrix.fileManaging.MatrixType;
 import matrix.model.*;
+import matrix.util.ErrorsAndSyntax;
 import matrix.view.MatrixView;
 
 import java.io.IOException;
@@ -45,26 +47,33 @@ public class InverseController implements DataManipulation {
 
     @FXML
     public void handleRefFunctionality() {
-//        Matrix matrix = MatrixSingleton.getInstance();
-//        matrix.toEchelonForm();
-//        Matrix matrix = MatrixFileHandler.getMatrix("REF");
-//        matrixView.updateViews(false, matrix);
+        Matrix matrix = MatrixSingleton.getInstance().copy();
+        matrix.convertToEchelonForm();
+        matrix = MatrixFileHandler.matrices.get("REF");
+        matrixView.updateViews(false, matrix);
+        save(FilePath.REF_PATH.getPath(), matrix, MatrixType.REGULAR);
     }
 
     @FXML
     public void handleRRefFunctionality() {
-//        MatrixInvertingOperations MIO = new MatrixInvertingOperations();
-//        MIO.toReducedEchelonForm();
-//        Matrix matrix = MatrixFileHandler.getMatrix("RREF");
-//        matrixView.updateViews(false, matrix);
+        Matrix matrix = MatrixSingleton.getInstance().copy();
+        matrix.convertToReducedEchelonForm();
+        matrix = MatrixFileHandler.matrices.get("RREF");
+        matrixView.updateViews(false, matrix);
+        save(FilePath.RREF_PATH.getPath(), matrix, MatrixType.REGULAR);
     }
 
     @FXML
     public void handleInvertingFunctionality() {
-//        MatrixInvertingOperations MIO = new MatrixInvertingOperations();
-//        MIO.invert();
-//        Matrix matrix = MatrixFileHandler.getMatrix("inverse");
-//        matrixView.updateViews(true, matrix);
+        Matrix matrix = MatrixSingleton.getInstance().copy();
+        if (!matrix.isSquare()) {
+            ErrorsAndSyntax.showErrorPopup("Matrix must be square.");
+            throw new IllegalArgumentException("Matrix must be square.");
+        }
+        matrix.handleInvertingFunctionality();
+        matrix = MatrixFileHandler.matrices.get("Inverse");
+        matrixView.updateViews(false, matrix);
+        save(FilePath.REF_PATH.getPath(), matrix, MatrixType.REGULAR);
     }
 
     @Override
@@ -121,6 +130,11 @@ public class InverseController implements DataManipulation {
         }
     }
 
+    private void save(String filePath, Matrix matrix, MatrixType matrixType) {
+        List<List<String>> matrixData = MatrixFileHandler.loadMatrixDataFromMatrix(matrix);
+        MatrixFileHandler.saveMatrixDataToFile(filePath, "0", matrixData, matrixType);
+    }
+
     @Override
     public void setupScenesDropdown() {
         scenes.getItems().setAll(Scenes.values());
@@ -131,7 +145,8 @@ public class InverseController implements DataManipulation {
             try {
                 selectedScene.switchScene(event);
             } catch (IOException e) {
-                e.printStackTrace();
+                ErrorsAndSyntax.showErrorPopup("Cannot load the scene: " + selectedScene);
+                throw new IllegalArgumentException(e);
             }
         });
     }

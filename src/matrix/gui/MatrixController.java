@@ -1,25 +1,25 @@
 package matrix.gui;
 
 import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import matrix.fileManaging.FilePath;
-import matrix.fileManaging.MatrixType;
-import matrix.model.*;
 import matrix.fileManaging.MatrixFileHandler;
-import javafx.fxml.FXML;
-
-import matrix.util.MatrixInputHandler;
-import matrix.util.MatrixUtil;
-import matrix.util.ObjectType;
-import matrix.util.TextFieldListeners;
+import matrix.fileManaging.MatrixType;
+import matrix.model.Matrix;
+import matrix.model.MatrixCell;
+import matrix.model.MatrixSingleton;
+import matrix.util.*;
 import matrix.view.MatrixView;
 
 import java.io.BufferedReader;
@@ -42,7 +42,7 @@ public class MatrixController implements DataManipulation {
     @FXML
     BorderPane borderPane;
     @FXML
-    Button generateButton, saveButton, operationButton, identityButton, transposeButton, operationSummaryButton;
+    Button generateButton, saveButton, operationButton, identityButton, transposeButton, operationSummaryButton, loadButton, clearSummaryButton;
     @FXML
     TextField sizeColsField, sizeRowsField, targetRow, sourceRow, multiplier;
     @FXML
@@ -54,10 +54,10 @@ public class MatrixController implements DataManipulation {
     @FXML
     GridPane matrixGrid;
     private MatrixView matrixView;
-    private int steps = 1;
+    private int step = 1;
     private MatrixCell[][] matrixCells;
     private final MatrixInputHandler MIH = new MatrixInputHandler();
-
+    private List<String> operationsSummary = new ArrayList<>();
     private final String initialDirections =
             """
                     "Click 'generate' to produce a matrix. The cells are editable; use the 'Tab' key to navigate through each cell and add an entry.""";
@@ -70,10 +70,9 @@ public class MatrixController implements DataManipulation {
         setupOperationsDropdown();
         setupScenesDropdown();
         setupDirectionText();
-        System.out.println("(initialize) Accessing the singleton inside of the matrix cells (matrixController): ");
-        System.out.println("Accessed " + steps++ + " in order.");
         Matrix matrix = MatrixSingleton.getInstance();
         matrixView.updateViews(true, matrix);
+        setToolTips();
         setInitTextFieldData();
     }
 
@@ -101,7 +100,8 @@ public class MatrixController implements DataManipulation {
             try {
                 selectedScene.switchScene(event);
             } catch (IOException e) {
-                e.printStackTrace();
+                ErrorsAndSyntax.showErrorPopup("Unable to load the scene: " + scenes.getValue());
+                throw new IllegalArgumentException(e);
             }
         });
     }
@@ -192,10 +192,8 @@ public class MatrixController implements DataManipulation {
     }
 
     private void populateMatrixUI(List<List<String>> matrixData) {
-        System.out.println("(populate) Accessing the singleton inside of the matrix cells (matrixController): \n");
-        System.out.println("Accessed " + steps++ + " in order.");
         Matrix matrix = MatrixSingleton.getInstance();
-        MatrixSingleton.resizeInstance(matrixData.size(), matrixData.get(0).size());
+        MatrixSingleton.resizeInstance(matrixData.size(), matrixData.getFirst().size());
         setupMatrixCells(matrix, matrixData, false);
         System.out.println("This is the matrix that is initially created: \n" + matrix);
         System.out.println("These are the matrix cells: \n" + MatrixUtil.matrixCellsToString(matrixCells));
@@ -224,8 +222,6 @@ public class MatrixController implements DataManipulation {
     }
 
     private void updateMatrixFromMatrixCells(MatrixCell[][] matrixCells) {
-        System.out.println("Accessing the singleton inside of the matrix cells (matrixController): ");
-        System.out.println("Accessed " + steps++ + " in order. \n");
         Matrix matrix = MatrixSingleton.getInstance();
         for (int row = 0; row < matrixCells.length; row++) {
             for (int col = 0; col < matrixCells[row].length; col++) {
@@ -233,7 +229,7 @@ public class MatrixController implements DataManipulation {
                 try {
                     matrix.setValue(row, col, cellValue);
                 } catch (NumberFormatException e) {
-                    System.out.println("Invalid number format in cell [" + row + "][" + col + "]");
+                    ErrorsAndSyntax.showErrorPopup("Invalid number format in cell [" + row + "][" + col + "]");
                     throw new RuntimeException(e);
                 }
             }
@@ -242,21 +238,17 @@ public class MatrixController implements DataManipulation {
 
     private void saveIdentityCopy(List<List<String>> identityMatrixData) {
         int numRows = identityMatrixData.size();
-        int numCols = identityMatrixData.getFirst().size();
+        int numCols = identityMatrixData.getFirst().size(); // Use get(0) instead of getFirst()
 
         Matrix iMatrix = new Matrix(numRows, numCols);
-//        System.out.println("pre-updated matrix after instance is retrieved: \n" + iMatrix);
-
-        MatrixCell[][] iMatrixCells = new MatrixCell[numRows][numCols];
 
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
                 String cellValue = row == col ? "1" : "0";
-
-                iMatrixCells[row][col] = new MatrixCell(row, col, cellValue, true);
                 iMatrix.setValue(row, col, cellValue);
             }
         }
+
         MatrixFileHandler.saveMatrixDataToFile(FilePath.IDENTITY_PATH.getPath(), "0", identityMatrixData, MatrixType.IDENTITY);
     }
 
@@ -274,12 +266,17 @@ public class MatrixController implements DataManipulation {
         try {
             root = loader.load();
         } catch (IOException e) {
-            e.printStackTrace();
-            return;
+            ErrorsAndSyntax.showErrorPopup("Unable to load the Save Scene.");
+            throw new IllegalArgumentException(e);
         }
 
         Scene saveScene = new Scene(root);
-        MatrixApp.setupGlobalEscapeHandler(saveScene);
+        saveScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                saveStage.close();
+            }
+        });
+
         MatrixApp.applyTheme(saveScene);
         saveStage.setScene(saveScene);
         saveStage.showAndWait();
@@ -326,12 +323,15 @@ public class MatrixController implements DataManipulation {
 
         switch (selectedOption) {
             case "Swap Rows":
+                operationsSummary.add("#" + step++ + ", Swapped rows: " + (targetRowIndex + 1) + ", " + (sourceRowIndex + 1) + "\n");
                 matrix.swapRows(targetRowIndex, sourceRowIndex);
                 break;
             case "Multiply Rows":
+                operationsSummary.add("#" + step++ + ", Multiplied row: " + (targetRowIndex + 1) + " by " + multiplier + "\n");
                 handleRowOperation(targetRowIndex, multiplier, matrix::multiplyRow);
                 break;
             case "Add Rows":
+                operationsSummary.add("#" + step++ + ", Multiplied row: " + (sourceRowIndex + 1) + " by " + multiplier + ", and added it to" + (targetRowIndex + 1) + "\n");
                 handleRowOperation(targetRowIndex, multiplier, (index, value) -> matrix.addRows(targetRowIndex, sourceRowIndex, value));
                 break;
             default:
@@ -372,7 +372,21 @@ public class MatrixController implements DataManipulation {
 
     @FXML
     public void handleOperationSummary() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Matrix Operations Summary");
+        alert.setHeaderText("Operations Performed on This Matrix Instance");
 
+        TextArea textArea = new TextArea();
+        textArea.setEditable(false);
+        textArea.setText(String.join("\n", operationsSummary));
+
+        alert.getDialogPane().setContent(textArea);
+        alert.showAndWait();
+    }
+
+    @FXML
+    public void handleResetOperationSummary() {
+        operationsSummary = new ArrayList<>();
     }
 
     // Method to update the directions text area
@@ -407,5 +421,52 @@ public class MatrixController implements DataManipulation {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @FXML
+    public void handleShowInformation() {
+        try {
+            // Load layout from FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("informationControl/mainInformation.fxml"));
+            Parent infoLayout = loader.load();
+
+            // Create a Scene with the layout
+            Scene scene = new Scene(infoLayout);
+
+            // Add key event handler for ESCAPE key to close the window
+            scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+                if (event.getCode() == KeyCode.ESCAPE) {
+                    ((Stage) scene.getWindow()).close();
+                }
+            });
+
+            // Create a new Stage (window) and set the scene
+            Stage infoStage = new Stage();
+            infoStage.setTitle("Information");
+            infoStage.setScene(scene);
+
+            // Show the stage
+            infoStage.show();
+        } catch (Exception e) {
+            ErrorsAndSyntax.showErrorPopup("Unable to show the information.");
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    private void setToolTips() {
+        generateButton.setTooltip(new Tooltip("Generate a random matrix"));
+        saveButton.setTooltip(new Tooltip("Save the matrix"));
+        loadButton.setTooltip(new Tooltip("Load a matrix"));
+        operationButton.setTooltip(new Tooltip("Operate on matrix"));
+        identityButton.setTooltip(new Tooltip("Set matrix to 1s and 0s"));
+        transposeButton.setTooltip(new Tooltip("Transpose the matrix"));
+        operationSummaryButton.setTooltip(new Tooltip("Shows operations"));
+        clearSummaryButton.setTooltip(new Tooltip("Clears operations"));
+        operations.setTooltip(new Tooltip("Elementary row operations"));
+        sizeRowsField.setTooltip(new Tooltip("Specify number of rows"));
+        sizeColsField.setTooltip(new Tooltip("Specify number of columns"));
+        targetRow.setTooltip(new Tooltip("Specify target row"));
+        sourceRow.setTooltip(new Tooltip("Specify source row"));
+        multiplier.setTooltip(new Tooltip("Change multiplier"));
     }
 }

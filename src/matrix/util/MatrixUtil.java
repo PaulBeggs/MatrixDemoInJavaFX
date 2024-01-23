@@ -23,15 +23,7 @@ public class MatrixUtil {
     }
 
     public static String convertDecimalToFraction(String input) {
-        if (input.contains("/")) {
-            return simplifyFraction(input); // It is already a fraction.
-        }
-        double decimalValue;
-        try {
-            decimalValue = Double.parseDouble(input);
-        } catch (NumberFormatException e) {
-            return String.valueOf(0);
-        }
+        double decimalValue = ExpressionEvaluator.evaluate(input);;
 
         if (decimalValue < 0) {
             return "-" + convertDecimalToFraction(String.valueOf(-decimalValue));
@@ -81,16 +73,16 @@ public class MatrixUtil {
 
 
     public static String convertFractionToDecimalString(String expression) {
-//        System.out.println("Convert Fraction to Decimal Expression: " + expression);
-        if (expression.contains(".")) {
-            return correctRoundingError(expression); // It is already a decimal.
+        String parsedExpression = String.valueOf(ExpressionEvaluator.evaluate(expression));
+        if (parsedExpression.contains(".")) {
+            return correctRoundingError(parsedExpression); // It is already a decimal.
         }
 
-        if (!expression.contains("/")) {
-            return expression; // Expression is just an integer.
+        if (!parsedExpression.contains("/")) {
+            return parsedExpression; // Expression is just an integer.
         }
 
-        String[] parts = expression.split("/");
+        String[] parts = parsedExpression.split("/");
         if (parts.length != 2) {
             throw new IllegalArgumentException("Invalid fraction format"); // Catch all for any input that is not fractional (ex., x/y/e)
         }
@@ -151,6 +143,8 @@ public class MatrixUtil {
 
             // Check if the result is an integer
             if (denominator == 1) {
+//                System.out.println("numerator: " + numerator);
+//                System.out.println("Denominator: " + denominator);
                 return String.valueOf(numerator); // Simplified to an integer
             } else {
                 return numerator + "/" + denominator; // Fraction in the simplest form
@@ -185,7 +179,8 @@ public class MatrixUtil {
         for (int i = 0; i < matrix.length; i++) {
             originalFormMatrix[i] = new String[matrix[i].length];
             for (int j = 0; j < matrix[i].length; j++) {
-                originalFormMatrix[i][j] = MatrixApp.isFractionMode() ? convertDecimalToFraction(matrix[i][j]) : matrix[i][j]; // Assuming convertDecimalToFraction is also static
+                originalFormMatrix[i][j] = MatrixApp.isFractionMode() ? convertDecimalToFraction(matrix[i][j])
+                        : convertFractionToDecimalString(matrix[i][j]);
             }
         }
         return new Matrix(originalFormMatrix);

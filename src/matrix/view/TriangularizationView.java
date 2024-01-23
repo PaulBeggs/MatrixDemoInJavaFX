@@ -2,7 +2,6 @@ package matrix.view;
 
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import matrix.fileManaging.MatrixFileHandler;
 import matrix.gui.MatrixApp;
 import matrix.model.Matrix;
 import matrix.model.MatrixCell;
