@@ -5,19 +5,18 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="matrix.gui.MatrixController">
    <left>
-      <VBox prefHeight="625.0" prefWidth="136.0" spacing="5.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="525.0" prefWidth="136.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
             <Label alignment="CENTER" prefWidth="116.0" styleClass="title-label" text="Rows">
                <cursor>
@@ -33,7 +32,7 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Button fx:id="identityButton" mnemonicParsing="false" onAction="#handleIdentityButton" prefWidth="116.0" text="Set Identity Matrix">
+            <Button fx:id="identityButton" mnemonicParsing="false" onAction="#handleIdentityButton" prefWidth="116.0" text="Identity" textAlignment="CENTER" wrapText="true">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
@@ -52,52 +51,12 @@
                      </cursor></Button>
                </children>
             </HBox>
-            <Button fx:id="fastFactsButton" mnemonicParsing="false" onAction="#handleFastFactsButton" prefWidth="116.0" text="Fast Facts">
+            <Button fx:id="transposeButton" mnemonicParsing="false" onAction="#handleTransposeButton" prefWidth="116.0" text="Transpose">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <TextArea fx:id="directions" editable="false" minHeight="130.0" minWidth="116.0" prefHeight="134.0" prefWidth="116.0" styleClass="text-area" text="&#10;" wrapText="true">
-               <VBox.margin>
-                  <Insets top="35.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="Times New Roman" size="13.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="DEFAULT" />
-               </cursor>
-            </TextArea>
-            <Label alignment="CENTER" prefHeight="18.0" prefWidth="116.0" styleClass="title-label" text="Target Row" textAlignment="CENTER">
-               <VBox.margin>
-                  <Insets top="30.0" />
-               </VBox.margin>
-               <cursor>
-                  <Cursor fx:constant="DEFAULT" />
-               </cursor>
-            </Label>
-            <TextField fx:id="targetRow" styleClass="text-field" text="1" />
-            <Label alignment="CENTER" prefHeight="17.0" prefWidth="116.0" styleClass="title-label" text="Source Row">
-               <cursor>
-                  <Cursor fx:constant="DEFAULT" />
-               </cursor></Label>
-            <TextField fx:id="sourceRow" styleClass="text-field" text="2" />
-            <Label alignment="CENTER" prefWidth="116.0" styleClass="title-label" text="Multiplier" textAlignment="CENTER">
-               <cursor>
-                  <Cursor fx:constant="DEFAULT" />
-               </cursor></Label>
-            <TextField fx:id="multiplier" styleClass="text-field" text="-2" />
-            <Button fx:id="operationButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#performOperation" text="Compute">
-               <VBox.margin>
-                  <Insets top="20.0" />
-               </VBox.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></Button>
-            <ChoiceBox fx:id="operations" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></ChoiceBox>
-            <ChoiceBox fx:id="scenes" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0">
+            <Pane VBox.vgrow="ALWAYS" />
+            <ChoiceBox fx:id="scenes" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="116.0" VBox.vgrow="NEVER">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -117,7 +76,7 @@
       </VBox>
    </left>
    <center>
-      <GridPane fx:id="matrixGrid" styleClass="bordered-grid" BorderPane.alignment="CENTER">
+      <GridPane fx:id="matrixGrid" BorderPane.alignment="CENTER">
         <columnConstraints>
             <ColumnConstraints halignment="CENTER" />
           <ColumnConstraints halignment="CENTER" />
@@ -133,4 +92,60 @@
          </padding>
       </GridPane>
    </center>
+   <right>
+      <VBox prefWidth="136.0" spacing="5.0" BorderPane.alignment="CENTER">
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </padding>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+         <children>
+            <Label alignment="CENTER" prefHeight="18.0" prefWidth="116.0" styleClass="title-label" text="Target Row" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </Label>
+            <TextField fx:id="targetRow" styleClass="text-field" text="1" />
+            <Label alignment="CENTER" prefHeight="17.0" prefWidth="116.0" styleClass="title-label" text="Source Row">
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor></Label>
+            <TextField fx:id="sourceRow" styleClass="text-field" text="2" />
+            <Label alignment="CENTER" prefWidth="116.0" styleClass="title-label" text="Multiplier" textAlignment="CENTER">
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor></Label>
+            <TextField fx:id="multiplier" styleClass="text-field" text="-2" />
+            <Pane VBox.vgrow="ALWAYS" />
+            <Button fx:id="operationButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#performOperation" text="Compute">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <ChoiceBox fx:id="operations" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></ChoiceBox>
+            <Button fx:id="operationSummaryButton" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" onAction="#handleOperationSummary" prefWidth="116.0" text="Operation Summary" textAlignment="CENTER" wrapText="true">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="clearSummaryButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleResetOperationSummary" text="Clear Summary" textAlignment="CENTER" wrapText="true">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </VBox>
+   </right>
 </BorderPane>

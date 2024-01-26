@@ -2,6 +2,13 @@
     -primary-color: #282828;
     -secondary-color: #383838;
     -third-color: #181818;
+
+    -hover-color: gray;
+    -focus-color: red;
+
+    -header-color: -focus-color;
+    -subheader-color: #DC143C; /* Firebrick. Darker than red and crimson */
+    -sub-subheader-color: #8B0000; /* Dark red. */
     -text-color: white;
 
     -fx-background-color: -primary-color;
@@ -16,7 +23,7 @@
 
     -fx-alignment: center;
 
-    -fx-border-color: red;
+    -fx-border-color: -focus-color;
     -fx-border-width: .75;
 
     -fx-background-color: -third-color;
@@ -24,24 +31,42 @@
 }
 
 .button {
-    -fx-cursor: hand;
-    -fx-background-color: -third-color; /* black background */
-    -fx-text-fill: -text-color; /* White text */
+    -fx-text-fill: -text-color;
+    -fx-background-color: -third-color;
+    -fx-background-radius:0;
+    -fx-border-color:transparent;
+    -fx-border-width: 0 2 2 0;
 }
 
-/* Background color of the whole context menu */
-.choice-box .context-menu {
-    -fx-background-color: -third-color;
+.button:hover {
+    -fx-text-fill: -text-color;
+    -fx-background-color: -secondary-color;
+    -fx-background-radius:0;
+    -fx-border-color: -hover-color;
+    -fx-border-width: 0 2 2 0;
+}
+
+.button:focused {
+    -fx-text-fill: -text-color;
+    -fx-background-color: -secondary-color;
+    -fx-background-radius:0;
+    -fx-border-color: -focus-color;
+    -fx-border-width: 0 2 2 0;
 }
 
 /* Focused item background color in the list */
 .choice-box .menu-item:focused {
-    -fx-background-color: red;
+    -fx-background-color: -focus-color;
 }
 
 /* Text color of non-focused items in the list */
 .choice-box .menu-item > .label {
     -fx-text-fill: -text-color;
+}
+
+/* Background color of the whole context menu */
+.choice-box .context-menu {
+    -fx-background-color: -third-color;
 }
 
 /* Text color of focused item in the list */
@@ -51,8 +76,13 @@
 
 /* Background color of the control itself */
 .choice-box {
-  -fx-background-color: -third-color;
-  -fx-mark-color: red;
+    -fx-background-color: -third-color;
+    -fx-mark-color: -focus-color;
+    -fx-text-fill: -text-color;
+
+    -fx-background-radius:0;
+    -fx-border-color:transparent;
+    -fx-border-width: 0 2 2 0;
 }
 
 /* Selected item text color on the control itself */
@@ -60,23 +90,143 @@
     -fx-text-fill: -text-color;
 }
 
+.choice-box:hover {
+    -fx-background-color: -secondary-color;
+    -fx-text-color: -text-color;
+    -fx-text-fill: -text-color;
+    -fx-background-radius: 0;
+    -fx-border-color: -hover-color;
+    -fx-border-width: 0 2 2 0;
+}
+
+.choice-box:focused {
+    -fx-background-color: -secondary-color;
+    -fx-text-color: -text-color;
+    -fx-text-fill: -text-color;
+    -fx-background-radius: 0;
+    -fx-border-color: -focus-color;
+    -fx-border-width: 0 2 2 0;
+}
+
 .title-label {
     -fx-text-fill: -text-color;
 }
 
 .text-area {
-    -fx-background-color: red; /* Light gray background */
-    -fx-control-inner-background: -third-color; /* For text field background */
-    -fx-text-fill: -text-color; /* Light text for dark mode */
+    -fx-background-color: gray;
+    -fx-border-color: gray;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 0;
+    -fx-effect: none;
+    -fx-shadow: none;
+    -fx-inner-background-color: white;
+    -fx-control-inner-background: white;
+    -fx-text-fill: -text-color;
 }
 
 .text-field {
     -fx-background-color: -third-color;
     -fx-text-fill: -text-color;
+    -fx-border-color: transparent;
+    -fx-border-width: 2 2 2 2;
+}
+
+.text-field:hover {
+    -fx-background-color: -secondary-color;
+    -fx-text-fill: -text-color;
+    -fx-border-color: -hover-color;
+    -fx-border-width: 2 2 2 2;
+}
+
+.text-field:focused {
+    -fx-background-color: -secondary-color;
+    -fx-text-fill: -text-color;
+    -fx-border-color: -focus-color;
+    -fx-border-width: 2 2 2 2;
 }
 
 .bordered-grid {
-    -fx-border-color: red;
+    -fx-border-color: -focus-color;
     -fx-border-width: 0.75;
-    /* Other styles as needed */
 }
+
+.check-box .box {
+    -fx-background-color: -secondary-color;
+    -fx-border-color: -hover-color;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: -focus-color;
+}
+
+.check-box:selected .box {
+    -fx-background-color: -secondary-color;
+    -fx-border-color: -focus-color;
+}
+
+/* Main header style */
+.main-header {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-fill: -header-color; /* Adjust color as needed */
+}
+
+/* Subheader style */
+.sub-header {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-fill: -subheader-color; /* Adjust color as needed */
+}
+
+/* Sub-subheader style */
+.sub-sub-header {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-fill: -sub-subheader-color; /* Adjust color as needed */
+}
+
+/* Regular text style */
+.regular-text {
+    -fx-font-size: 14px;
+    -fx-fill: -text-color; /* Adjust color as needed */
+}
+
+.scroll-bar:vertical {
+    -fx-background-color: #333;
+}
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #666;
+}
+
+.text-flow {
+    -fx-background-color: -secondary-color;
+    -fx-control-inner-background: -third-color;
+}
+
+.scroll-pane {
+    -fx-background-color: -primary-color;
+    -fx-control-inner-background: -third-color;
+}
+
+.borderpane {
+    -fx-background-color: -primary-color;
+}
+/* Custom CSS for Slider */
+.slider {
+    -fx-background-color: -primary-color; /* Background color of the slider */
+}
+
+.slider .track {
+    -fx-background-color: -secondary-color; /* Track (background) color */
+}
+
+.slider .thumb {
+    -fx-background-color: white; /* Thumb (bar) color */
+}
+
+.slider:focused .thumb {
+    -fx-background-color: yellow; /* Thumb (bar) color when slider is focused */
+    -fx-radius: 2;
+}
+

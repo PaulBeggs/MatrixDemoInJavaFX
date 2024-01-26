@@ -1,6 +1,5 @@
 package matrix.gui;
 
-import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -9,66 +8,29 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.util.Duration;
 import matrix.fileManaging.FileUtil;
 
 import java.io.IOException;
 import java.util.Objects;
-import java.util.Set;
 
 public class MatrixApp extends Application {
     public static Stage primaryStage;
     public static String selectedTheme = "light";
-    public static boolean fractionMode = true;
+    public static boolean fractionMode = true, isForceFractions = true, showInfo = false, matrixApp = false;
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws IOException {
         FileUtil.ensureAllFilesExist();
         primaryStage = stage;
-        try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/themeScene.fxml")));
-            Scene scene = new Scene(root);
-            setupGlobalEscapeHandler(scene);
-            applyTheme(scene);
-            primaryStage.setScene(scene);
-            primaryStage.setTitle("Select Theme");
-            primaryStage.show();
-            primaryStage.setOnCloseRequest(event -> closeApps());
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Couldn't load the theme selection scene.");
-        }
-    }
-
-
-    public static void applyTheme(Scene scene) {
-        scene.getStylesheets().clear();
-        System.out.println("(Inside applyTheme) This is the selected theme: \n" + selectedTheme);
-        String cssFile = selectedTheme.equals("dark") ? "/styles/darkMode.css" : "/styles/lightMode.css";
-        scene.getStylesheets().add(Objects.requireNonNull(MatrixApp.class.getResource(cssFile)).toExternalForm());
-    }
-
-
-    public static Stage getPrimaryStage() {
-//        System.out.println("This is the primary stage: \n" + primaryStage);
-        return primaryStage;
-    }
-
-    public static void setSelectedTheme(String theme) {
-        System.out.println("(Inside setSelectedScene) This is the selected theme: \n" + selectedTheme);
-        selectedTheme = theme;
-    }
-
-    public static void setFractionMode(boolean modeBoolean) {
-        fractionMode = modeBoolean;
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    public static boolean isFractionMode() {
-        return fractionMode;
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/themeScene.fxml")));
+        Scene scene = new Scene(root);
+        setupGlobalEscapeHandler(scene);
+        applyTheme(scene);
+        setFractionMode(fractionMode);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Select Themes");
+        primaryStage.show();
+        primaryStage.setOnCloseRequest(event -> closeApps());
     }
 
     public static void setupGlobalEscapeHandler(Scene scene) {
@@ -78,9 +40,22 @@ public class MatrixApp extends Application {
             }
         });
     }
-
-    public static void closeApps() {
-        Platform.exit(); // Immediately close the UI
-        System.exit(130); // Exit the JVM
+    public static void applyTheme(Scene scene) {
+        scene.getStylesheets().clear();
+        String cssFile = selectedTheme.equals("dark") ? "/styles/darkMode.css" : "/styles/lightMode.css";
+        scene.getStylesheets().add(Objects.requireNonNull(MatrixApp.class.getResource(cssFile)).toExternalForm());
     }
+
+    public static Stage getPrimaryStage() {return primaryStage;}
+    public static void setSelectedTheme(String theme) {selectedTheme = theme;}
+    public static void setFractionMode(boolean modeBoolean) {fractionMode = modeBoolean;}
+    public static boolean isFractionMode() {return fractionMode;}
+    public static boolean isForceFractions() {return isForceFractions;}
+    public static void setIsForceFractions(boolean fractionBoolean) {isForceFractions = fractionBoolean;}
+    public static boolean isShowInfo() {return showInfo;}
+    public static void setShowInfo(boolean infoBoolean) {showInfo = infoBoolean;}
+    public static boolean isMatrixApp() {return matrixApp;}
+    public static void setMatrixApp(boolean appBoolean) {matrixApp = appBoolean;}
+    public static void closeApps() {Platform.exit(); System.exit(130);}
+    public static void main(String[] args) {launch(args);}
 }

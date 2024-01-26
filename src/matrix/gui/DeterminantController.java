@@ -1,31 +1,32 @@
 package matrix.gui;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import matrix.fileManaging.FilePath;
+import matrix.fileManaging.MatrixFileHandler;
 import matrix.fileManaging.MatrixType;
 import matrix.model.Matrix;
-import matrix.fileManaging.MatrixFileHandler;
-import matrix.model.MatrixView;
-import matrix.operators.MatrixDeterminantOperations;
+import matrix.model.MatrixCell;
+import matrix.model.MatrixSingleton;
+import matrix.util.ErrorsAndSyntax;
+import matrix.util.ExpressionEvaluator;
+import matrix.view.MatrixView;
 
-import java.io.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.io.IOException;
+import java.util.List;
 
 public class DeterminantController implements DataManipulation {
+    @FXML
+    BorderPane borderPane;
     @FXML
     Button saveButton;
     @FXML
@@ -38,119 +39,91 @@ public class DeterminantController implements DataManipulation {
     TextArea directions;
     @FXML
     CheckBox checkBox;
-    private MatrixDeterminantOperations determinantOperations;
     private MatrixView matrixView;
-    private List<List<TextField>> matrixTextFields;
-    private Matrix matrix;
-    private BigDecimal determinant;
-    private boolean tickedBox;
-    private boolean determinantIsZero = false;
-    private boolean isEditable;
-    private final ScheduledExecutorService autoSaveExecutor = Executors.newSingleThreadScheduledExecutor();
-    private final String initialDirections =
-                    """
-                        Additive:\s
-                        det(B) = det(A)\s
-                        \s
-                        Interchangeability:\s
-                        det(B) = -det(A);\s
-                        \s
-                        Scalar Multiplication:\s
-                        det(B) = k * det(A)""";
+    private MatrixCell[][] matrixCells;
+    private String determinant;
+    private boolean isSquare = true;
 
     @FXML
     private void initialize() {
-        setupAutoSave();
-        setBooleans();
-        initializeMatrixAndOperations();
-        initializeMatrixView();
+        update();
+        matrixView = new MatrixView(matrixGrid, matrixCells);
         setupDirectionText();
-        setupUIListeners();
-        matrixView.updateViews(FilePath.MATRIX_PATH.getPath(), MatrixType.REGULAR, true);
+        setupScenesDropdown();
+        Matrix matrix = MatrixSingleton.getInstance();
+        matrixView.updateViews(true, matrix);
     }
 
-    private void initializeMatrixAndOperations() {
-        matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
-    }
-    private void setBooleans() {
-        isEditable = true;
-        tickedBox = true;
-        checkBox.setSelected(true);
-    }
-    private void initializeMatrixView() {
-        matrixGrid.getStyleClass().add("grid-pane");
-        matrixTextFields = new ArrayList<>();
-        matrixView = new MatrixView(matrix, matrixGrid, matrixTextFields);
-    }
     private void setupDirectionText() {
+        String initialDirections = """
+                Additive:\s
+                det(B) = det(A)\s
+                \s
+                Interchangeability:
+                det(B) = -det(A);\s
+                \s
+                Scalar Multiplication:\s
+                det(B) = k * det(A)""";
         directions.setText(initialDirections);
         directions.setWrapText(true);
         directions.setEditable(false);
     }
-    private void setupUIListeners() {
+
+    @Override
+    public void setupScenesDropdown() {
         scenes.getItems().setAll(Scenes.values());
         scenes.setValue(Scenes.DETERMINANT);
-
+        scenes.setTooltip(new Tooltip("Pick the scene"));
         scenes.setOnAction(event -> {
             Scenes selectedScene = scenes.getValue();
             try {
-                stopAutoSave();
                 selectedScene.switchScene(event);
             } catch (IOException e) {
-                e.getMessage();
+                ErrorsAndSyntax.showErrorPopup("Cannot load the scene.");
+                throw new IllegalArgumentException(e);
             }
         });
-
-        checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            tickedBox = newValue;
-        });
     }
+
+
 
     @FXML
     public void handleDeterminantFunctionality() {
-        stopAutoSave();
-        update();
-        if (checkBox.isSelected()) {
-            tickedBox = true;
-
-            showDeterminantAnimation();
-            isEditable = false;
-        }
-        determinantValue.setText(String.valueOf(determinant));
-        System.out.println("This is the determinant value inside of 'handleDeterminantFunctionality' \n" + determinant);
-    }
-
-    private void processMatrixForDeterminant() {
-            if (Objects.equals(determinant, BigDecimal.valueOf(.12319620031999)) ||
-                    Objects.equals(determinant, BigDecimal.ZERO)) {
-                handleZeroDeterminant();
+        try {
+            Matrix matrix = MatrixSingleton.getInstance().copy();
+            if (matrix.isSquare()) {
+                this.determinant = (matrix.calculateDeterminant());
+                determinantValue.setText((determinant));
+                save();
+                matrixView.updateViews(true, MatrixSingleton.getTriangularInstance());
+                isSquare = true;
             } else {
-                handleNonZeroDeterminant();
+                isSquare = false;
+                ErrorsAndSyntax.showErrorPopup("Matrix is not square; it does not have a defined determinant.");
+
             }
-    }
-
-    private void handleZeroDeterminant() {
-        if (!tickedBox) {
-            temporarilyUpdateDirections("Determinant is either 0, or not defined as it may be a non-square matrix.");
+        } catch (IllegalArgumentException e) {
+            e.getMessage();
+            return;
         }
-        determinantValue.setText("0.0");
-        determinantIsZero = true;
+
+        if (checkBox.isSelected()) {
+            showDeterminantAnimation();
+        }
     }
 
-    private void handleNonZeroDeterminant() {
-        stopAutoSave();
-        matrix = MatrixFileHandler.getMatrix(FilePath.TRIANGULAR_PATH.getPath());
-        System.out.println("This is the matrix that is being acquired from Triangular_Path: \n" + matrix);
-        matrixView.updateViews(FilePath.TRIANGULAR_PATH.getPath(), MatrixType.TRIANGULAR, false);
-    }
-
-    private void handleMissingMatrix() {
-        temporarilyUpdateDirections("Matrix not found. Generate a matrix first.");
-    }
 
     @Override
     @FXML
     public void handleSaveButton() {
+        if (determinant == null) {
+            ErrorsAndSyntax.showErrorPopup("Cannot save a matrix with an undefined determinant using this option.");
+            return;
+        }
+        if (Double.compare(ExpressionEvaluator.evaluate(determinant), 0) == 0) {
+            determinantValue.setText("0.0");
+            determinant = String.valueOf(0.0);
+        }
         Stage saveStage = new Stage();
         saveStage.setTitle("Save Menu");
         saveStage.initModality(Modality.WINDOW_MODAL);
@@ -161,30 +134,28 @@ public class DeterminantController implements DataManipulation {
         try {
             root = loader.load();
         } catch (IOException e) {
-            e.printStackTrace();
-            return;
+            ErrorsAndSyntax.showErrorPopup("Cannot load the scene.");
+            throw new IllegalArgumentException(e);
         }
-
-        SaveController saveController = loader.getController();
-        System.out.println("These are the matrixTextFields that are being sent to the save controller: ");
-        for (List<TextField> row : matrixTextFields) {
-            row.forEach(textField -> System.out.print(textField.getText() + " "));
-            System.out.println(); // To move to the next line after each row
-        }
-        saveController.setMatrixTextFields(matrixTextFields);
-        saveController.setDeterminantValue(determinant);
-        saveController.setStage(saveStage);
 
         Scene saveScene = new Scene(root);
-        MatrixApp.setupGlobalEscapeHandler(saveScene);
+        saveScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                saveStage.close();
+            }
+        });
+
+        SaveController saveController = loader.getController();
+        saveController.setDeterminantValue((determinant));
+        saveController.setStage(saveStage);
+
         MatrixApp.applyTheme(saveScene);
         saveStage.setScene(saveScene);
         saveStage.showAndWait();
     }
 
     private void showDeterminantAnimation() {
-        if (!determinantIsZero) {
-            System.out.println("This is the matrix that is being sent to be calculated for the determinant in show determinant operation: \n" + matrix);
+        if (isSquare) {
             Stage animationStage = new Stage();
             animationStage.setTitle("Determinant Animation");
             animationStage.initModality(Modality.WINDOW_MODAL);
@@ -195,141 +166,81 @@ public class DeterminantController implements DataManipulation {
             try {
                 root = loader.load();
             } catch (IOException e) {
-                e.printStackTrace();
-                return;
+                ErrorsAndSyntax.showErrorPopup("Cannot load the scene.");
+                throw new IllegalArgumentException(e);
             }
 
             DeterminantPopUpController determinantPopUpController = loader.getController();
-            determinantPopUpController.setMatrixTextFields(matrixTextFields);
+            determinantPopUpController.setMatrixCells(matrixCells);
             determinantPopUpController.setMatrixGrid(matrixGrid);
-            determinantPopUpController.setStage(animationStage);
 
             Scene animationScene = new Scene(root);
-            MatrixApp.setupGlobalEscapeHandler(animationScene);
+            animationScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+                if (event.getCode() == KeyCode.ESCAPE) {
+                    animationStage.close();
+                }
+            });
             MatrixApp.applyTheme(animationScene);
             animationStage.setScene(animationScene);
             animationStage.show();
-
         } else {
-            showErrorPopup();
+            System.out.println("Not square.");
         }
-    }
 
-    private void makeTriangular(Matrix matrix) {
-        List<List<String>> matrixData = matrixView.parseMatrixData(matrix);
-        if (matrixData != null) {
-            System.out.println("This is the (hopefully triangularized) matrixData inside DeterminantController: \n" + matrixData);
-            MatrixFileHandler.saveMatrixDataToFile(FilePath.TRIANGULAR_PATH.getPath(), BigDecimal.valueOf(0), matrixData, MatrixType.TRIANGULAR);
-            matrixView.updateViews(FilePath.TRIANGULAR_PATH.getPath(), MatrixType.TRIANGULAR, false);
-        }
-    }
-
-    private void showErrorPopup() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText("The matrix is not invertible. Therefore, the determinant is either zero or undefined.");
-
-        alert.showAndWait();
     }
 
     @Override
     public void update() {
-        if (matrix != null) {
-            System.out.println("Matrix is not null (determinantController) \n" + matrix);
-            determinantOperations = new MatrixDeterminantOperations(matrix);
-            this.determinant = determinantOperations.calculateDeterminant();
+        List<List<String>> matrixData = MatrixFileHandler.loadMatrixDataFromFile(FilePath.MATRIX_PATH.getPath());
 
-            // Set the scale of the determinant to 5 decimal places, rounding as necessary
-            BigDecimal scaledDeterminant = determinant.setScale(5, RoundingMode.HALF_UP);
-            System.out.println("This is the scaled determinant: \n" + scaledDeterminant);
-
-            this.determinant = scaledDeterminant;
-
-            List<List<String>> matrixData = matrixView.parseMatrixData(matrix);
-            MatrixFileHandler.saveMatrixDataToFile(
-                    FilePath.DETERMINANT_PATH.getPath(), determinant,
-                            matrixData, MatrixType.DETERMINANT);
-            MatrixFileHandler.saveMatrixDataToFile(FilePath.TRIANGULAR_PATH.getPath(),
-                    BigDecimal.ZERO, matrixData, MatrixType.TRIANGULAR);
-            makeTriangular(matrix);
-            processMatrixForDeterminant();
+        if (!matrixData.isEmpty()) {
+            populateMatrixUI(matrixData);
         } else {
-            System.out.println("Matrix is null (determinantController) ");
-            System.out.println("Handling missing matrix...");
-            handleMissingMatrix();
+            MatrixFileHandler.populateMatrixIfEmpty();
         }
+    }
+
+
+    private void populateMatrixUI(List<List<String>> matrixData) {
+        int numRows = matrixData.size();
+        int numCols = matrixData.getFirst().size();
+
+        // Initialize your Matrix model with the loaded data
+        Matrix matrix = MatrixSingleton.getInstance();
+
+        for (int row = 0; row < numRows; row++) {
+            for (int col = 0; col < numCols; col++) {
+                try {
+                    String cellValue = matrixData.get(row).get(col);
+                    matrix.setValue(row, col, cellValue);
+                } catch (NumberFormatException e) {
+                    MatrixFileHandler.populateMatrixIfEmpty();
+                }
+            }
+        }
+
+        // Create MatrixCells with the initialized Matrix model
+        matrixCells = new MatrixCell[numRows][numCols];
+        for (int row = 0; row < numRows; row++) {
+            for (int col = 0; col < numCols; col++) {
+                String cellValue = matrixData.get(row).get(col);
+                matrixCells[row][col] = new MatrixCell(row, col, cellValue, true);
+            }
+        }
+    }
+
+    private void save() {
+        List<List<String>> matrixData = MatrixFileHandler.loadMatrixDataFromMatrix(MatrixSingleton.getInstance());
+
+        MatrixFileHandler.saveMatrixDataToFile(
+                FilePath.DETERMINANT_PATH.getPath(), determinant,
+                matrixData, MatrixType.DETERMINANT);
+        MatrixFileHandler.saveMatrixDataToFile(FilePath.TRIANGULAR_PATH.getPath(),
+                "0", matrixData, MatrixType.TRIANGULAR);
     }
 
     @Override
-    public void saveToFile() {
-        List<List<String>> matrixData = matrixView.parseMatrixData(matrix);
-        if (matrixData != null) {
+    public void setToolTips() {
 
-            MatrixFileHandler.saveMatrixDataToFile(FilePath.MATRIX_PATH.getPath(),
-                    BigDecimal.valueOf(0), matrixData, MatrixType.REGULAR);
-            MatrixFileHandler.setMatrix(FilePath.MATRIX_PATH.getPath(), matrix);
-
-        } else {
-            System.out.println("(MatrixController) Error: reg Matrix data is null.");
-        }
-    }
-
-    public void uploadFromFile() {
-        matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
-        if (matrix == null) {
-            System.out.println("(DeterminantController) regMatrix is null from the start.");
-            System.out.println("Populating with 0.0...");
-
-            MatrixFileHandler.populateFileIfEmpty(FilePath.MATRIX_PATH.getPath());
-            matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
-
-            if (matrix == null) {
-                System.out.println("(DeterminantController) Error: Unable to load initial matrix.");
-            }
-        } else if (isEditable) {
-            matrixView.setMatrixTextFields(matrixTextFields);
-            matrixView.updateMatrixFromUI();
-            matrix = MatrixFileHandler.getMatrix(FilePath.MATRIX_PATH.getPath());
-        }
-    }
-
-    private void temporarilyUpdateDirections(String newDirections) {
-        directions.setText(newDirections);
-
-        // Schedule resetting the directions text area after 6 seconds
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.schedule(() -> {
-            Platform.runLater(() -> directions.setText(initialDirections));
-            executorService.shutdown(); // Important to shut down the executor to prevent resource leaks
-        }, 7, TimeUnit.SECONDS);
-    }
-
-    @Override
-    public void setupAutoSave() {
-        long autoSaveInterval = 100; // The auto-save interval in milliseconds
-
-        // Schedule the auto-save task to run periodically
-        autoSaveExecutor.scheduleAtFixedRate(() -> {
-            Platform.runLater(() -> {
-                // Ensure that file operations that affect the UI are run on the JavaFX Application Thread
-                uploadFromFile();
-                saveToFile();
-            });
-        }, autoSaveInterval, autoSaveInterval, TimeUnit.MILLISECONDS);
-    }
-
-    public void stopAutoSave() {
-        autoSaveExecutor.shutdown();
-        try {
-            if (!autoSaveExecutor.awaitTermination(500, TimeUnit.MILLISECONDS)) {
-                System.out.println("autoSaver has been shut down.");
-                autoSaveExecutor.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            autoSaveExecutor.shutdownNow();
-        }
     }
 }
-
-

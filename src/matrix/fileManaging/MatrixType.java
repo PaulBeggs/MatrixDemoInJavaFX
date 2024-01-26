@@ -4,5 +4,8 @@ public enum MatrixType {
     DETERMINANT,
     TRIANGULAR,
     REGULAR,
-    IDENTITY
+    IDENTITY,
+    INVERSE,
+    REF,
+    RREF
 }

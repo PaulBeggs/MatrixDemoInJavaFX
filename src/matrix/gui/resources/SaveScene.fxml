@@ -1,21 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="matrix.gui.SaveController">
+<VBox alignment="CENTER" prefWidth="237.0" spacing="10" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="matrix.gui.SaveController">
     <Label styleClass="title-label" text="Enter file name:">
       <font>
          <Font size="15.0" />
       </font></Label>
     <TextField fx:id="fileNameField" />
-   <ChoiceBox fx:id="matrixSelectionComboBox" prefWidth="150.0" />
-    <Button onAction="#saveButtonPressed" text="Save" />
+   <ChoiceBox fx:id="matrixSelectionComboBox" prefWidth="150.0">
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor></ChoiceBox>
+   <CheckBox fx:id="saveAsFractions" mnemonicParsing="false" selected="true" styleClass="title-label" text="Save as fractions" textAlignment="CENTER" wrapText="true">
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor></CheckBox>
+    <Button onAction="#saveButtonPressed" text="Save">
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor></Button>
    <padding>
       <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
    </padding>

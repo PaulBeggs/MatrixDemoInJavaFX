@@ -1,37 +1,36 @@
 package matrix.gui;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import matrix.fileManaging.FilePath;
+import matrix.fileManaging.MatrixFileHandler;
 import matrix.fileManaging.MatrixType;
 import matrix.model.Matrix;
-import matrix.fileManaging.MatrixFileHandler;
+import matrix.model.MatrixCell;
+import matrix.util.ErrorsAndSyntax;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SaveController {
     @FXML
     private TextField fileNameField;
     @FXML
     private ChoiceBox<String> matrixSelectionComboBox;
+    @FXML
+    private CheckBox saveAsFractions;
     private List<List<TextField>> matrixTextFields;
-    private Stage stage;
-    private BigDecimal determinantValue;
+    private MatrixCell[][] matrixCells;
+    private String determinantValue;
     private Matrix triangularMatrix;
+    private Stage saveStage;
 
     @FXML
     public void initialize() {
-        setStage(stage);
         setMatrixTextFields(matrixTextFields);
 
         matrixSelectionComboBox.getItems().addAll("Default Matrix", "Determinant Matrix", "Triangular Matrix");
@@ -40,22 +39,24 @@ public class SaveController {
         fileNameField.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 saveButtonPressed();
-            } else if (event.getCode() == KeyCode.ESCAPE) {
-                stage.close();
             }
         });
     }
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
     public void setMatrixTextFields(List<List<TextField>> matrixTextFields) {
         this.matrixTextFields = matrixTextFields;
     }
-    public void setDeterminantValue(BigDecimal determinantValue) {
+
+    public MatrixCell[][] getMatrixCells() {
+        return matrixCells;
+    }
+    public void setMatrixCells (MatrixCell[][] matrixCells) {
+        this.matrixCells = matrixCells;
+    }
+    public void setDeterminantValue(String determinantValue) {
         this.determinantValue = determinantValue;
     }
-    public BigDecimal getDeterminant() {
+    public String getDeterminant() {
         return determinantValue;
     }
     public Matrix getTriangularMatrix() {
@@ -64,64 +65,53 @@ public class SaveController {
 
     @FXML
     private void saveButtonPressed() {
+        ThemeController.setFraction(saveAsFractions.isSelected());
+        MatrixApp.setFractionMode(saveAsFractions.isSelected());
+
         String fileName = fileNameField.getText().trim();
 
         if (!fileName.isEmpty() && !fileName.contains(File.separator) && !fileName.contains(".")) {
+
             String selectedMatrixOption = matrixSelectionComboBox.getValue();
 
-            List<List<String>> matrixData = getMatrixDataFromTextFields();
+            List<List<String>> matrixData;
 
             switch (selectedMatrixOption) {
-                case "Default Matrix" ->
-                        MatrixFileHandler.saveMatrixDataToFile("savedMatrices/matrices/"
-                                + fileName + ".txt", BigDecimal.valueOf(0), matrixData, MatrixType.REGULAR);
+                case "Default Matrix" -> {
+                    matrixData = MatrixFileHandler.loadMatrixDataFromFile(FilePath.MATRIX_PATH.getPath());
+                    MatrixFileHandler.saveMatrixDataToFile("savedMatrices/matrices/"
+                            + fileName + ".txt", "0", matrixData, MatrixType.REGULAR);
+                    saveStage.close();
+                }
                 case "Determinant Matrix" -> {
                     if (getDeterminant() != null) {
-                        matrixData = MatrixFileHandler.loadMatrixFromFile(FilePath.TRIANGULAR_PATH.getPath());
+                        matrixData = MatrixFileHandler.loadMatrixDataFromFile(FilePath.TRIANGULAR_PATH.getPath());
                         MatrixFileHandler.saveMatrixDataToFile("savedMatrices/determinants/"
                                 + fileName + ".txt", determinantValue, matrixData, MatrixType.DETERMINANT);
+                        saveStage.close();
                     } else {
-                        showErrorPopup("Must find the determinant before you can save.");
-                        System.out.println("Must find the determinant before you can save.");
+                        ErrorsAndSyntax.showErrorPopup("Must find the determinant before you can save.");
+//                        System.out.println("Must find the determinant before you can save.");
                     }
                 }
                 case "Triangular Matrix" -> {
                     if (getTriangularMatrix() != null) {
-
+                        saveStage.close();
                     } else {
-                        showErrorPopup("Must find the triangular matrix before you can save.");
-                        System.out.println("Must find the triangular matrix before you can save.");
+                        ErrorsAndSyntax.showErrorPopup("Must find the triangular matrix before you can save.");
+//                        System.out.println("Must find the triangular matrix before you can save.");
                     }
                 }
                 default -> {
                 }
             }
-            stage.close();
+
 
         } else {
             // Show an error message or handle invalid input
-            System.out.println("Please enter a valid file name without special characters or file extensions.");
+            ErrorsAndSyntax.showErrorPopup("Please enter a valid file name without special characters or file extensions.");
+            fileNameField.setText("Example");
         }
     }
-
-    public List<List<String>> getMatrixDataFromTextFields() {
-        List<List<String>> matrixData = new ArrayList<>();
-
-        for (List<TextField> row : this.matrixTextFields) {
-            List<String> rowData = row.stream().map(TextField::getText).collect(Collectors.toList());
-            matrixData.add(rowData);
-        }
-        System.out.println("This is the matrixData inside of the SaveController: \n" + matrixData);
-
-        return matrixData;
-    }
-
-    private void showErrorPopup(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-
-        alert.showAndWait();
-    }
+    public void setStage(Stage stage) {saveStage = stage;}
 }

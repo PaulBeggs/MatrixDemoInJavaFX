@@ -4,23 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4abf2f47-9852-4e6c-b90b-d7b7b33c5173" name="Changes" comment="Updated the Theme Controller. This is before editing the rest of the controllers to adapt with the new fraction-decimal changes.">
+    <list default="true" id="4abf2f47-9852-4e6c-b90b-d7b7b33c5173" name="Changes" comment="Project is still in a good spot. Added some additional controllers and more scenes. I also started on the &quot;general information scene&quot; as well.&#10;I'm going to start work on fixing the exponentiation and adding some modulus capability to the project. I wanted to save before I potentially fuck up the whole thing.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/MatrixApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MatrixApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/themeScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/themeScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/model/MatrixView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/model/MatrixView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/operators/DecimalToFraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/operators/UserInputToOutputOperands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/darkMode.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/darkMode.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/lightMode.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/lightMode.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/MainInformationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MainInformationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/util/ErrorsAndSyntax.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/util/ErrorsAndSyntax.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/util/ExpressionEvaluator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/util/ExpressionEvaluator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/util/TextFieldListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/util/TextFieldListeners.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/util/TokenInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/util/TokenInfo.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
   </component>
   <component name="CoverageOptionsProvider">
     <option name="myAddOrReplace" value="0" />
@@ -42,7 +41,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="Work-on-Fraction/decimal-functionality" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -67,6 +66,9 @@
       </UrlAndAccount>
     </option>
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/matrix/gui/MainInformationController.java" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -81,49 +83,98 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Application.DecimalToFraction.executor": "Run",
-    "Application.MatrixApp.executor": "Run",
-    "Application.UserInputToOutputOperands.executor": "Run",
-    "Downloaded.Files.Path.Enabled": "false",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "ShowUsagesActions.previewPropertyKey": "true",
-    "create.test.in.the.same.root": "true",
-    "git-widget-placeholder": "Testing-branch-12/23/23",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/paulb/IdeaProjects/Matrix testing",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "editor.preferences.tabs"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Application.BigCalculator.executor&quot;: &quot;Run&quot;,
+    &quot;Application.BigDecimalExample.executor&quot;: &quot;Run&quot;,
+    &quot;Application.CalculatorConsole.executor&quot;: &quot;Run&quot;,
+    &quot;Application.DecimalToFraction.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ExpressionEvaluator.executor&quot;: &quot;Run&quot;,
+    &quot;Application.FractionUtil.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Matrix.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MatrixApp.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MatrixInvertingOperationsTest.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MatrixTest.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MatrixUtil.executor&quot;: &quot;Run&quot;,
+    &quot;Application.RepeatingCharacterDetector.executor&quot;: &quot;Run&quot;,
+    &quot;Application.UserInputToOutputOperands.executor&quot;: &quot;Run&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;ShowUsagesActions.previewPropertyKey&quot;: &quot;true&quot;,
+    &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Working-on-Determinant-Controller&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/paulb/IdeaProjects/Matrix testing&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.postfix.templates&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\paulb\IdeaProjects\MatrixGUI_2\src\matrix\gui\resources" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\paulb\IdeaProjects\MatrixDemoInJavaFX\src\matrix\gui\resources" />
+      <recent name="C:\Users\paulb\IdeaProjects\MatrixDemoInJavaFX\src\matrix\gui\generalInformationControllers" />
       <recent name="C:\Users\paulb\IdeaProjects\MatrixDemoInJavaFX\src\img" />
       <recent name="C:\Users\paulb\IdeaProjects\MatrixDemoInJavaFX\src\styles" />
       <recent name="C:\Users\paulb\IdeaProjects\FinalProject\SavedMatricies" />
-      <recent name="C:\Users\paulb\IdeaProjects\DataStructuresFinalProject_PaulBeggs1\src\matrix\gui\resources" />
     </key>
   </component>
   <component name="RunManager" selected="Application.MatrixApp">
+    <configuration name="ExpressionEvaluator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="matrix.util.ExpressionEvaluator" />
+      <module name="MatrixGUI_2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="matrix.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Matrix" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="matrix.model.Matrix" />
+      <module name="MatrixGUI_2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="matrix.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+        <pattern>
+          <option name="PATTERN" value="matrix.model.MatrixCell" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+        <pattern>
+          <option name="PATTERN" value="matrix.util.MatrixUtil" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+        <pattern>
+          <option name="PATTERN" value="matrix.util.ExpressionEvaluator" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="MatrixApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="matrix.gui.MatrixApp" />
       <module name="MatrixGUI_2" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="matrix.gui.MatrixController" />
-          <option name="ENABLED" value="true" />
+          <option name="ENABLED" value="false" />
         </pattern>
         <pattern>
           <option name="PATTERN" value="matrix.gui.MatrixApp" />
@@ -139,6 +190,30 @@
         </pattern>
         <pattern>
           <option name="PATTERN" value="matrix.*" />
+          <option name="ENABLED" value="false" />
+        </pattern>
+        <pattern>
+          <option name="PATTERN" value="matrix.model.Matrix" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+        <pattern>
+          <option name="PATTERN" value="matrix.gui.DeterminantController" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+        <pattern>
+          <option name="PATTERN" value="matrix.model.MatrixCell" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+        <pattern>
+          <option name="PATTERN" value="matrix.gui.MatrixController" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+        <pattern>
+          <option name="PATTERN" value="matrix.util.MatrixUtil" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+        <pattern>
+          <option name="PATTERN" value="matrix.gui.InverseController" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -146,12 +221,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserInputToOutputOperands" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="matrix.operators.UserInputToOutputOperands" />
+    <configuration name="MatrixTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="matrix.model.MatrixTest" />
       <module name="MatrixGUI_2" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="matrix.operators.*" />
+          <option name="PATTERN" value="matrix.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MatrixUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="matrix.util.MatrixUtil" />
+      <module name="MatrixGUI_2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="matrix.util.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -160,16 +248,18 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.UserInputToOutputOperands" />
+      <item itemvalue="Application.Matrix" />
+      <item itemvalue="Application.MatrixTest" />
+      <item itemvalue="Application.ExpressionEvaluator" />
+      <item itemvalue="Application.MatrixUtil" />
       <item itemvalue="Application.MatrixApp" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.MatrixApp" />
-        <item itemvalue="Application.UserInputToOutputOperands" />
-        <item itemvalue="Application.MatrixApp" />
-        <item itemvalue="Application.UserInputToOutputOperands" />
-        <item itemvalue="Application.MatrixApp" />
+        <item itemvalue="Application.MatrixTest" />
+        <item itemvalue="Application.MatrixUtil" />
+        <item itemvalue="Application.ExpressionEvaluator" />
       </list>
     </recent_temporary>
   </component>
@@ -261,7 +351,63 @@
       <option name="project" value="LOCAL" />
       <updated>1704148953031</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Updated theme controller, &#10;Added a singleton class to handle the different instances of the matrix across different scenes,&#10;Changed MatrixController to reflect the changes with the singleton class,&#10;Updated some parts of MatrixFileHandler, but not much; nothing worth commenting on,&#10;Also, greatly reduced redundancy inside the MatrixView class. I hope with those changes, the code will be much more readable,&#10;fin.">
+      <option name="closed" value="true" />
+      <created>1704574796774</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1704574796774</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Lots of stuff happened. Now I am going to change the double matrices to use bigdecimal instead.">
+      <option name="closed" value="true" />
+      <created>1704863725104</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1704863725104</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Cleaned up the BigDecimal from the project. Replaced the functionality with double primitive type instead.&#10;At this point, only the MatrixController works. All the other functionality of the project is at a stand-still. &#10;I will leave that for the time-being, as I want to work on the decimal/fractional functionality without having to worry about updating all other controllers for every change.">
+      <option name="closed" value="true" />
+      <created>1705543448284</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1705543448284</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Working on DeterminantController.&#10;Added fraction to decimal functionality. Also added a new Controller, CalculatorController.&#10;Probably won't start work on that for a while, but it is a neat addition, I think.">
+      <option name="closed" value="true" />
+      <created>1705803988191</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1705803988191</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Added proper decimal to fraction and fraction to decimal functionality inside the determinant controller. &#10;&#10;Need to add additional steps for the popup controller (i.e., documenting the sign changes, the updated matrices, etc.).">
+      <option name="closed" value="true" />
+      <created>1705865565102</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1705865565102</updated>
+    </task>
+    <task id="LOCAL-00015" summary="This project is in a good spot right now. DeterminantController, InverseController, and MatrixController are all working properly (I think). I need add the &quot;general information&quot; FXML file, but that can be handled later.&#10;Also, I noticed this bug when trying to use the exponentiation feature. 2^2^3 should return 2^8 -&gt; 256, but instead, it returns 64? I'm sure it's just a bug about the order of operations.">
+      <option name="closed" value="true" />
+      <created>1705969265811</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1705969265811</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Project is still in a good spot. Added some additional controllers and more scenes. I also started on the &quot;general information scene&quot; as well.&#10;I'm going to start work on fixing the exponentiation and adding some modulus capability to the project. I wanted to save before I potentially fuck up the whole thing.">
+      <option name="closed" value="true" />
+      <created>1706234375426</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1706234375426</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -286,15 +432,42 @@
     <MESSAGE value="Finished the different themes." />
     <MESSAGE value="Matrix Controller and Determinant Controller can accurately manipulate and store data." />
     <MESSAGE value="Updated the Theme Controller. This is before editing the rest of the controllers to adapt with the new fraction-decimal changes." />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated the Theme Controller. This is before editing the rest of the controllers to adapt with the new fraction-decimal changes." />
+    <MESSAGE value="Updated theme controller, &#10;Added a singleton class to handle the different instances of the matrix across different scenes,&#10;Changed MatrixController to reflect the changes with the singleton class,&#10;Updated some parts of MatrixFileHandler, but not much; nothing worth commenting on,&#10;Also, greatly reduced redundancy inside the MatrixView class. I hope with those changes, the code will be much more readable,&#10;fin." />
+    <MESSAGE value="Lots of stuff happened. Now I am going to change the double matrices to use bigdecimal instead." />
+    <MESSAGE value="Cleaned up the BigDecimal from the project. Replaced the functionality with double primitive type instead.&#10;At this point, only the MatrixController works. All the other functionality of the project is at a stand-still. &#10;I will leave that for the time-being, as I want to work on the decimal/fractional functionality without having to worry about updating all other controllers for every change." />
+    <MESSAGE value="Working on DeterminantController.&#10;Added fraction to decimal functionality. Also added a new Controller, CalculatorController.&#10;Probably won't start work on that for a while, but it is a neat addition, I think." />
+    <MESSAGE value="Added proper decimal to fraction and fraction to decimal functionality inside the determinant controller. &#10;&#10;Need to add additional steps for the popup controller (i.e., documenting the sign changes, the updated matrices, etc.)." />
+    <MESSAGE value="This project is in a good spot right now. DeterminantController, InverseController, and MatrixController are all working properly (I think). I need add the &quot;general information&quot; FXML file, but that can be handled later.&#10;Also, I noticed this bug when trying to use the exponentiation feature. 2^2^3 should return 2^8 -&gt; 256, but instead, it returns 64? I'm sure it's just a bug about the order of operations." />
+    <MESSAGE value="Project is still in a good spot. Added some additional controllers and more scenes. I also started on the &quot;general information scene&quot; as well.&#10;I'm going to start work on fixing the exponentiation and adding some modulus capability to the project. I wanted to save before I potentially fuck up the whole thing." />
+    <option name="LAST_COMMIT_MESSAGE" value="Project is still in a good spot. Added some additional controllers and more scenes. I also started on the &quot;general information scene&quot; as well.&#10;I'm going to start work on fixing the exponentiation and adding some modulus capability to the project. I wanted to save before I potentially fuck up the whole thing." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NumberFormatException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/FinalProject_iml$DecimalToFraction.ic" NAME="DecimalToFraction Coverage Results" MODIFIED="1703359890785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>matrix.operators.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/FinalProject_iml$MatrixApp.ic" NAME="MatrixApp Coverage Results" MODIFIED="1703877857458" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/FinalProject_iml$Matrix.ic" NAME="Matrix Coverage Results" MODIFIED="1705962147086" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>matrix.model.*</FILTER>
+      <FILTER>matrix.model.MatrixCell</FILTER>
+      <FILTER>matrix.util.MatrixUtil</FILTER>
+      <FILTER>matrix.util.ExpressionEvaluator</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/FinalProject_iml$MatrixApp.ic" NAME="MatrixApp Coverage Results" MODIFIED="1706230335326" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>matrix.model.Matrix</FILTER>
+      <FILTER>matrix.gui.DeterminantController</FILTER>
+      <FILTER>matrix.model.MatrixCell</FILTER>
       <FILTER>matrix.gui.MatrixController</FILTER>
-      <FILTER>matrix.*</FILTER>
+      <FILTER>matrix.util.MatrixUtil</FILTER>
+      <FILTER>matrix.gui.InverseController</FILTER>
     </SUITE>
   </component>
 </project>
