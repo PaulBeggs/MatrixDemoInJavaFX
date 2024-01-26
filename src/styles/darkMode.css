@@ -2,9 +2,14 @@
     -primary-color: #282828;
     -secondary-color: #383838;
     -third-color: #181818;
-    -text-color: white;
+
     -hover-color: gray;
     -focus-color: red;
+
+    -header-color: -focus-color;
+    -subheader-color: #DC143C; /* Firebrick. Darker than red and crimson */
+    -sub-subheader-color: #8B0000; /* Dark red. */
+    -text-color: white;
 
     -fx-background-color: -primary-color;
 }
@@ -108,8 +113,15 @@
 }
 
 .text-area {
-    -fx-background-color: -focus-color;
-    -fx-control-inner-background: -third-color;
+    -fx-background-color: gray;
+    -fx-border-color: gray;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 0;
+    -fx-effect: none;
+    -fx-shadow: none;
+    -fx-inner-background-color: white;
+    -fx-control-inner-background: white;
     -fx-text-fill: -text-color;
 }
 
@@ -139,4 +151,82 @@
     -fx-border-width: 0.75;
 }
 
+.check-box .box {
+    -fx-background-color: -secondary-color;
+    -fx-border-color: -hover-color;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: -focus-color;
+}
+
+.check-box:selected .box {
+    -fx-background-color: -secondary-color;
+    -fx-border-color: -focus-color;
+}
+
+/* Main header style */
+.main-header {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-fill: -header-color; /* Adjust color as needed */
+}
+
+/* Subheader style */
+.sub-header {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-fill: -subheader-color; /* Adjust color as needed */
+}
+
+/* Sub-subheader style */
+.sub-sub-header {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-fill: -sub-subheader-color; /* Adjust color as needed */
+}
+
+/* Regular text style */
+.regular-text {
+    -fx-font-size: 14px;
+    -fx-fill: -text-color; /* Adjust color as needed */
+}
+
+.scroll-bar:vertical {
+    -fx-background-color: #333;
+}
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #666;
+}
+
+.text-flow {
+    -fx-background-color: -secondary-color;
+    -fx-control-inner-background: -third-color;
+}
+
+.scroll-pane {
+    -fx-background-color: -primary-color;
+    -fx-control-inner-background: -third-color;
+}
+
+.borderpane {
+    -fx-background-color: -primary-color;
+}
+/* Custom CSS for Slider */
+.slider {
+    -fx-background-color: -primary-color; /* Background color of the slider */
+}
+
+.slider .track {
+    -fx-background-color: -secondary-color; /* Track (background) color */
+}
+
+.slider .thumb {
+    -fx-background-color: white; /* Thumb (bar) color */
+}
+
+.slider:focused .thumb {
+    -fx-background-color: yellow; /* Thumb (bar) color when slider is focused */
+    -fx-radius: 2;
+}
 

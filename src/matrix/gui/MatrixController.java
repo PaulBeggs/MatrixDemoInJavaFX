@@ -1,6 +1,5 @@
 package matrix.gui;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -30,9 +29,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
@@ -46,8 +42,6 @@ public class MatrixController implements DataManipulation {
     @FXML
     TextField sizeColsField, sizeRowsField, targetRow, sourceRow, multiplier;
     @FXML
-    TextArea directions;
-    @FXML
     ChoiceBox<Scenes> scenes;
     @FXML
     ChoiceBox<String> operations;
@@ -58,10 +52,6 @@ public class MatrixController implements DataManipulation {
     private MatrixCell[][] matrixCells;
     private final MatrixInputHandler MIH = new MatrixInputHandler();
     private List<String> operationsSummary = new ArrayList<>();
-    private final String initialDirections =
-            """
-                    "Click 'generate' to produce a matrix. The cells are editable; use the 'Tab' key to navigate through each cell and add an entry.""";
-
     @FXML
     private void initialize() {
         update();
@@ -69,7 +59,6 @@ public class MatrixController implements DataManipulation {
         setupTextFieldListeners();
         setupOperationsDropdown();
         setupScenesDropdown();
-        setupDirectionText();
         Matrix matrix = MatrixSingleton.getInstance();
         matrixView.updateViews(true, matrix);
         setToolTips();
@@ -86,7 +75,7 @@ public class MatrixController implements DataManipulation {
     }
 
     private void setupOperationsDropdown() {
-        operations.getItems().addAll("Swap Rows", "Multiply Rows", "Add Rows");
+        operations.getItems().addAll("Swap Rows", "Multiply Row", "Add Rows");
         operations.setValue("Swap Rows");
     }
 
@@ -104,12 +93,6 @@ public class MatrixController implements DataManipulation {
                 throw new IllegalArgumentException(e);
             }
         });
-    }
-
-    private void setupDirectionText() {
-        directions.setText(initialDirections);
-        directions.setWrapText(true);
-        directions.setEditable(false);
     }
 
     @FXML
@@ -147,7 +130,7 @@ public class MatrixController implements DataManipulation {
             });
         } else {
             System.out.println("Invalid input for matrix dimensions.");
-            temporarilyUpdateDirections("Invalid input for matrix dimensions.");
+            ErrorsAndSyntax.showErrorPopup("Invalid input for matrix dimensions.");
             sizeColsField.setText("1");
             sizeRowsField.setText("1");
             return Collections.emptyList(); // Return an empty list if inputs are invalid
@@ -160,7 +143,7 @@ public class MatrixController implements DataManipulation {
             int numCols = Integer.parseInt(sizeColsField.getText());
             return generateMatrixData(numRows, numCols, (row, col) -> (Objects.equals(row, col)) ? "1" : "0");
         } else {
-            temporarilyUpdateDirections("Invalid input for identity matrix dimensions");
+            ErrorsAndSyntax.showErrorPopup("Invalid input for identity matrix dimensions");
             sizeColsField.setText("1");
             sizeRowsField.setText("1");
             return Collections.emptyList(); // Return an empty list if inputs are invalid
@@ -277,6 +260,9 @@ public class MatrixController implements DataManipulation {
             }
         });
 
+        SaveController saveController = loader.getController();
+        saveController.setStage(saveStage);
+
         MatrixApp.applyTheme(saveScene);
         saveStage.setScene(saveScene);
         saveStage.showAndWait();
@@ -314,7 +300,7 @@ public class MatrixController implements DataManipulation {
 
         if (MIH.isRowValid(targetRow, matrix.getRows()) || MIH.isRowValid(sourceRow, matrix.getRows())) {
             System.out.println("At least one row is invalid. Fix it to proceed.");
-            temporarilyUpdateDirections("At least one row is invalid. Fix it to proceed.");
+            ErrorsAndSyntax.showErrorPopup("At least one row is invalid. Fix it to proceed.");
             return;
         }
 
@@ -326,13 +312,13 @@ public class MatrixController implements DataManipulation {
                 operationsSummary.add("#" + step++ + ", Swapped rows: " + (targetRowIndex + 1) + ", " + (sourceRowIndex + 1) + "\n");
                 matrix.swapRows(targetRowIndex, sourceRowIndex);
                 break;
-            case "Multiply Rows":
+            case "Multiply Row":
                 operationsSummary.add("#" + step++ + ", Multiplied row: " + (targetRowIndex + 1) + " by " + multiplier + "\n");
                 handleRowOperation(targetRowIndex, multiplier, matrix::multiplyRow);
                 break;
             case "Add Rows":
                 operationsSummary.add("#" + step++ + ", Multiplied row: " + (sourceRowIndex + 1) + " by " + multiplier + ", and added it to" + (targetRowIndex + 1) + "\n");
-                handleRowOperation(targetRowIndex, multiplier, (index, value) -> matrix.addRows(targetRowIndex, sourceRowIndex, value));
+                handleRowOperation(targetRowIndex, multiplier, (index, value) -> matrix.addRows(sourceRowIndex, targetRowIndex, value));
                 break;
             default:
                 throw new IllegalStateException("How did you fuck this up?");
@@ -344,7 +330,7 @@ public class MatrixController implements DataManipulation {
     private void handleRowOperation(int targetRowIndex, TextField multiplierField, BiConsumer<Integer, Double> operationFunction) {
         if (!MIH.isDoubleValid(multiplierField)) {
             System.out.println("Invalid Multiplier. Please enter a valid double.");
-            temporarilyUpdateDirections("Invalid Multiplier. Please enter a valid double.");
+            ErrorsAndSyntax.showErrorPopup("Invalid Multiplier. Please enter a valid double.");
             return;
         }
         double value = 0;
@@ -387,19 +373,9 @@ public class MatrixController implements DataManipulation {
     @FXML
     public void handleResetOperationSummary() {
         operationsSummary = new ArrayList<>();
+        step = 1;
     }
 
-    // Method to update the directions text area
-    private void temporarilyUpdateDirections(String newDirections) {
-        directions.setText(newDirections);
-
-        // Schedule resetting the directions text area after 10 seconds
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.schedule(() -> {
-            Platform.runLater(() -> directions.setText(initialDirections));
-            executorService.shutdown(); // Important to shut down the executor to prevent resource leaks
-        }, 6, TimeUnit.SECONDS);
-    }
 
     public void setInitTextFieldData() {
         String filePath = FilePath.MATRIX_PATH.getPath();
@@ -427,7 +403,7 @@ public class MatrixController implements DataManipulation {
     public void handleShowInformation() {
         try {
             // Load layout from FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("informationControl/mainInformation.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/mainInformation.fxml"));
             Parent infoLayout = loader.load();
 
             // Create a Scene with the layout
@@ -453,7 +429,8 @@ public class MatrixController implements DataManipulation {
         }
     }
 
-    private void setToolTips() {
+    @Override
+    public void setToolTips() {
         generateButton.setTooltip(new Tooltip("Generate a random matrix"));
         saveButton.setTooltip(new Tooltip("Save the matrix"));
         loadButton.setTooltip(new Tooltip("Load a matrix"));

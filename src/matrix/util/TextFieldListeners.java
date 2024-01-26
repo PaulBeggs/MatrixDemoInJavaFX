@@ -43,21 +43,23 @@ public class TextFieldListeners {
 
     public static void addTextPropertyListener(TextField textField, Matrix matrix, int row, int col) {
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("([-+]?\\d*(\\.\\d*)?)|(/sqrt\\([-+]?\\d+\\))|(/)") && !newValue.isEmpty()) {
-                textField.setText(newValue.replaceAll("[^\\d.\\-+*^/sqrt()]", ""));
+            // Validate the input to allow only numbers, decimals, negative signs, and mathematical expressions
+            if (!newValue.matches("([-+]?\\d*(\\.\\d*)?)|(/sqrt\\([-+]?\\d+\\))|([+\\-*/^()])") && !newValue.isEmpty()) {
+                textField.setText(newValue.replaceAll("[^\\d.\\-+*/^sqrt()]", ""));
             } else {
                 try {
-                    String valueToSet = newValue.isEmpty() ? "0" : newValue;
-                    matrix.setValue(row, col, valueToSet); // Update the Matrix object
-                    System.out.println("Did the matrix update properly? \n" + matrix);
-                    MatrixSingleton.saveMatrix();
+                    // Check if the newValue is a valid numerical value before setting it to the matrix
+                    if (newValue.matches("[-+]?\\d*\\.?\\d+")) {
+                        matrix.setValue(row, col, newValue); // Update the Matrix object
+                        System.out.println("Matrix updated with value: \n" + matrix);
+                        MatrixSingleton.saveMatrix();
+                    }
                 } catch (NumberFormatException e) {
                     textField.setText(oldValue);
                 }
             }
         });
     }
-
 
     private static String calculateExpression(String inputField) {
         return MatrixApp.isFractionMode()

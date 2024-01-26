@@ -158,4 +158,9 @@ public class InverseController implements DataManipulation {
         directions.setWrapText(true);
         directions.setEditable(false);
     }
+
+    @Override
+    public void setToolTips() {
+
+    }
 }

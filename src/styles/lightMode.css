@@ -1,10 +1,15 @@
 .root {
-    -primary-color: white;
-    -secondary-color: #F0F0F0;
-    -third-color: #E7E7E7;
-    -text-color: black;
+    -primary-color: #e0e0e0 ;
+    -secondary-color: #f7f7f7;
+    -third-color: #f2f2f2;
+
     -hover-color: gray;
     -focus-color: red;
+
+    -header-color: -focus-color;
+    -subheader-color: #DC143C; /* Firebrick. Darker than red and crimson */
+    -sub-subheader-color: #8B0000; /* Dark red. */
+    -text-color: black;
 
     -fx-background-color: -primary-color;
 }
@@ -108,8 +113,15 @@
 }
 
 .text-area {
-    -fx-background-color: -focus-color;
-    -fx-control-inner-background: -third-color;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 0;
+    -fx-effect: none;
+    -fx-shadow: none;
+    -fx-inner-background-color: transparent;
+    -fx-control-inner-background: transparent;
     -fx-text-fill: -text-color;
 }
 
@@ -137,4 +149,102 @@
 .bordered-grid {
     -fx-border-color: -focus-color;
     -fx-border-width: 0.75;
+}
+
+.check-box .box {
+    -fx-background-color: -secondary-color;
+    -fx-border-color: -hover-color;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: -focus-color;
+}
+
+.check-box:selected .box {
+    -fx-background-color: -secondary-color;
+    -fx-border-color: -focus-color;
+}
+
+/* Main header style */
+.main-header {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-fill: #000045; /* Adjust color as needed */
+}
+
+/* Subheader style */
+.sub-header {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-fill: -text-color; /* Adjust color as needed */
+}
+
+/* Sub-subheader style */
+.sub-sub-header {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-fill: #666666; /* Adjust color as needed */
+}
+
+/* Regular text style */
+.regular-text {
+    -fx-font-size: 12px;
+    -fx-fill: #009000; /* Adjust color as needed */
+}
+
+.scroll-bar:vertical {
+    -fx-background-color: #eee;
+}
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #ccc;
+}
+
+.text-flow {
+    -fx-background-color: white;
+}
+
+.main-header {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-fill: -header-color;
+}
+
+.sub-header {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-fill: -subheader-color;
+}
+
+.sub-sub-header {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-fill: -sub-subheader-color;
+}
+
+/* Regular text style */
+.regular-text {
+    -fx-font-size: 12px;
+    -fx-fill: -text-color;
+}
+
+.scroll-bar:vertical {
+    -fx-background-color: -secondary-color;
+}
+/* funny devil number is the best gray. */
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #666;
+}
+
+.text-flow {
+    -fx-background-color: -secondary-color;
+    -fx-control-inner-background: -third-color;
+}
+
+.scroll-pane {
+    -fx-background-color: -primary-color;
+    -fx-control-inner-background: -third-color;
+}
+
+.borderpane {
+    -fx-background-color: -primary-color;
 }

@@ -26,7 +26,7 @@
                </VBox.margin></Label>
             <TextField fx:id="determinantValue" editable="false" prefHeight="25.0" prefWidth="116.0" promptText="Value">
                <cursor>
-                  <Cursor fx:constant="HAND" />
+                  <Cursor fx:constant="DEFAULT" />
                </cursor></TextField>
             <CheckBox fx:id="checkBox" alignment="CENTER" mnemonicParsing="false" prefHeight="20.0" prefWidth="105.0" selected="true" styleClass="title-label" text="Show Process" textAlignment="CENTER">
                <cursor>
@@ -52,10 +52,13 @@
                   <Insets top="25.0" />
                </VBox.margin>
             </Label>
-            <TextArea fx:id="directions" editable="false" minHeight="190.0" minWidth="119.0" prefHeight="165.0" prefWidth="114.0" wrapText="true">
+            <TextArea fx:id="directions" editable="false" minHeight="180.0" minWidth="119.0" prefHeight="165.0" prefWidth="114.0" styleClass="text-area" wrapText="true">
                <font>
                   <Font name="Times New Roman" size="13.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
             </TextArea>
             <Pane VBox.vgrow="ALWAYS" />
             <ChoiceBox fx:id="scenes" prefWidth="116.0">

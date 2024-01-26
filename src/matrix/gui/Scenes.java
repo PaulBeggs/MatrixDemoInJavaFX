@@ -15,25 +15,57 @@ public enum Scenes {
      This enum is important because it allows brevity within the other classes.
      The "toString" method is simply there to accompany the choices within the box.
      */
-    INVERSE {
+
+    MATRIX {
         @Override
         public String toString() {
-            return "Inverse";
+            return "Main Matrix";
         }
 
         @Override
         public String getTitle() {
-            return "Inversion Operation";
+            return "Matrix GUI";
         }
 
         @Override
         public void switchScene(ActionEvent event) throws IOException {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/inverseScene.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/matrixGUI.fxml")));
             switchToScene(event, root, getTitle());
-
-
         }
     },
+
+    MULTIPLICATION {
+        @Override
+        public String toString() {
+            return "Matrix Multiply";
+        }
+        @Override
+        public String getTitle() {
+            return "Matrix Multiplication";
+        }
+        @Override
+        public void switchScene(ActionEvent event) throws IOException {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/multiplicationScene.fxml")));
+            switchToScene(event, root, getTitle());
+        }
+    },
+
+    SOLVE {
+        @Override
+        public String toString() {
+            return "Matrix Solver";
+        }
+        @Override
+        public String getTitle() {
+            return "Matrix Solver";
+        }
+        @Override
+        public void switchScene(ActionEvent event) throws IOException {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/matrixSolver.fxml")));
+            switchToScene(event, root, getTitle());
+        }
+    },
+
     DETERMINANT {
         @Override
         public String toString() {
@@ -51,37 +83,57 @@ public enum Scenes {
             switchToScene(event, root, getTitle());
         }
     },
-    RREF {
+
+    INVERSE {
         @Override
         public String toString() {
-            return "RREF";
+            return "REF/Invert";
         }
 
         @Override
         public String getTitle() {
-            return "RREF Operation";
+            return "REF, RREF, Inverting Operations";
         }
 
         @Override
         public void switchScene(ActionEvent event) throws IOException {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/RREFScene.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/inverseScene.fxml")));
+            switchToScene(event, root, getTitle());
+
+
+        }
+    },
+
+    BASES {
+        @Override
+        public String toString() {
+            return "Bases";
+        }
+
+        @Override
+        public String getTitle() {
+            return "Bases Operations";
+        }
+
+        @Override
+        public void switchScene(ActionEvent event) throws IOException {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/basesScene.fxml")));
             switchToScene(event, root, getTitle());
         }
     },
-    MATRIX {
+
+    EIGEN {
         @Override
         public String toString() {
-            return "Updated Matrix";
+            return "Eigen";
         }
-
         @Override
         public String getTitle() {
-            return "Matrix GUI";
+            return "Eigenvalues and Eigenvectors";
         }
-
         @Override
         public void switchScene(ActionEvent event) throws IOException {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/matrixGUI.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("resources/eigenScene.fxml")));
             switchToScene(event, root, getTitle());
         }
     };

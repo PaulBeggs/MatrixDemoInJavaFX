@@ -59,7 +59,7 @@ public class DeterminantPopUpController {
             }
         }));
 
-        timeline.setCycleCount(totalSteps);
+        timeline.setCycleCount(totalSteps - 1);
 
         // Set the onFinished event handler for the timeline
         timeline.setOnFinished(e -> {
@@ -81,14 +81,12 @@ public class DeterminantPopUpController {
     public void start() {
         timeline.play();
         clockOn = true;
-        handleProgressBar();
     }
 
     @FXML
     public void stop() {
         timeline.stop();
         clockOn = false;
-        handleProgressBar();
     }
 
     @FXML
@@ -123,13 +121,6 @@ public class DeterminantPopUpController {
 
     public void setMatrixGrid(GridPane matrixGrid) {
         this.matrixGrid = matrixGrid;
-    }
-
-    private void handleProgressBar() {
-        if (!clockOn) {
-            progressBar.setOpacity(75);
-        }
-        progressBar.setOpacity(40);
     }
 
     public void setMatrixCells (MatrixCell[][] matrixCells) {

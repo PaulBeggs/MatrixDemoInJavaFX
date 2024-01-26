@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -14,11 +13,10 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="matrix.gui.MatrixController">
    <left>
-      <VBox prefWidth="136.0" spacing="5.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="525.0" prefWidth="136.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
             <Label alignment="CENTER" prefWidth="116.0" styleClass="title-label" text="Rows">
                <cursor>
@@ -34,7 +32,7 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Button fx:id="identityButton" mnemonicParsing="false" onAction="#handleIdentityButton" prefWidth="116.0" text="Set Identity Matrix">
+            <Button fx:id="identityButton" mnemonicParsing="false" onAction="#handleIdentityButton" prefWidth="116.0" text="Identity" textAlignment="CENTER" wrapText="true">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
@@ -57,18 +55,6 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Pane VBox.vgrow="NEVER" />
-            <TextArea fx:id="directions" editable="false" maxHeight="134.0" minHeight="150.0" minWidth="116.0" prefHeight="150.0" prefWidth="116.0" styleClass="text-area" text="&#10;" wrapText="true" VBox.vgrow="NEVER">
-               <VBox.margin>
-                  <Insets bottom="20.0" top="20.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="Times New Roman" size="13.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="DEFAULT" />
-               </cursor>
-            </TextArea>
             <Pane VBox.vgrow="ALWAYS" />
             <ChoiceBox fx:id="scenes" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="116.0" VBox.vgrow="NEVER">
                <opaqueInsets>
@@ -80,11 +66,6 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></ChoiceBox>
-            <Button fx:id="informationButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleShowInformation" text="General Information" textAlignment="CENTER" wrapText="true">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
          </children>
          <padding>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
@@ -155,6 +136,9 @@
                <VBox.margin>
                   <Insets />
                </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
             <Button fx:id="clearSummaryButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleResetOperationSummary" text="Clear Summary" textAlignment="CENTER" wrapText="true">
                <cursor>

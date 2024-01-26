@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="CRIMSON" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="2. Matrix Window">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="DARKRED" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="i. Changes and Matrix Manipulation">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="25.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text lineSpacing="1.2" stroke="RED" strokeWidth="0.0" text="Text">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets left="35.0" right="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="DARKRED" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="i. Changes and Matrix Manipulation">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="25.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text lineSpacing="1.2" stroke="RED" strokeWidth="0.0" text="Text">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets left="35.0" right="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="CRIMSON" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="3. Multiplication Window">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="DARKRED" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="i. Changes and Matrix Manipulation">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="25.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text lineSpacing="1.2" stroke="RED" strokeWidth="0.0" text="Text">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets left="35.0" right="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="DARKRED" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="i. Changes and Matrix Manipulation">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="25.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text lineSpacing="1.2" stroke="RED" strokeWidth="0.0" text="Text">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets left="35.0" right="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="CRIMSON" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="4. Solve Window">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="DARKRED" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="i. Changes and Matrix Manipulation">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="25.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text lineSpacing="1.2" stroke="RED" strokeWidth="0.0" text="Text">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets left="35.0" right="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="DARKRED" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="i. Changes and Matrix Manipulation">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="25.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text lineSpacing="1.2" stroke="RED" strokeWidth="0.0" text="Text">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets left="35.0" right="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="CRIMSON" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="5. Determinant Window">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="DARKRED" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="i. Changes and Matrix Manipulation">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="25.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text lineSpacing="1.2" stroke="RED" strokeWidth="0.0" text="Text">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets left="35.0" right="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="DARKRED" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="i. Changes and Matrix Manipulation">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="25.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text lineSpacing="1.2" stroke="RED" strokeWidth="0.0" text="Text">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets left="35.0" right="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="CRIMSON" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="6. Inverse Window">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="DARKRED" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="i. Changes and Matrix Manipulation">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="25.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text lineSpacing="1.2" stroke="RED" strokeWidth="0.0" text="Text">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets left="35.0" right="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="DARKRED" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="i. Changes and Matrix Manipulation">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="25.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text lineSpacing="1.2" stroke="RED" strokeWidth="0.0" text="Text">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets left="35.0" right="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="CRIMSON" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="7. Bases Window">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="DARKRED" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="i. Changes and Matrix Manipulation">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="25.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text lineSpacing="1.2" stroke="RED" strokeWidth="0.0" text="Text">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets left="35.0" right="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="DARKRED" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="i. Changes and Matrix Manipulation">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="25.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text lineSpacing="1.2" stroke="RED" strokeWidth="0.0" text="Text">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets left="35.0" right="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="CRIMSON" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="8. Eigen Window">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="DARKRED" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="i. Changes and Matrix Manipulation">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="25.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text lineSpacing="1.2" stroke="RED" strokeWidth="0.0" text="Text">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets left="35.0" right="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text fill="DARKRED" lineSpacing="1.5" stroke="RED" strokeWidth="0.0" text="i. Changes and Matrix Manipulation">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="25.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Text lineSpacing="1.2" stroke="RED" strokeWidth="0.0" text="Text">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </children>
+         <padding>
+            <Insets left="35.0" right="5.0" />
+         </padding>
+      </HBox>
+   </children>
+</VBox>

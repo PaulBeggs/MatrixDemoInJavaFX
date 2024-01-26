@@ -4,6 +4,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -50,6 +51,12 @@
                   </Button>
                </children>
             </HBox>
+            <Pane VBox.vgrow="ALWAYS" />
+            <Label alignment="CENTER" prefWidth="116.0" styleClass="title-label" text="Append Vector or Matrix?" textAlignment="CENTER" wrapText="true" />
+            <Button alignment="CENTER" mnemonicParsing="false" prefWidth="116.0" text="Sure">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
             <TextArea fx:id="directions" editable="false" minHeight="130.0" minWidth="116.0" prefHeight="134.0" prefWidth="116.0" styleClass="text-area" text="&#10;" wrapText="true">
                <VBox.margin>
                   <Insets bottom="20.0" top="20.0" />
@@ -57,9 +64,6 @@
                <font>
                   <Font name="Times New Roman" size="13.0" />
                </font>
-               <cursor>
-                  <Cursor fx:constant="DEFAULT" />
-               </cursor>
             </TextArea>
             <Pane VBox.vgrow="ALWAYS" />
             <ChoiceBox fx:id="scenes" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0">

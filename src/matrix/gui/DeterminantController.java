@@ -42,16 +42,7 @@ public class DeterminantController implements DataManipulation {
     private MatrixView matrixView;
     private MatrixCell[][] matrixCells;
     private String determinant;
-    private final String initialDirections =
-            """
-                    Additive:\s
-                    det(B) = det(A)\s
-                    \s
-                    Interchangeability:\s
-                    det(B) = -det(A);\s
-                    \s
-                    Scalar Multiplication:\s
-                    det(B) = k * det(A)""";
+    private boolean isSquare = true;
 
     @FXML
     private void initialize() {
@@ -64,6 +55,15 @@ public class DeterminantController implements DataManipulation {
     }
 
     private void setupDirectionText() {
+        String initialDirections = """
+                Additive:\s
+                det(B) = det(A)\s
+                \s
+                Interchangeability:
+                det(B) = -det(A);\s
+                \s
+                Scalar Multiplication:\s
+                det(B) = k * det(A)""";
         directions.setText(initialDirections);
         directions.setWrapText(true);
         directions.setEditable(false);
@@ -85,18 +85,22 @@ public class DeterminantController implements DataManipulation {
         });
     }
 
+
+
     @FXML
     public void handleDeterminantFunctionality() {
         try {
-            Matrix matrix = MatrixSingleton.getInstance();
+            Matrix matrix = MatrixSingleton.getInstance().copy();
             if (matrix.isSquare()) {
                 this.determinant = (matrix.calculateDeterminant());
                 determinantValue.setText((determinant));
                 save();
                 matrixView.updateViews(true, MatrixSingleton.getTriangularInstance());
+                isSquare = true;
             } else {
-                updateDirections();
+                isSquare = false;
                 ErrorsAndSyntax.showErrorPopup("Matrix is not square; it does not have a defined determinant.");
+
             }
         } catch (IllegalArgumentException e) {
             e.getMessage();
@@ -143,6 +147,7 @@ public class DeterminantController implements DataManipulation {
 
         SaveController saveController = loader.getController();
         saveController.setDeterminantValue((determinant));
+        saveController.setStage(saveStage);
 
         MatrixApp.applyTheme(saveScene);
         saveStage.setScene(saveScene);
@@ -150,29 +155,38 @@ public class DeterminantController implements DataManipulation {
     }
 
     private void showDeterminantAnimation() {
-        Stage animationStage = new Stage();
-        animationStage.setTitle("Determinant Animation");
-        animationStage.initModality(Modality.WINDOW_MODAL);
-        animationStage.initOwner(MatrixApp.getPrimaryStage());
+        if (isSquare) {
+            Stage animationStage = new Stage();
+            animationStage.setTitle("Determinant Animation");
+            animationStage.initModality(Modality.WINDOW_MODAL);
+            animationStage.initOwner(MatrixApp.getPrimaryStage());
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/determinantAnimation.fxml"));
-        Parent root;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            ErrorsAndSyntax.showErrorPopup("Cannot load the scene.");
-            throw new IllegalArgumentException(e);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/determinantAnimation.fxml"));
+            Parent root;
+            try {
+                root = loader.load();
+            } catch (IOException e) {
+                ErrorsAndSyntax.showErrorPopup("Cannot load the scene.");
+                throw new IllegalArgumentException(e);
+            }
+
+            DeterminantPopUpController determinantPopUpController = loader.getController();
+            determinantPopUpController.setMatrixCells(matrixCells);
+            determinantPopUpController.setMatrixGrid(matrixGrid);
+
+            Scene animationScene = new Scene(root);
+            animationScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+                if (event.getCode() == KeyCode.ESCAPE) {
+                    animationStage.close();
+                }
+            });
+            MatrixApp.applyTheme(animationScene);
+            animationStage.setScene(animationScene);
+            animationStage.show();
+        } else {
+            System.out.println("Not square.");
         }
 
-        DeterminantPopUpController determinantPopUpController = loader.getController();
-        determinantPopUpController.setMatrixCells(matrixCells);
-        determinantPopUpController.setMatrixGrid(matrixGrid);
-
-        Scene animationScene = new Scene(root);
-        MatrixApp.setupGlobalEscapeHandler(animationScene);
-        MatrixApp.applyTheme(animationScene);
-        animationStage.setScene(animationScene);
-        animationStage.show();
     }
 
     @Override
@@ -215,17 +229,6 @@ public class DeterminantController implements DataManipulation {
         }
     }
 
-    private void updateDirections() {
-        directions.setText("Matrix is not square; it does not have a defined determinant.");
-//
-//        // Schedule resetting the directions text area after 6 seconds
-//        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-//        executorService.schedule(() -> {
-//            Platform.runLater(() -> directions.setText(initialDirections));
-//            executorService.shutdown(); // Important to shut down the executor to prevent resource leaks
-//        }, 7, TimeUnit.SECONDS);
-    }
-
     private void save() {
         List<List<String>> matrixData = MatrixFileHandler.loadMatrixDataFromMatrix(MatrixSingleton.getInstance());
 
@@ -234,5 +237,10 @@ public class DeterminantController implements DataManipulation {
                 matrixData, MatrixType.DETERMINANT);
         MatrixFileHandler.saveMatrixDataToFile(FilePath.TRIANGULAR_PATH.getPath(),
                 "0", matrixData, MatrixType.TRIANGULAR);
+    }
+
+    @Override
+    public void setToolTips() {
+
     }
 }

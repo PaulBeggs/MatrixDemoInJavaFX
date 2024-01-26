@@ -4,24 +4,26 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import matrix.util.ErrorsAndSyntax;
 
 import java.io.IOException;
 
 public class MultiplicationController {
     @FXML
-    TextField rowOne;
+    private TextField matrixAMultiplier, matrixBMultiplier, resultMultiplier;
     @FXML
-    TextField rowTwo;
+    private GridPane matrixGrid;
     @FXML
-    Button switchButton;
+    private Button operationSummaryButton, setMatrixButton, computeButton, clearSummaryButton;
     @FXML
-    ChoiceBox<Scenes> scenes;
+    private ChoiceBox<Scenes> scenes;
+
     @FXML
     private void initialize() {
 
         scenes.getItems().setAll(Scenes.values());
-        scenes.setValue(Scenes.RREF);
+        scenes.setValue(Scenes.MULTIPLICATION);
 
         scenes.setOnAction(event -> {
             Scenes selectedScene = scenes.getValue();
@@ -35,7 +37,18 @@ public class MultiplicationController {
     }
 
     @FXML
-    private void handleRREFFunctionality() {
+    void handleOperationSummary() {
 
     }
+
+    @FXML
+    void handleResetOperationSummary() {
+
+    }
+
+    @FXML
+    void performOperation() {
+
+    }
+
 }

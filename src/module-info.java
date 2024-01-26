@@ -7,11 +7,9 @@ module MatrixDemoInJavaFX {
     exports matrix.util;
     exports matrix.fileManaging;
     exports matrix.view;
-    exports matrix.gui.informationControl;
     opens matrix.gui;
     opens matrix.model;
     opens matrix.util;
     opens matrix.fileManaging;
     opens matrix.view;
-    opens matrix.gui.informationControl;
 }

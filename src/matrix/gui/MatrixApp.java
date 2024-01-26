@@ -16,7 +16,7 @@ import java.util.Objects;
 public class MatrixApp extends Application {
     public static Stage primaryStage;
     public static String selectedTheme = "light";
-    public static boolean fractionMode = true;
+    public static boolean fractionMode = true, isForceFractions = true, showInfo = false, matrixApp = false;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -50,6 +50,12 @@ public class MatrixApp extends Application {
     public static void setSelectedTheme(String theme) {selectedTheme = theme;}
     public static void setFractionMode(boolean modeBoolean) {fractionMode = modeBoolean;}
     public static boolean isFractionMode() {return fractionMode;}
+    public static boolean isForceFractions() {return isForceFractions;}
+    public static void setIsForceFractions(boolean fractionBoolean) {isForceFractions = fractionBoolean;}
+    public static boolean isShowInfo() {return showInfo;}
+    public static void setShowInfo(boolean infoBoolean) {showInfo = infoBoolean;}
+    public static boolean isMatrixApp() {return matrixApp;}
+    public static void setMatrixApp(boolean appBoolean) {matrixApp = appBoolean;}
     public static void closeApps() {Platform.exit(); System.exit(130);}
     public static void main(String[] args) {launch(args);}
 }

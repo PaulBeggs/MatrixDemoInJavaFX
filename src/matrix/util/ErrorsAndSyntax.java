@@ -36,7 +36,33 @@ public class ErrorsAndSyntax {
         String indicator = " ".repeat(Math.max(0, errorPosition)) + "^";
 
         // Show the error message
-        showErrorPopup(errorMessage + " after position " + (errorPosition + 1) + ":\n" + expression + "\n" + indicator);
+        showErrorPopup(errorMessage + " at position " + (errorPosition + 1) + ":\n" + expression + "\n" + indicator);
+    }
+
+    public static StringBuilder getErrorBuilder(String expression, List<TokenInfo> tokens) {
+        int lastParsedIndex = 0;
+        StringBuilder errorIndicator = new StringBuilder(" ".repeat(expression.length()));
+
+        for (TokenInfo token : tokens) {
+            int startIndexOfToken = token.getStartIndex();
+
+            // Process the segment between lastParsedIndex and startIndexOfToken
+            for (int i = lastParsedIndex; i < startIndexOfToken; i++) {
+                if (expression.charAt(i) != ' ') {
+                    errorIndicator.setCharAt(i, '^');
+                }
+            }
+
+            lastParsedIndex = startIndexOfToken + token.getToken().length();
+        }
+
+        // Check for any remaining unparsed segment at the end of the expression
+        for (int i = lastParsedIndex; i < expression.length(); i++) {
+            if (expression.charAt(i) != ' ') {
+                errorIndicator.setCharAt(i, '^');
+            }
+        }
+        return errorIndicator;
     }
 
 

@@ -23,16 +23,20 @@ public class MatrixUtil {
     }
 
     public static String convertDecimalToFraction(String input) {
-        double decimalValue = ExpressionEvaluator.evaluate(input);;
+        double decimalValue = ExpressionEvaluator.evaluate(input);
 
         if (decimalValue < 0) {
             return "-" + convertDecimalToFraction(String.valueOf(-decimalValue));
         }
 
+        if (!MatrixApp.isForceFractions() && !hasRepeatingDecimals(decimalValue, 2, 2)) {
+            return convertFractionToDecimalString(correctRoundingError(String.valueOf(decimalValue)));
+        }
+
         String result = getFraction(decimalValue);
-        if (result.length() >= 12) {
+        if (result.length() >= 16) {
             System.out.println("This is the result length: " + result.length());
-            return correctRoundingError(input); // The fraction is too large to be of any use.
+            return correctRoundingError(input); // The fraction is too large to be displayed.
         }
 
         return simplifyFraction(result);
@@ -46,7 +50,6 @@ public class MatrixUtil {
         double denominatorPrevious = 1;
         double intermediateValue = decimalValue;
 
-        // Loop control to avoid infinite loops
         int maxIterations = 10000;
 
         for (int i = 0; i < maxIterations; i++) {
@@ -104,7 +107,7 @@ public class MatrixUtil {
             String decimalPart = number.substring(indexOfDot + 1);
 
             // Detect long sequences of 9s or 0s
-            if (decimalPart.matches(".*(9999999|0000000).*")) {
+            if (decimalPart.matches(".*(999999|000000).*")) {
                 // Round the number using BigDecimal to avoid floating-point issues
                 BigDecimal num = new BigDecimal(number);
                 int scale = decimalPart.indexOf('9') != -1 ? decimalPart.indexOf('9') : decimalPart.indexOf('0');
@@ -161,6 +164,31 @@ public class MatrixUtil {
         }
         return gcd(b, a % b);
     }
+
+    public static boolean hasRepeatingDecimals(double value, int minPatternLength, int minRepetitions) {
+        String decimalString = String.format("%.15f", value);
+        String decimalPart = decimalString.substring(decimalString.indexOf('.') + 1);
+
+        for (int i = 0; i <= decimalPart.length() - minPatternLength; i++) {
+            for (int len = minPatternLength; len <= (decimalPart.length() - i) / minRepetitions; len++) {
+                String pattern = decimalPart.substring(i, i + len);
+                boolean isRepeating = true;
+
+                for (int j = i + len; j <= decimalPart.length() - len; j += len) {
+                    if (!decimalPart.startsWith(pattern, j)) {
+                        isRepeating = false;
+                        break;
+                    }
+                }
+
+                if (isRepeating) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
 
     public static String[][] convertToDecimalMatrix(String[][] originalMatrix) {

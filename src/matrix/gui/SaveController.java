@@ -1,15 +1,17 @@
 package matrix.gui;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.stage.Stage;
 import matrix.fileManaging.FilePath;
+import matrix.fileManaging.MatrixFileHandler;
 import matrix.fileManaging.MatrixType;
 import matrix.model.Matrix;
-import matrix.fileManaging.MatrixFileHandler;
 import matrix.model.MatrixCell;
+import matrix.util.ErrorsAndSyntax;
 
 import java.io.File;
 import java.util.List;
@@ -19,10 +21,13 @@ public class SaveController {
     private TextField fileNameField;
     @FXML
     private ChoiceBox<String> matrixSelectionComboBox;
+    @FXML
+    private CheckBox saveAsFractions;
     private List<List<TextField>> matrixTextFields;
     private MatrixCell[][] matrixCells;
     private String determinantValue;
     private Matrix triangularMatrix;
+    private Stage saveStage;
 
     @FXML
     public void initialize() {
@@ -60,6 +65,9 @@ public class SaveController {
 
     @FXML
     private void saveButtonPressed() {
+        ThemeController.setFraction(saveAsFractions.isSelected());
+        MatrixApp.setFractionMode(saveAsFractions.isSelected());
+
         String fileName = fileNameField.getText().trim();
 
         if (!fileName.isEmpty() && !fileName.contains(File.separator) && !fileName.contains(".")) {
@@ -73,22 +81,24 @@ public class SaveController {
                     matrixData = MatrixFileHandler.loadMatrixDataFromFile(FilePath.MATRIX_PATH.getPath());
                     MatrixFileHandler.saveMatrixDataToFile("savedMatrices/matrices/"
                             + fileName + ".txt", "0", matrixData, MatrixType.REGULAR);
+                    saveStage.close();
                 }
                 case "Determinant Matrix" -> {
                     if (getDeterminant() != null) {
                         matrixData = MatrixFileHandler.loadMatrixDataFromFile(FilePath.TRIANGULAR_PATH.getPath());
                         MatrixFileHandler.saveMatrixDataToFile("savedMatrices/determinants/"
                                 + fileName + ".txt", determinantValue, matrixData, MatrixType.DETERMINANT);
+                        saveStage.close();
                     } else {
-                        showErrorPopup("Must find the determinant before you can save.");
+                        ErrorsAndSyntax.showErrorPopup("Must find the determinant before you can save.");
 //                        System.out.println("Must find the determinant before you can save.");
                     }
                 }
                 case "Triangular Matrix" -> {
                     if (getTriangularMatrix() != null) {
-
+                        saveStage.close();
                     } else {
-                        showErrorPopup("Must find the triangular matrix before you can save.");
+                        ErrorsAndSyntax.showErrorPopup("Must find the triangular matrix before you can save.");
 //                        System.out.println("Must find the triangular matrix before you can save.");
                     }
                 }
@@ -99,17 +109,9 @@ public class SaveController {
 
         } else {
             // Show an error message or handle invalid input
-            showErrorPopup("Please enter a valid file name without special characters or file extensions.");
+            ErrorsAndSyntax.showErrorPopup("Please enter a valid file name without special characters or file extensions.");
             fileNameField.setText("Example");
         }
     }
-
-    private void showErrorPopup(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-
-        alert.showAndWait();
-    }
+    public void setStage(Stage stage) {saveStage = stage;}
 }

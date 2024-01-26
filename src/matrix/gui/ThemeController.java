@@ -4,9 +4,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import matrix.util.ErrorsAndSyntax;
 
@@ -20,24 +24,37 @@ public class ThemeController {
     @FXML
     Button startApp, openCalculator, themeBtnMode, fractionBtnMode;
     @FXML
-    CheckBox showInfo, convertSquareRoots;
-    private boolean isLightMode = false, isFraction = true;
+    CheckBox showInfo, forceFractions;
+    private boolean isLightMode = false;
+    private static boolean isFraction = true;
 
     @FXML
     public void initialize() {
         updateTheme();
         setToolTips();
         startApp.setOnAction(event -> {
+            MatrixApp.setMatrixApp(true);
+            MatrixApp.setIsForceFractions(forceFractions.isSelected());
+            MatrixApp.setShowInfo(showInfo.isSelected());
             try {
                 switchToMainScene();
+                if (showInfo.isSelected()) {
+                    showInformationScene();
+                }
             } catch (IOException e) {
                 ErrorsAndSyntax.showErrorPopup("Cannot open the Main Scene.");
                 throw new RuntimeException(e);
             }
         });
         openCalculator.setOnAction(event -> {
+            MatrixApp.setMatrixApp(false);
+            MatrixApp.setIsForceFractions(forceFractions.isSelected());
+            MatrixApp.setShowInfo(showInfo.isSelected());
             try {
                 switchToCalculatorScene();
+                if (showInfo.isSelected()) {
+                    showInformationScene();
+                }
             } catch (IOException e) {
                 ErrorsAndSyntax.showErrorPopup("Cannot open the Calculator Scene.");
                 throw new RuntimeException(e);
@@ -54,7 +71,7 @@ public class ThemeController {
 
     @FXML
     public void changeFraction() {
-        isFraction = !isFraction;
+        setFraction(!isFraction);
         MatrixApp.setFractionMode(isFraction);
         updateFractionModeImage(isLightMode, isFraction);
     }
@@ -71,14 +88,14 @@ public class ThemeController {
     }
 
     private void updateModeImage(boolean isLightMode) {
-        String imagePath = isLightMode ? "/matrix/gui/resources/colored moon.png" : "/matrix/gui/resources/colored sun.png";
+        String imagePath = isLightMode ? "/matrix/gui/resources/coloredMoon.png" : "/matrix/gui/resources/coloredSun.png";
         imgMode.setImage(loadImage(imagePath));
     }
 
     private void updateFractionModeImage(boolean isLightMode, boolean isFraction) {
         String fractionImagePath = isLightMode
                 ? (isFraction ? "/matrix/gui/resources/fraction.png" : "/matrix/gui/resources/decimal.png")
-                : (isFraction ? "/matrix/gui/resources/fraction white.png" : "/matrix/gui/resources/decimal white.png");
+                : (isFraction ? "/matrix/gui/resources/fractionWhite.png" : "/matrix/gui/resources/decimalWhite.png");
         fractionMode.setImage(loadImage(fractionImagePath));
     }
 
@@ -111,6 +128,23 @@ public class ThemeController {
         primaryStage.show();
     }
 
+    public void showInformationScene() throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/matrix/gui/resources/mainInformation.fxml")));
+        Scene scene = new Scene(root);
+
+        Stage infoStage = new Stage();
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                infoStage.close();
+            }
+        });
+
+        MatrixApp.applyTheme(scene);
+        infoStage.setTitle("Information");
+        infoStage.setScene(scene);
+        infoStage.show();
+    }
+
     private Stage getStage(Scene scene) {
         MatrixApp.setupGlobalEscapeHandler(scene);
         MatrixApp.applyTheme(scene);
@@ -121,5 +155,12 @@ public class ThemeController {
     private void setToolTips() {
         themeBtnMode.setTooltip(new Tooltip("Select Light or Dark theme"));
         fractionBtnMode.setTooltip(new Tooltip("Decimals or fractions"));
+        openCalculator.setTooltip(new Tooltip("Launches side Calculator App"));
+        startApp.setTooltip(new Tooltip("Launches main Matrix App"));
+        showInfo.setTooltip(new Tooltip("Launches a scene with information"));
+        forceFractions.setTooltip(new Tooltip("All decimals are presented as fractions"));
     }
+
+    public static boolean getFraction() {return isFraction;}
+    public static void setFraction(boolean fraction) {isFraction = fraction;}
 }

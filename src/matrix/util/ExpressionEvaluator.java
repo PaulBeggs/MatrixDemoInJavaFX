@@ -6,8 +6,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static matrix.util.ErrorsAndSyntax.printSyntaxError;
+import static matrix.util.ErrorsAndSyntax.showErrorPopup;
 
 public class ExpressionEvaluator {
+
+    /*
+    Bugs to fix:
+    Need to make a change for exponentiation. Right now, the program does not give an accurate answer.
+    Need to implement the modulus operator as well. Figure out where this lies in the Order of Operations.
+    Parenthesis is the first to be evaluated, but then multiplication / division is next...This should not be.
+    1. Parenthesis -> 2. Exponentiation -> 3. Multiplication & Division -> 4. Addition -> 5. Subtraction.
+    I am going to assume that the modulus operator is going to be somewhere in-between 2 and 3.
+     */
 
     /*
     (-?\\d+\\.?\\d*(E-?\\d+)?): This part matches numbers in scientific notation.
@@ -60,7 +70,7 @@ public class ExpressionEvaluator {
         while (matcher.find()) {
             tokens.add(new TokenInfo(matcher.group(), matcher.start()));
         }
-        StringBuilder errorIndicator = getErrorBuilder(expression, tokens);
+        StringBuilder errorIndicator = ErrorsAndSyntax.getErrorBuilder(expression, tokens);
 
         if (!errorIndicator.toString().trim().isEmpty()) {
             printSyntaxError(expression, errorIndicator.toString());
@@ -69,30 +79,8 @@ public class ExpressionEvaluator {
         return tokens;
     }
 
-    private static StringBuilder getErrorBuilder(String expression, List<TokenInfo> tokens) {
-        int lastParsedIndex = 0;
-        StringBuilder errorIndicator = new StringBuilder(" ".repeat(expression.length()));
+    private static void handleModulus(int index, List<TokenInfo> newTokens, List<String> processedTokens) {
 
-        for (TokenInfo token : tokens) {
-            int startIndexOfToken = token.getStartIndex();
-
-            // Process the segment between lastParsedIndex and startIndexOfToken
-            for (int i = lastParsedIndex; i < startIndexOfToken; i++) {
-                if (expression.charAt(i) != ' ') {
-                    errorIndicator.setCharAt(i, '^');
-                }
-            }
-
-            lastParsedIndex = startIndexOfToken + token.getToken().length();
-        }
-
-        // Check for any remaining unparsed segment at the end of the expression
-        for (int i = lastParsedIndex; i < expression.length(); i++) {
-            if (expression.charAt(i) != ' ') {
-                errorIndicator.setCharAt(i, '^');
-            }
-        }
-        return errorIndicator;
     }
 
     private static void handleExponentiation(int index, List<TokenInfo> newTokens, List<String> processedTokens) {
@@ -101,7 +89,6 @@ public class ExpressionEvaluator {
             printSyntaxError(newTokens, index, "Invalid expression: Exponentiation requires two operands");
             throw new IllegalArgumentException("Invalid expression: Exponentiation requires two operands");
         }
-
         try {
             double base = Double.parseDouble(processedTokens.removeLast());
             double exponent = Double.parseDouble(newTokens.get(index + 1).getToken());
@@ -116,39 +103,57 @@ public class ExpressionEvaluator {
 
 
     private static void handleSquareRoot(int index, List<TokenInfo> newTokens, List<String> processedTokens) {
-//        System.out.println("Tokens inside 'Square Root': " + newTokens);
+        // Check if sqrt is used correctly
         if (index == newTokens.size() - 1) {
+            printSyntaxError(newTokens, index, "Invalid sqrt usage in token: ");
             throw new IllegalArgumentException("Invalid sqrt usage in token: ");
         }
-        String sqrtArgument = newTokens.get(index + 1).getToken();
-        if (isExpression(sqrtArgument)) {
-            sqrtArgument = String.valueOf(evaluate(sqrtArgument));
-        }
-        if (!isNumeric(sqrtArgument)) {
-            throw new IllegalArgumentException("Invalid sqrt argument: " + sqrtArgument);
-        }
-        double operand = Double.parseDouble(sqrtArgument);
-        if (operand < 0) {
-            System.out.println("This calculator does not compute imaginary numbers at this time.");
-            processedTokens.add("0");
-        } else {
-            double sqrtResult = Math.sqrt(operand);
-            processedTokens.add(String.valueOf(sqrtResult));
-        }
 
+        String sqrtArgument = newTokens.get(index + 1).getToken();
+
+        // Check if sqrt argument is an expression, and if so, evaluate it
+        try {
+            if (isExpression(sqrtArgument)) {
+                sqrtArgument = String.valueOf(evaluate(sqrtArgument));
+            }
+
+            // Check if the argument is numeric
+            if (!isNumeric(sqrtArgument)) {
+                printSyntaxError(newTokens, index, "Invalid sqrt argument: " + sqrtArgument);
+                throw new IllegalArgumentException("Invalid sqrt argument: " + sqrtArgument);
+            }
+
+            double operand = Double.parseDouble(sqrtArgument);
+            if (operand < 0) {
+                showErrorPopup("This calculator does not compute imaginary numbers at this time.");
+                System.out.println("This calculator does not compute imaginary numbers at this time.");
+                processedTokens.add("0");
+            } else {
+                double sqrtResult = Math.sqrt(operand);
+                processedTokens.add(String.valueOf(sqrtResult));
+            }
+        } catch (NumberFormatException e) {
+            printSyntaxError(newTokens, index, "Invalid number format in sqrt");
+            throw new IllegalArgumentException("Invalid number format in sqrt");
+        }
     }
 
 
     private static void handleMultiplicationOrDivision(String token, int index, List<TokenInfo> newTokens, List<String> processedTokens) {
-//        System.out.println("Tokens inside 'MultiplicationOrDivision': " + newTokens);
+        // Check if the operation is at the start or end of the token list
         if (index == 0 || index == newTokens.size() - 1) {
+            ErrorsAndSyntax.printSyntaxError(newTokens, index, "Invalid expression: " + token);
             throw new IllegalArgumentException("Invalid expression: " + token);
         }
-        double operand1 = Double.parseDouble(processedTokens.removeLast());
-        double operand2 = Double.parseDouble(newTokens.get(index + 1).getToken());
-        double result = token.equals("*") ? operand1 * operand2 : operand1 / operand2;
-        processedTokens.add(String.valueOf(result));
-//        System.out.println("Processed tokens after multiplication or division: " + processedTokens);
+        try {
+            double operand1 = Double.parseDouble(processedTokens.removeLast());
+            double operand2 = Double.parseDouble(newTokens.get(index + 1).getToken());
+            double result = token.equals("*") ? operand1 * operand2 : operand1 / operand2;
+            processedTokens.add(String.valueOf(result));
+        } catch (NumberFormatException e) {
+            ErrorsAndSyntax.printSyntaxError(newTokens, index, "Invalid number format");
+            throw new IllegalArgumentException("Invalid number format in multiplication/division");
+        }
     }
 
 
@@ -168,16 +173,20 @@ public class ExpressionEvaluator {
                 throw new IllegalArgumentException(errorMessage);
             }
             switch (token) {
-                case "*", "/" -> {
-                    handleMultiplicationOrDivision(token, i, newTokens, processedTokens);
-                    i++;
-                }
                 case "sqrt" -> {
                     handleSquareRoot(i, newTokens, processedTokens);
                     i++;
                 }
                 case "^" -> {
                     handleExponentiation(i, newTokens, processedTokens);
+                    i++;
+                }
+                case "%" -> {
+                    handleModulus(i, newTokens, processedTokens);
+                    i++;
+                }
+                case "*", "/" -> {
+                    handleMultiplicationOrDivision(token, i, newTokens, processedTokens);
                     i++;
                 }
                 default -> processedTokens.add(token);

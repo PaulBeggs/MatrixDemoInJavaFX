@@ -402,8 +402,10 @@ public class Matrix implements MatrixOperations {
         }
 
         if (!isUpperTriangular() && ! isLowerTriangular()) {
-            operationsSummary.add("#" + step++ + ", It is not. Moving on to swapping rows if necessary... \n");
+            operationsSummary.add("#" + step++ + " It is not. Swapping rows if necessary... \n");
             convertToTriangularForm();
+        } else {
+            operationsSummary.add("#" + step++ + " It is! Returning determinant of the triangular matrix... \n");
         }
         String deter = correctRoundingError(String.valueOf(multiplyDiagonal()));
         System.out.println("Triangular matrix:");
@@ -415,7 +417,7 @@ public class Matrix implements MatrixOperations {
         deter = isFractionMode()
                 ? convertDecimalToFraction(deter)
                 : convertFractionToDecimalString(deter);
-        operationsSummary.add("#" + step++ + ", Final determinant value: " + deter + "\n");
+        operationsSummary.add("#" + step++ + " Final determinant value: " + deter + "\n");
         return deter;
     }
 
@@ -431,7 +433,7 @@ public class Matrix implements MatrixOperations {
             if (pivotRow != -1) {
                 // Swap rows if necessary
                 if (pivotRow != currentRow) {
-                    operationsSummary.add("#" + step++ + ", Swapping rows: " + (currentRow + 1) + ", " + (pivotRow + 1) + "\n");
+                    operationsSummary.add("#" + step++ + " Swapping rows: " + (currentRow + 1) + ", " + (pivotRow + 1) + "\n");
                     swapRows(currentRow, pivotRow);
                     setSign(-1);
                 }
@@ -447,22 +449,37 @@ public class Matrix implements MatrixOperations {
 
     private double multiplyDiagonal() {
         double result = 1.0;
-        String resultDupe = ""; // Declare resultDupe outside the for loop
+        StringBuilder currentProduct = new StringBuilder();
 
         for (int i = 0; i < Math.min(numRows, numCols); i++) {
-            result *= evaluate(data[i][i]);
-            resultDupe = String.valueOf(result);
-            String evalDupe = String.valueOf(data[i][i]);
-            resultDupe = isFractionMode() ? convertDecimalToFraction(resultDupe) : convertFractionToDecimalString(resultDupe);
-            evalDupe = isFractionMode() ? convertDecimalToFraction(evalDupe) : convertFractionToDecimalString(evalDupe);
-            operationsSummary.add("#" + step++ + ", Multiplying diagonal elements to find determinant: " + resultDupe + " * " + evalDupe + "\n");
+            double diagonalElement = evaluate(data[i][i]);
+            result *= diagonalElement;
+
+            String diagonalElementString = isFractionMode() ? convertDecimalToFraction(String.valueOf(diagonalElement))
+                    : convertFractionToDecimalString(String.valueOf(diagonalElement));
+
+            if (i > 0) {
+                currentProduct.append(" * ");
+            }
+            currentProduct.append("(").append(diagonalElementString).append(")");
         }
 
-        // Use resultDupe outside the for loop
-        operationsSummary.add("#" + step++ + ", Determinant (before applying sign): " + resultDupe + "\n");
-        operationsSummary.add("#" + step++ + ", Multiplying the result ("+resultDupe+") by the sign ("+getSign()+") to get the final determinant" + "\n");
+        String resultString = isFractionMode() ? convertDecimalToFraction(String.valueOf(result))
+                : convertFractionToDecimalString(String.valueOf(result));
+
+        operationsSummary.add("#" + step++ + " Multiplying diagonal elements to find determinant: \n     " + currentProduct + "\n");
+        operationsSummary.add("#" + step++ + " Determinant (before applying sign): " + resultString + "\n");
+        String stringSign = "";
+        if (getSign() == 1) {
+            stringSign = "+";
+        } else if (getSign() == -1) {
+            stringSign = "-";
+        }
+        operationsSummary.add("#" + step++ + " Multiplying the result (" + resultString + ") by the sign (" + stringSign + ") to get the final determinant" + "\n");
+
         return result * getSign();
     }
+
 
     private boolean isUpperTriangular() {
         if (getRows() < 2) {
@@ -479,7 +496,7 @@ public class Matrix implements MatrixOperations {
     }
 
     private boolean isLowerTriangular() {
-        operationsSummary.add("#" + step++ + ", Checking to see if the matrix is already triangular..." + "\n");
+        operationsSummary.add("#" + step++ + " Checking to see if the matrix is already triangular..." + "\n");
         if (getRows() < 2) {
             return false;
         }
