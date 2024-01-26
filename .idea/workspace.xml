@@ -4,58 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4abf2f47-9852-4e6c-b90b-d7b7b33c5173" name="Changes" comment="This project is in a good spot right now. DeterminantController, InverseController, and MatrixController are all working properly (I think). I need add the &quot;general information&quot; FXML file, but that can be handled later.&#10;Also, I noticed this bug when trying to use the exponentiation feature. 2^2^3 should return 2^8 -&gt; 256, but instead, it returns 64? I'm sure it's just a bug about the order of operations.">
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/BasesController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/EigenController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/MatrixSolverController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/resources/SAVING FOR LATER.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/resources/magIn.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/resources/magOut.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/resources/mainInformationDu.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/matrix/gui/resources/mainInformationDupe.fxml" afterDir="false" />
+    <list default="true" id="4abf2f47-9852-4e6c-b90b-d7b7b33c5173" name="Changes" comment="Project is still in a good spot. Added some additional controllers and more scenes. I also started on the &quot;general information scene&quot; as well.&#10;I'm going to start work on fixing the exponentiation and adding some modulus capability to the project. I wanted to save before I potentially fuck up the whole thing.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SavedMatrices/matrices/identity.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/matrices/identity.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SavedMatrices/ref/ref_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/ref/ref_data.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SavedMatrices/rref/rref_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/rref/rref_data.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/DataManipulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DataManipulation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/DeterminantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DeterminantController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/DeterminantPopUpController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DeterminantPopUpController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/InverseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/InverseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/MatrixApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MatrixApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/MultiplicationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MultiplicationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/SaveController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/SaveController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/Scenes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/Scenes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/ThemeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/ThemeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/informationControl/DeterInfo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/informationControl/InverseInfo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/informationControl/MainInformation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MainInformationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/informationControl/MultiInfo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/informationControl/deterInfo.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/eigenScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/informationControl/inverseInfo.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/matrixSolver.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/informationControl/mainInformation.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/mainInformation.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/informationControl/multiInfo.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/basesScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/SaveScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/SaveScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/colored moon.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/coloredMoon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/colored sun.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/coloredSun.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/decimal white.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/decimalWhite.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/determinantScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/determinantScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/fraction white.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/fractionWhite.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/inverseScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/inverseScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/matrixGUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/matrixGUI.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/multiplicationScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/multiplicationScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/themeScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/themeScene.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/model/Matrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/model/Matrix.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/MainInformationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MainInformationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/util/ErrorsAndSyntax.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/util/ErrorsAndSyntax.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/util/ExpressionEvaluator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/util/ExpressionEvaluator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/util/MatrixUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/util/MatrixUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/util/TextFieldListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/util/TextFieldListeners.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/darkMode.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/darkMode.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/lightMode.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/lightMode.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/util/TokenInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/util/TokenInfo.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -443,7 +399,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705969265811</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Project is still in a good spot. Added some additional controllers and more scenes. I also started on the &quot;general information scene&quot; as well.&#10;I'm going to start work on fixing the exponentiation and adding some modulus capability to the project. I wanted to save before I potentially fuck up the whole thing.">
+      <option name="closed" value="true" />
+      <created>1706234375426</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1706234375426</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -474,7 +438,8 @@
     <MESSAGE value="Working on DeterminantController.&#10;Added fraction to decimal functionality. Also added a new Controller, CalculatorController.&#10;Probably won't start work on that for a while, but it is a neat addition, I think." />
     <MESSAGE value="Added proper decimal to fraction and fraction to decimal functionality inside the determinant controller. &#10;&#10;Need to add additional steps for the popup controller (i.e., documenting the sign changes, the updated matrices, etc.)." />
     <MESSAGE value="This project is in a good spot right now. DeterminantController, InverseController, and MatrixController are all working properly (I think). I need add the &quot;general information&quot; FXML file, but that can be handled later.&#10;Also, I noticed this bug when trying to use the exponentiation feature. 2^2^3 should return 2^8 -&gt; 256, but instead, it returns 64? I'm sure it's just a bug about the order of operations." />
-    <option name="LAST_COMMIT_MESSAGE" value="This project is in a good spot right now. DeterminantController, InverseController, and MatrixController are all working properly (I think). I need add the &quot;general information&quot; FXML file, but that can be handled later.&#10;Also, I noticed this bug when trying to use the exponentiation feature. 2^2^3 should return 2^8 -&gt; 256, but instead, it returns 64? I'm sure it's just a bug about the order of operations." />
+    <MESSAGE value="Project is still in a good spot. Added some additional controllers and more scenes. I also started on the &quot;general information scene&quot; as well.&#10;I'm going to start work on fixing the exponentiation and adding some modulus capability to the project. I wanted to save before I potentially fuck up the whole thing." />
+    <option name="LAST_COMMIT_MESSAGE" value="Project is still in a good spot. Added some additional controllers and more scenes. I also started on the &quot;general information scene&quot; as well.&#10;I'm going to start work on fixing the exponentiation and adding some modulus capability to the project. I wanted to save before I potentially fuck up the whole thing." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

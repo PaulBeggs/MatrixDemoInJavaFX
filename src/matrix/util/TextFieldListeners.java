@@ -44,8 +44,9 @@ public class TextFieldListeners {
     public static void addTextPropertyListener(TextField textField, Matrix matrix, int row, int col) {
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
             // Validate the input to allow only numbers, decimals, negative signs, and mathematical expressions
-            if (!newValue.matches("([-+]?\\d*(\\.\\d*)?)|(/sqrt\\([-+]?\\d+\\))|([+\\-*/^()])") && !newValue.isEmpty()) {
-                textField.setText(newValue.replaceAll("[^\\d.\\-+*/^sqrt()]", ""));
+            if (!newValue.matches("([-+]?\\d*(\\.\\d*)?)|(\\s*)|(/sqrt\\([-+]?\\d+\\))|([+\\-*/^%()])"
+            ) && !newValue.isEmpty()) {
+                textField.setText(newValue.replaceAll("[^\\d.\\-+*/^%sqrt()\\s]", ""));
             } else {
                 try {
                     // Check if the newValue is a valid numerical value before setting it to the matrix

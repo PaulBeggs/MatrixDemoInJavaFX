@@ -39,6 +39,17 @@ public class ErrorsAndSyntax {
         showErrorPopup(errorMessage + " at position " + (errorPosition + 1) + ":\n" + expression + "\n" + indicator);
     }
 
+    public static void printSyntaxError(String expression, int errorIndex, int chainLength, String errorMessage) {
+        // Create a string with carets under each consecutive operator
+        String carets = "^".repeat(Math.max(0, chainLength));
+
+        String message = expression + "\n" +
+                " ".repeat(Math.max(0, errorIndex)) +
+                carets;
+        showErrorPopup(errorMessage + " at position " + (errorIndex + 1) + ":\n" + message);
+    }
+
+
     public static StringBuilder getErrorBuilder(String expression, List<TokenInfo> tokens) {
         int lastParsedIndex = 0;
         StringBuilder errorIndicator = new StringBuilder(" ".repeat(expression.length()));

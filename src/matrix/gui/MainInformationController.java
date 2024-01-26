@@ -43,10 +43,9 @@ public class MainInformationController {
                 [*] There are only certain characters that can be entered into the editable fields.
                     [+] Any numerical value can be entered and saved automatically (Ex: 1, -2, 3, 4.5, or -6.7)
                     [+] Any operator can be entered into the text fields. That includes, "+", "-", "/", "*", "sqrt(...)", "%" (modulo), and "^".
-                    NOTE TO AUTHOR: right now, modulo and double exponentiation does not work properly.
                     [+] Any operation that requires processing will have to be followed by pressing the "Enter" key.
                     [+] Note that the calculator can have bugs, as all of the operators had to be hand implemented (refer to the class, "ExpressionEvaluator," for additional information).
-                    [+] The "Space" key to separate the numbers from the operators is unavailable (however, it is available in the calculator application).
+                    [+] If you leave any spaces between numbers, the program will concatenate the separated numbers, and proceed with calculating the given prompt. However, this will still throw a syntax error because you should be explicit about your number format.
                     [+] Duplicate operators will be flagged a syntax error, the program will notify you, and change the cell back to its previous valid entry.
                                  
                 [*] Operations like inverting the matrix, or finding its triangular form, its echelon form, or its reduced echelon form will not be saved to the main matrix instance. If you would like to save one of these changed matrices, simply save the matrix (refer to "Saving and Loading").

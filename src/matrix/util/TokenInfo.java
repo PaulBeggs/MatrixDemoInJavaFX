@@ -17,5 +17,13 @@ public class TokenInfo {
     public int getStartIndex() {
         return startIndex;
     }
+
+    @Override
+    public String toString() {
+        return "TokenInfo[" +
+                "token='" + token + '\'' +
+                ", startIndex=" + startIndex +
+                ']';
+    }
 }
 

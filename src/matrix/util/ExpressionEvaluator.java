@@ -11,15 +11,8 @@ import static matrix.util.ErrorsAndSyntax.showErrorPopup;
 public class ExpressionEvaluator {
 
     /*
-    Bugs to fix:
-    Need to make a change for exponentiation. Right now, the program does not give an accurate answer.
-    Need to implement the modulus operator as well. Figure out where this lies in the Order of Operations.
-    Parenthesis is the first to be evaluated, but then multiplication / division is next...This should not be.
-    1. Parenthesis -> 2. Exponentiation -> 3. Multiplication & Division -> 4. Addition -> 5. Subtraction.
-    I am going to assume that the modulus operator is going to be somewhere in-between 2 and 3.
-     */
+    String regex = "(-?\\d+\\.?\\d*(E-?\\d+)?)|([+\\-*^%/()])|(sqrt)";
 
-    /*
     (-?\\d+\\.?\\d*(E-?\\d+)?): This part matches numbers in scientific notation.
 
     -?: Optional negative sign.
@@ -30,9 +23,9 @@ public class ExpressionEvaluator {
       E can be followed by an optional negative sign and one or more digits.
 
 
-    ([+\\-*^/()]): This part matches common arithmetic operators and parentheses.
+    ([+\\-*^%/()]): This part matches common arithmetic operators and parentheses.
 
-    +\\-*^/(): Matches one of the characters: +, -, *, /, ^, (, ).
+    +\\-*^/(): Matches one of the characters: +, -, *, /, ^, (, ), %.
     (sqrt): This part matches the specific string "sqrt".
 
 
@@ -53,7 +46,7 @@ public class ExpressionEvaluator {
      */
 
     private static List<TokenInfo> tokenizeExpression(String expression) {
-//        System.out.println("Expression inside 'tokenize': " + expression);
+        System.out.println("Expression inside 'tokenize': " + expression);
         List<TokenInfo> tokens = new ArrayList<>();
         if (expression.isEmpty()) {
             String errorMessage = "Syntax error: Empty string";
@@ -63,38 +56,94 @@ public class ExpressionEvaluator {
         }
         expression = expression.replaceAll("(?<!\\d)\\.", "0.");
 
-        String regex = "(-?\\d+\\.?\\d*(E-?\\d+)?)|([+\\-*^/()])|(sqrt)";
+        String regex = "(-?\\d+\\.?\\d*(E-?\\d+)?)|([+\\-*^%/()])|(sqrt)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(expression);
 
         while (matcher.find()) {
             tokens.add(new TokenInfo(matcher.group(), matcher.start()));
         }
-        StringBuilder errorIndicator = ErrorsAndSyntax.getErrorBuilder(expression, tokens);
+
+        // Process tokens to combine adjacent number tokens
+        List<TokenInfo> processedTokens = new ArrayList<>();
+        for (int i = 0; i < tokens.size(); i++) {
+            TokenInfo currentToken = tokens.get(i);
+            if (i < tokens.size() - 1 && isNumeric(currentToken.getToken()) && isNumeric(tokens.get(i + 1).getToken())) {
+                // Combine current number with the next number
+                String combinedNumber = currentToken.getToken() + tokens.get(i + 1).getToken();
+                processedTokens.add(new TokenInfo(combinedNumber, currentToken.getStartIndex()));
+                i++; // Skip the next token as it's now combined
+            } else {
+                processedTokens.add(currentToken);
+            }
+        }
+
+        StringBuilder errorIndicator = ErrorsAndSyntax.getErrorBuilder(expression, processedTokens);
 
         if (!errorIndicator.toString().trim().isEmpty()) {
+            System.out.println("Error indicator tripped in Tokenize");
             printSyntaxError(expression, errorIndicator.toString());
-            tokens.add(new TokenInfo("", 0));
+            processedTokens.add(new TokenInfo("", 0));
         }
-        return tokens;
+        System.out.println("Tokens: " + processedTokens);
+        return processedTokens;
     }
 
     private static void handleModulus(int index, List<TokenInfo> newTokens, List<String> processedTokens) {
+        // Check if the modulus operation is at the start or end of the token list
+        if (index == 0 || index == newTokens.size() - 1) {
+            printSyntaxError(newTokens, index, "Invalid expression: Modulus requires two operands");
+            throw new IllegalArgumentException("Invalid expression: Modulus requires two operands");
+        }
+        try {
+            double operand1 = Double.parseDouble(processedTokens.removeLast());
+            double operand2 = Double.parseDouble(newTokens.get(index + 1).getToken());
 
+            if (operand2 == 0) {
+                printSyntaxError(newTokens, index, "Math error: Division by zero");
+                throw new ArithmeticException("Division by zero in modulus operation");
+            }
+
+            double result = operand1 % operand2;
+            processedTokens.add(String.valueOf(result));
+            System.out.println("Processed tokens after modulus: " + processedTokens);
+
+            // Remove the operand token that has been processed
+            newTokens.remove(index + 1);
+
+        } catch (NumberFormatException e) {
+            printSyntaxError(newTokens, index, "Invalid number format");
+            throw new IllegalArgumentException("Invalid number format in modulus operation");
+        }
     }
+
 
     private static void handleExponentiation(int index, List<TokenInfo> newTokens, List<String> processedTokens) {
         // Check if the exponentiation operation is at the start or end of the token list
-        if (index == 0 || index == newTokens.size() - 1) {
+        if (index == 0 || index >= newTokens.size() - 1) {
             printSyntaxError(newTokens, index, "Invalid expression: Exponentiation requires two operands");
             throw new IllegalArgumentException("Invalid expression: Exponentiation requires two operands");
         }
         try {
             double base = Double.parseDouble(processedTokens.removeLast());
             double exponent = Double.parseDouble(newTokens.get(index + 1).getToken());
+
+            // Process chained exponentiation
+            int nextIndex = index + 2;
+            while (nextIndex < newTokens.size() && newTokens.get(nextIndex).getToken().equals("^")) {
+                exponent = Math.pow(exponent, Double.parseDouble(newTokens.get(nextIndex + 1).getToken()));
+                nextIndex += 2; // Skip over the next exponent and its preceding '^' token
+            }
+
             double result = Math.pow(base, exponent);
             processedTokens.add(String.valueOf(result));
             System.out.println("Processed tokens after exponentiation: " + processedTokens);
+
+            // Remove processed exponent tokens
+            if (nextIndex > index + 1) {
+                newTokens.subList(index + 1, nextIndex).clear();
+            }
+
         } catch (NumberFormatException e) {
             printSyntaxError(newTokens, index, "Invalid number format");
             throw new IllegalArgumentException("Invalid number format in exponentiation");
@@ -166,11 +215,17 @@ public class ExpressionEvaluator {
             TokenInfo tokenInfo = newTokens.get(i);
             String token = tokenInfo.getToken();
 
-            // Check for consecutive operators
             if (isOperator(token) && i < newTokens.size() - 1 && isOperator(newTokens.get(i + 1).getToken())) {
+                int chainLength = 1;
+                int j = i + 1;
+                while (j < newTokens.size() && isOperator(newTokens.get(j).getToken())) {
+                    chainLength += newTokens.get(j).getToken().length(); // Add the length of each consecutive operator
+                    j++;
+                }
+
                 String errorMessage = "Syntax error: Duplicate consecutive operators starting";
-                printSyntaxError(expression, tokenInfo.getStartIndex(), errorMessage);
-                throw new IllegalArgumentException(errorMessage);
+                printSyntaxError(expression, tokenInfo.getStartIndex(), chainLength, errorMessage);
+                return "0";
             }
             switch (token) {
                 case "sqrt" -> {
@@ -274,13 +329,13 @@ public class ExpressionEvaluator {
             System.out.println("Expression after handling parenthesis: " + expression);
         }
 
-//        System.out.println("Expression before initial operations: " + expression);
+        System.out.println("Expression before initial operations: " + expression);
         expression = initialOperations(expression);
 
-//        System.out.println("Expression before addition/subtraction: " + expression);
+        System.out.println("Expression before addition/subtraction: " + expression);
         finalExpression = evaluateAdditionSubtraction(expression);
 
-//        System.out.println("Final Expression: " + finalExpression);
+        System.out.println("Final Expression: " + finalExpression);
         return finalExpression;
     }
 }
