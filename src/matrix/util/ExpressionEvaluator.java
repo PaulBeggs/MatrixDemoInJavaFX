@@ -2,6 +2,7 @@ package matrix.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,10 +46,13 @@ public class ExpressionEvaluator {
       The (?<!\\d) part ensures that the double quote is not part of a number.
      */
 
+    private static boolean shownError = false;
+
     private static List<TokenInfo> tokenizeExpression(String expression) {
-        System.out.println("Expression inside 'tokenize': " + expression);
+//        // System.out.println("Expression inside 'tokenize': " + expression);
         List<TokenInfo> tokens = new ArrayList<>();
-        if (expression.isEmpty()) {
+        if (expression.isEmpty() && !shownError) {
+            shownError = true;
             String errorMessage = "Syntax error: Empty string";
             printSyntaxError(expression, 0, errorMessage);
             tokens.add(new TokenInfo("", 0));
@@ -80,18 +84,21 @@ public class ExpressionEvaluator {
 
         StringBuilder errorIndicator = ErrorsAndSyntax.getErrorBuilder(expression, processedTokens);
 
-        if (!errorIndicator.toString().trim().isEmpty()) {
-            System.out.println("Error indicator tripped in Tokenize");
+        if (!errorIndicator.toString().trim().isEmpty() && !shownError) {
+            shownError = true;
+            // System.out.println("Error indicator tripped in Tokenize");
             printSyntaxError(expression, errorIndicator.toString());
-            processedTokens.add(new TokenInfo("", 0));
+            throw new IllegalArgumentException();
+//            processedTokens.add(new TokenInfo("", 0));
         }
-        System.out.println("Tokens: " + processedTokens);
+//        // System.out.println("Tokens: " + processedTokens);
         return processedTokens;
     }
 
     private static void handleModulus(int index, List<TokenInfo> newTokens, List<String> processedTokens) {
         // Check if the modulus operation is at the start or end of the token list
-        if (index == 0 || index == newTokens.size() - 1) {
+        if (index == 0 || index == newTokens.size() - 1 && !shownError) {
+            shownError = true;
             printSyntaxError(newTokens, index, "Invalid expression: Modulus requires two operands");
             throw new IllegalArgumentException("Invalid expression: Modulus requires two operands");
         }
@@ -99,19 +106,21 @@ public class ExpressionEvaluator {
             double operand1 = Double.parseDouble(processedTokens.removeLast());
             double operand2 = Double.parseDouble(newTokens.get(index + 1).getToken());
 
-            if (operand2 == 0) {
+            if (operand2 == 0 && !shownError) {
+                shownError = true;
                 printSyntaxError(newTokens, index, "Math error: Division by zero");
                 throw new ArithmeticException("Division by zero in modulus operation");
             }
 
             double result = operand1 % operand2;
             processedTokens.add(String.valueOf(result));
-            System.out.println("Processed tokens after modulus: " + processedTokens);
+//            // System.out.println("Processed tokens after modulus: " + processedTokens);
 
             // Remove the operand token that has been processed
             newTokens.remove(index + 1);
 
         } catch (NumberFormatException e) {
+            shownError = true;
             printSyntaxError(newTokens, index, "Invalid number format");
             throw new IllegalArgumentException("Invalid number format in modulus operation");
         }
@@ -119,33 +128,37 @@ public class ExpressionEvaluator {
 
 
     private static void handleExponentiation(int index, List<TokenInfo> newTokens, List<String> processedTokens) {
+        // System.out.println("before entering the ring of exponentiation: \n" + processedTokens + "\n newTokens: \n" + newTokens);
+        // For the case of left to right exponentiation, you must include a parenthesis around the final exponent that you want to use.
+        // e.g., 2 ^ 2 ^ 3 -> 2 ^ (2 ^ 3)
         // Check if the exponentiation operation is at the start or end of the token list
-        if (index == 0 || index >= newTokens.size() - 1) {
+        if (index == 0 || index >= newTokens.size() - 1 && !shownError) {
+            shownError = true;
             printSyntaxError(newTokens, index, "Invalid expression: Exponentiation requires two operands");
             throw new IllegalArgumentException("Invalid expression: Exponentiation requires two operands");
         }
         try {
             double base = Double.parseDouble(processedTokens.removeLast());
             double exponent = Double.parseDouble(newTokens.get(index + 1).getToken());
+            int nextIndex = index + 1; // Start from the first exponent
 
-            // Process chained exponentiation
-            int nextIndex = index + 2;
-            while (nextIndex < newTokens.size() && newTokens.get(nextIndex).getToken().equals("^")) {
+            // Adjust loop to process chained exponentiation correctly
+            while (nextIndex + 1 < newTokens.size() && newTokens.get(nextIndex).getToken().equals("^")) {
                 exponent = Math.pow(exponent, Double.parseDouble(newTokens.get(nextIndex + 1).getToken()));
-                nextIndex += 2; // Skip over the next exponent and its preceding '^' token
+                // Remove the "^" and its right-hand operand as they are processed
+                newTokens.remove(nextIndex); // Remove "^"
+                newTokens.remove(nextIndex); // Remove the operand right of "^"
             }
 
             double result = Math.pow(base, exponent);
             processedTokens.add(String.valueOf(result));
-            System.out.println("Processed tokens after exponentiation: " + processedTokens);
 
-            // Remove processed exponent tokens
-            if (nextIndex > index + 1) {
-                newTokens.subList(index + 1, nextIndex).clear();
-            }
-
+            // No need to manually remove tokens here as they are already handled in the loop
         } catch (NumberFormatException e) {
-            printSyntaxError(newTokens, index, "Invalid number format");
+            if (!shownError) {
+                shownError = true;
+                printSyntaxError(newTokens, index, "Invalid number format");
+            }
             throw new IllegalArgumentException("Invalid number format in exponentiation");
         }
     }
@@ -153,7 +166,8 @@ public class ExpressionEvaluator {
 
     private static void handleSquareRoot(int index, List<TokenInfo> newTokens, List<String> processedTokens) {
         // Check if sqrt is used correctly
-        if (index == newTokens.size() - 1) {
+        if (index == newTokens.size() - 1 && !shownError) {
+            shownError = true;
             printSyntaxError(newTokens, index, "Invalid sqrt usage in token: ");
             throw new IllegalArgumentException("Invalid sqrt usage in token: ");
         }
@@ -167,47 +181,62 @@ public class ExpressionEvaluator {
             }
 
             // Check if the argument is numeric
-            if (!isNumeric(sqrtArgument)) {
+            if (!isNumeric(sqrtArgument) && !shownError) {
+                shownError = true;
                 printSyntaxError(newTokens, index, "Invalid sqrt argument: " + sqrtArgument);
                 throw new IllegalArgumentException("Invalid sqrt argument: " + sqrtArgument);
             }
 
             double operand = Double.parseDouble(sqrtArgument);
-            if (operand < 0) {
+            if (operand < 0 && !shownError) {
+                shownError = true;
                 showErrorPopup("This calculator does not compute imaginary numbers at this time.");
-                System.out.println("This calculator does not compute imaginary numbers at this time.");
+                // System.out.println("This calculator does not compute imaginary numbers at this time.");
                 processedTokens.add("0");
             } else {
                 double sqrtResult = Math.sqrt(operand);
                 processedTokens.add(String.valueOf(sqrtResult));
             }
         } catch (NumberFormatException e) {
-            printSyntaxError(newTokens, index, "Invalid number format in sqrt");
+            if (!shownError) {
+                shownError = true;
+                printSyntaxError(newTokens, index, "Invalid number format in sqrt");
+            }
             throw new IllegalArgumentException("Invalid number format in sqrt");
         }
     }
 
 
     private static void handleMultiplicationOrDivision(String token, int index, List<TokenInfo> newTokens, List<String> processedTokens) {
-        // Check if the operation is at the start or end of the token list
-        if (index == 0 || index == newTokens.size() - 1) {
-            ErrorsAndSyntax.printSyntaxError(newTokens, index, "Invalid expression: " + token);
-            throw new IllegalArgumentException("Invalid expression: " + token);
-        }
         try {
+            // Check if the operation is at the start or end of the token list
+            if (index == 0 || index == newTokens.size() - 1 && !shownError) {
+                shownError = true;
+                if (Objects.equals(token, "/")) {
+                    ErrorsAndSyntax.showErrorPopup("Missing operands for division.");
+                } else if (Objects.equals(token, "*")) {
+                    ErrorsAndSyntax.showErrorPopup("Missing operands for multiplication.");
+                }
+                throw new IllegalArgumentException("Invalid expression: " + token);
+            }
+
             double operand1 = Double.parseDouble(processedTokens.removeLast());
             double operand2 = Double.parseDouble(newTokens.get(index + 1).getToken());
             double result = token.equals("*") ? operand1 * operand2 : operand1 / operand2;
             processedTokens.add(String.valueOf(result));
         } catch (NumberFormatException e) {
-            ErrorsAndSyntax.printSyntaxError(newTokens, index, "Invalid number format");
-            throw new IllegalArgumentException("Invalid number format in multiplication/division");
+            String errorMessage = (index == 0 || index == newTokens.size() - 1) ?
+                    "Invalid expression: " + token : "Invalid number format in multiplication/division";
+            if (!shownError) {
+                shownError = true;
+                ErrorsAndSyntax.printSyntaxError(newTokens, index, errorMessage);
+            }
+            throw new IllegalArgumentException(errorMessage, e);
         }
     }
 
-
     private static String initialOperations(String expression) {
-//        System.out.println("Expression inside 'initialOperations': " + expression);
+//        // System.out.println("Expression inside 'initialOperations': " + expression);
         List<TokenInfo> newTokens = tokenizeExpression(expression);
         List<String> processedTokens = new ArrayList<>();
 
@@ -215,36 +244,44 @@ public class ExpressionEvaluator {
             TokenInfo tokenInfo = newTokens.get(i);
             String token = tokenInfo.getToken();
 
-            if (isOperator(token) && i < newTokens.size() - 1 && isOperator(newTokens.get(i + 1).getToken())) {
+            // Error detection:
+            if (isOperator(token) && i < newTokens.size() - 1 && isOperator(newTokens.get(i + 1).getToken()) && !shownError) {
                 int chainLength = 1;
                 int j = i + 1;
                 while (j < newTokens.size() && isOperator(newTokens.get(j).getToken())) {
                     chainLength += newTokens.get(j).getToken().length(); // Add the length of each consecutive operator
                     j++;
                 }
-
+                shownError = true;
                 String errorMessage = "Syntax error: Duplicate consecutive operators starting";
                 printSyntaxError(expression, tokenInfo.getStartIndex(), chainLength, errorMessage);
-                return "0";
             }
+
             switch (token) {
                 case "sqrt" -> {
                     handleSquareRoot(i, newTokens, processedTokens);
                     i++;
+                    // System.out.println("After sqrt case. \n" + processedTokens + "\n newTokens: \n" + newTokens);
                 }
                 case "^" -> {
                     handleExponentiation(i, newTokens, processedTokens);
                     i++;
+                    // System.out.println("After exponential case. \n" + processedTokens + "\n newTokens: \n" + newTokens);
                 }
                 case "%" -> {
                     handleModulus(i, newTokens, processedTokens);
                     i++;
+                    // System.out.println("After modulus case. \n" + processedTokens + "\n newTokens: \n" + newTokens);
                 }
                 case "*", "/" -> {
                     handleMultiplicationOrDivision(token, i, newTokens, processedTokens);
                     i++;
+                    // System.out.println("After multiplication or division cases. \n" + processedTokens + "\n newTokens: \n" + newTokens);
                 }
-                default -> processedTokens.add(token);
+                default -> {
+                    // System.out.println("Adding token in default call: \n" + token);
+                    processedTokens.add(token);
+                }
             }
         }
 
@@ -283,13 +320,20 @@ public class ExpressionEvaluator {
         return token.equals("*") || token.equals("/") || token.equals("+") || token.equals("-") || token.equals("^");
     }
 
+    private static String insertImplicitMultiplication(String expression) {
+        expression = expression.replaceAll("(\\d)\\(", "$1*("); // Insert * between a digit and (
+        expression = expression.replaceAll("\\)(\\d)", ")*$1"); // Insert * between ) and a digit
+        expression = expression.replaceAll("\\)\\(", ")*(");    // Insert * between ) and (
+        return expression;
+    }
+
     private static double evaluateAdditionSubtraction(String expression) {
         String[] tokens = expression.split(" ");
         double result = 0.0;
         char operation = '+';
 
-//        System.out.println("Tokens: " + Arrays.toString(tokens));
-//        System.out.println("Tokens length = " + tokens.length);
+//        // System.out.println("Tokens: " + Arrays.toString(tokens));
+//        // System.out.println("Tokens length = " + tokens.length);
 
         for (String token : tokens) {
             if (token.equals("+") || token.equals("-")) {
@@ -313,29 +357,31 @@ public class ExpressionEvaluator {
 
     public static double evaluate(String expression) {
         double finalExpression;
+        shownError = false;
+        expression = insertImplicitMultiplication(expression);
+
         while (expression.contains("(")) {
-            System.out.println("Handling parenthesis: " + expression);
+            // System.out.println("Handling parenthesis: " + expression);
             int open = expression.lastIndexOf('(');
             int close = expression.indexOf(')', open);
 
             if (close == -1) {
+                shownError = true;
                 String errorMessage = "Syntax error: Opening parenthesis with no closing parenthesis";
                 printSyntaxError(expression, open, errorMessage);
-                return 0;
             }
-
             double result = evaluate(expression.substring(open + 1, close));
             expression = expression.substring(0, open) + result + expression.substring(close + 1);
-            System.out.println("Expression after handling parenthesis: " + expression);
+            // System.out.println("Expression after handling parenthesis: " + expression);
         }
 
-        System.out.println("Expression before initial operations: " + expression);
+        // System.out.println("Expression before initial operations: " + expression);
         expression = initialOperations(expression);
 
-        System.out.println("Expression before addition/subtraction: " + expression);
+        // System.out.println("Expression before addition/subtraction: " + expression);
         finalExpression = evaluateAdditionSubtraction(expression);
 
-        System.out.println("Final Expression: " + finalExpression);
+        // System.out.println("Final Expression: " + finalExpression);
         return finalExpression;
     }
 }

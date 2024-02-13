@@ -1,9 +1,7 @@
 package matrix.gui;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import matrix.fileManaging.FilePath;
@@ -23,6 +21,8 @@ public class SaveController {
     private ChoiceBox<String> matrixSelectionComboBox;
     @FXML
     private CheckBox saveAsFractions;
+    @FXML
+    private Button saveButton;
     private List<List<TextField>> matrixTextFields;
     private MatrixCell[][] matrixCells;
     private String determinantValue;
@@ -31,6 +31,7 @@ public class SaveController {
 
     @FXML
     public void initialize() {
+        setToolTips();
         setMatrixTextFields(matrixTextFields);
 
         matrixSelectionComboBox.getItems().addAll("Default Matrix", "Determinant Matrix", "Triangular Matrix");
@@ -114,4 +115,10 @@ public class SaveController {
         }
     }
     public void setStage(Stage stage) {saveStage = stage;}
+
+    public void setToolTips() {
+        fileNameField.setTooltip(new Tooltip("Enter file name"));
+        matrixSelectionComboBox.setTooltip(new Tooltip("Save matrix type"));
+        saveButton.setTooltip(new Tooltip("Save"));
+    }
 }

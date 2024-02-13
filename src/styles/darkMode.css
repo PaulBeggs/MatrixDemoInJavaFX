@@ -14,12 +14,16 @@
     -fx-background-color: -primary-color;
 }
 
+.matrix-row-highlight {
+    -fx-background-color: yellow !important
+}
+
 .textfield-grid-cell {
     -fx-min-height: 70;
     -fx-min-width: 120;
 
-    -fx-pref-height: 70;
-    -fx-pref-width: 120;
+    -fx-pref-height: 100;
+    -fx-pref-width: 150;
 
     -fx-alignment: center;
 
@@ -28,6 +32,8 @@
 
     -fx-background-color: -third-color;
     -fx-text-fill: -text-color;
+
+    -fx-font-size: 20;
 }
 
 .button {
@@ -229,4 +235,3 @@
     -fx-background-color: yellow; /* Thumb (bar) color when slider is focused */
     -fx-radius: 2;
 }
-

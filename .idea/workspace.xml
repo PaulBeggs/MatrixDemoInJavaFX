@@ -4,14 +4,47 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4abf2f47-9852-4e6c-b90b-d7b7b33c5173" name="Changes" comment="Project is still in a good spot. Added some additional controllers and more scenes. I also started on the &quot;general information scene&quot; as well.&#10;I'm going to start work on fixing the exponentiation and adding some modulus capability to the project. I wanted to save before I potentially fuck up the whole thing.">
+    <list default="true" id="4abf2f47-9852-4e6c-b90b-d7b7b33c5173" name="Changes" comment="Fixed the exponentiation and adding some modulus capability to the project.&#10;&#10;I guess it is time to add some extra functionality to some of the other (new) controllers">
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FutureOfProject" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/matrix/model/MatrixInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/matrix/model/MatrixPane.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/matrix/util/ExpressionEvaluatorTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/matrix/util/MatrixUtilTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/matrix/view/MultiplicationView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatrixGUI_2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/MatrixGUI_2.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/determinants/determinant_result.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/matrices/identity.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/matrices/identity.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/matrices/matrix_data.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/gui/MainInformationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MainInformationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/util/ErrorsAndSyntax.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/util/ErrorsAndSyntax.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/ref/ref_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/ref/ref_data.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/rref/rref_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/rref/rref_data.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/SavedMatrices/triangular/triangular_data.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/DeterminantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DeterminantController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/DeterminantPopUpController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/DeterminantPopUpController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MatrixController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/MultiplicationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/MultiplicationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/SaveController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/SaveController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/Scenes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/Scenes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/ThemeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/ThemeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/SaveScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/saveScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/determinantAnimation.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/determinantAnimation.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/determinantScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/determinantScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/matrixGUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/matrixGUI.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/multiplicationScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/multiplicationScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/gui/resources/themeScene.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/gui/resources/themeScene.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/model/Matrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/model/Matrix.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/model/MatrixSingleton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/model/MatrixSingleton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/model/MatrixTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/model/MatrixTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/util/ExpressionEvaluator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/util/ExpressionEvaluator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/util/MatrixUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/util/MatrixUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/matrix/util/ObjectType.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/matrix/util/TextFieldListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/util/TextFieldListeners.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/matrix/util/TokenInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/matrix/util/TokenInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/darkMode.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/darkMode.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/styles/lightMode.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/lightMode.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +67,7 @@
         <option value="Interface" />
         <option value="Enum" />
         <option value="FxmlFile" />
+        <option value="JUnit5 Test Class" />
         <option value="Class" />
       </list>
     </option>
@@ -41,7 +75,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Work-on-Fraction/decimal-functionality" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -69,6 +103,9 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/matrix/gui/MainInformationController.java" root0="FORCE_HIGHLIGHTING" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -83,66 +120,75 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Application.BigCalculator.executor&quot;: &quot;Run&quot;,
-    &quot;Application.BigDecimalExample.executor&quot;: &quot;Run&quot;,
-    &quot;Application.CalculatorConsole.executor&quot;: &quot;Run&quot;,
-    &quot;Application.DecimalToFraction.executor&quot;: &quot;Run&quot;,
-    &quot;Application.ExpressionEvaluator.executor&quot;: &quot;Run&quot;,
-    &quot;Application.FractionUtil.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Matrix.executor&quot;: &quot;Run&quot;,
-    &quot;Application.MatrixApp.executor&quot;: &quot;Run&quot;,
-    &quot;Application.MatrixInvertingOperationsTest.executor&quot;: &quot;Run&quot;,
-    &quot;Application.MatrixTest.executor&quot;: &quot;Run&quot;,
-    &quot;Application.MatrixUtil.executor&quot;: &quot;Run&quot;,
-    &quot;Application.RepeatingCharacterDetector.executor&quot;: &quot;Run&quot;,
-    &quot;Application.UserInputToOutputOperands.executor&quot;: &quot;Run&quot;,
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;ShowUsagesActions.previewPropertyKey&quot;: &quot;true&quot;,
-    &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Working-on-Determinant-Controller&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/paulb/IdeaProjects/Matrix testing&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.postfix.templates&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Application.BigCalculator.executor": "Run",
+    "Application.BigDecimalExample.executor": "Run",
+    "Application.CalculatorConsole.executor": "Run",
+    "Application.DecimalToFraction.executor": "Run",
+    "Application.ExpressionEvaluator.executor": "Run",
+    "Application.FractionUtil.executor": "Run",
+    "Application.Matrix.executor": "Run",
+    "Application.MatrixApp.executor": "Run",
+    "Application.MatrixDragAndDropExample.executor": "Run",
+    "Application.MatrixInvertingOperationsTest.executor": "Run",
+    "Application.MatrixTest.executor": "Run",
+    "Application.MatrixUtil.executor": "Run",
+    "Application.RepeatingCharacterDetector.executor": "Run",
+    "Application.UserInputToOutputOperands.executor": "Run",
+    "Downloaded.Files.Path.Enabled": "false",
+    "JUnit.ExpressionEvaluatorTest.executor": "Run",
+    "JUnit.ExpressionEvaluatorTest.testCombinedOperators.executor": "Run",
+    "JUnit.ExpressionEvaluatorTest.testExponentiation.executor": "Run",
+    "JUnit.ExpressionEvaluatorTest.testMultipleParentheses.executor": "Run",
+    "JUnit.MatrixTest.REF.executor": "Run",
+    "JUnit.MatrixTest.executor": "Run",
+    "JUnit.MatrixTest.invert.executor": "Run",
+    "JUnit.MatrixUtilTest.correctDecimal.executor": "Run",
+    "JUnit.MatrixUtilTest.correctFrac.executor": "Run",
+    "JUnit.MatrixUtilTest.correctRounding.executor": "Run",
+    "JUnit.MatrixUtilTest.executor": "Run",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ShowUsagesActions.previewPropertyKey": "true",
+    "TestNG.ExpressionEvaluatorTest.executor": "Run",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers": "true",
+    "create.test.in.the.same.root": "true",
+    "git-widget-placeholder": "Working-on-Matrix-Multiplication",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/paulb/IdeaProjects/Matrix testing",
+    "project.structure.last.edited": "Global Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.postfix.templates"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\paulb\IdeaProjects\MatrixGUI_2\src\matrix\gui\resources" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\paulb\IdeaProjects\MatrixDemoInJavaFX" />
       <recent name="C:\Users\paulb\IdeaProjects\MatrixDemoInJavaFX\src\matrix\gui\resources" />
       <recent name="C:\Users\paulb\IdeaProjects\MatrixDemoInJavaFX\src\matrix\gui\generalInformationControllers" />
       <recent name="C:\Users\paulb\IdeaProjects\MatrixDemoInJavaFX\src\img" />
       <recent name="C:\Users\paulb\IdeaProjects\MatrixDemoInJavaFX\src\styles" />
-      <recent name="C:\Users\paulb\IdeaProjects\FinalProject\SavedMatricies" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="matrix.util" />
     </key>
   </component>
   <component name="RunManager" selected="Application.MatrixApp">
-    <configuration name="ExpressionEvaluator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="matrix.util.ExpressionEvaluator" />
-      <module name="MatrixGUI_2" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="matrix.util.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Matrix" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="matrix.model.Matrix" />
       <module name="MatrixGUI_2" />
@@ -168,52 +214,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MatrixApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="MatrixApp" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="matrix.gui.MatrixApp" />
       <module name="MatrixGUI_2" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="matrix.gui.MatrixController" />
-          <option name="ENABLED" value="false" />
-        </pattern>
-        <pattern>
-          <option name="PATTERN" value="matrix.gui.MatrixApp" />
-          <option name="ENABLED" value="false" />
-        </pattern>
-        <pattern>
-          <option name="PATTERN" value="matrix.gui.DeterminantController" />
-          <option name="ENABLED" value="false" />
-        </pattern>
-        <pattern>
-          <option name="PATTERN" value="matrix.gui.Scenes" />
-          <option name="ENABLED" value="false" />
-        </pattern>
-        <pattern>
-          <option name="PATTERN" value="matrix.*" />
-          <option name="ENABLED" value="false" />
+          <option name="PATTERN" value="matrix.gui.*" />
+          <option name="ENABLED" value="true" />
         </pattern>
         <pattern>
           <option name="PATTERN" value="matrix.model.Matrix" />
           <option name="ENABLED" value="true" />
         </pattern>
         <pattern>
-          <option name="PATTERN" value="matrix.gui.DeterminantController" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-        <pattern>
-          <option name="PATTERN" value="matrix.model.MatrixCell" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-        <pattern>
-          <option name="PATTERN" value="matrix.gui.MatrixController" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-        <pattern>
-          <option name="PATTERN" value="matrix.util.MatrixUtil" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-        <pattern>
-          <option name="PATTERN" value="matrix.gui.InverseController" />
+          <option name="PATTERN" value="matrix.util.ExpressionEvaluator" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -221,8 +235,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MatrixTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="matrix.model.MatrixTest" />
+    <configuration name="MatrixTest.invert" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="MatrixGUI_2" />
       <extension name="coverage">
         <pattern>
@@ -230,12 +243,15 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="matrix.model" />
+      <option name="MAIN_CLASS_NAME" value="matrix.model.MatrixTest" />
+      <option name="METHOD_NAME" value="invert" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MatrixUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="matrix.util.MatrixUtil" />
+    <configuration name="MatrixUtilTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="MatrixGUI_2" />
       <extension name="coverage">
         <pattern>
@@ -243,23 +259,59 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="matrix.util" />
+      <option name="MAIN_CLASS_NAME" value="matrix.util.MatrixUtilTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MatrixUtilTest.correctDecimal" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="MatrixGUI_2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="matrix.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="matrix.util" />
+      <option name="MAIN_CLASS_NAME" value="matrix.util.MatrixUtilTest" />
+      <option name="METHOD_NAME" value="correctDecimal" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MatrixUtilTest.correctFrac" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="MatrixGUI_2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="matrix.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="matrix.util" />
+      <option name="MAIN_CLASS_NAME" value="matrix.util.MatrixUtilTest" />
+      <option name="METHOD_NAME" value="correctFrac" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
       <item itemvalue="Application.Matrix" />
-      <item itemvalue="Application.MatrixTest" />
-      <item itemvalue="Application.ExpressionEvaluator" />
-      <item itemvalue="Application.MatrixUtil" />
       <item itemvalue="Application.MatrixApp" />
+      <item itemvalue="JUnit.MatrixTest.invert" />
+      <item itemvalue="JUnit.MatrixUtilTest" />
+      <item itemvalue="JUnit.MatrixUtilTest.correctDecimal" />
+      <item itemvalue="JUnit.MatrixUtilTest.correctFrac" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.MatrixApp" />
-        <item itemvalue="Application.MatrixTest" />
-        <item itemvalue="Application.MatrixUtil" />
-        <item itemvalue="Application.ExpressionEvaluator" />
+        <item itemvalue="JUnit.MatrixTest.invert" />
+        <item itemvalue="JUnit.MatrixUtilTest.correctDecimal" />
+        <item itemvalue="JUnit.MatrixUtilTest" />
+        <item itemvalue="JUnit.MatrixUtilTest.correctFrac" />
       </list>
     </recent_temporary>
   </component>
@@ -267,6 +319,7 @@
     <attachedChunks>
       <set>
         <option value="jdk-21.0.1-openjdk-21.0.1-249ae16d76d6-a618e4d4" />
+        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-4f524021" />
       </set>
     </attachedChunks>
   </component>
@@ -441,19 +494,15 @@
     <MESSAGE value="Project is still in a good spot. Added some additional controllers and more scenes. I also started on the &quot;general information scene&quot; as well.&#10;I'm going to start work on fixing the exponentiation and adding some modulus capability to the project. I wanted to save before I potentially fuck up the whole thing." />
     <option name="LAST_COMMIT_MESSAGE" value="Project is still in a good spot. Added some additional controllers and more scenes. I also started on the &quot;general information scene&quot; as well.&#10;I'm going to start work on fixing the exponentiation and adding some modulus capability to the project. I wanted to save before I potentially fuck up the whole thing." />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <breakpoint enabled="true" type="java-exception">
-          <properties class="java.lang.NumberFormatException" package="java.lang" />
-          <option name="timeStamp" value="1" />
-        </breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/FinalProject_iml$DecimalToFraction.ic" NAME="DecimalToFraction Coverage Results" MODIFIED="1703359890785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>matrix.operators.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/FinalProject_iml$MatrixUtilTest_correctDecimal.ic" NAME="MatrixUtilTest.correctDecimal Coverage Results" MODIFIED="1707081280857" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>matrix.util.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/FinalProject_iml$MatrixTest_invert.ic" NAME="MatrixTest.invert Coverage Results" MODIFIED="1707082079443" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>matrix.model.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/FinalProject_iml$Matrix.ic" NAME="Matrix Coverage Results" MODIFIED="1705962147086" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>matrix.model.*</FILTER>
@@ -461,13 +510,13 @@
       <FILTER>matrix.util.MatrixUtil</FILTER>
       <FILTER>matrix.util.ExpressionEvaluator</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/FinalProject_iml$MatrixApp.ic" NAME="MatrixApp Coverage Results" MODIFIED="1706230335326" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/FinalProject_iml$MatrixApp.ic" NAME="MatrixApp Coverage Results" MODIFIED="1707418177685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>matrix.gui.*</FILTER>
       <FILTER>matrix.model.Matrix</FILTER>
-      <FILTER>matrix.gui.DeterminantController</FILTER>
-      <FILTER>matrix.model.MatrixCell</FILTER>
-      <FILTER>matrix.gui.MatrixController</FILTER>
-      <FILTER>matrix.util.MatrixUtil</FILTER>
-      <FILTER>matrix.gui.InverseController</FILTER>
+      <FILTER>matrix.util.ExpressionEvaluator</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/FinalProject_iml$ExpressionEvaluatorTest_testExponentiation.ic" NAME="ExpressionEvaluatorTest.testExponentiation Coverage Results" MODIFIED="1707077929416" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>matrix.util.*</FILTER>
     </SUITE>
   </component>
 </project>

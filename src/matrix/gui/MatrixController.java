@@ -32,6 +32,7 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
+import static matrix.util.TextFieldListeners.addEnterListener;
 import static matrix.util.TextFieldListeners.objectOnlyListener;
 
 public class MatrixController implements DataManipulation {
@@ -47,6 +48,8 @@ public class MatrixController implements DataManipulation {
     ChoiceBox<String> operations;
     @FXML
     GridPane matrixGrid;
+    @FXML
+    CheckBox randomDigits;
     private MatrixView matrixView;
     private int step = 1;
     private MatrixCell[][] matrixCells;
@@ -67,11 +70,20 @@ public class MatrixController implements DataManipulation {
 
     private void setupTextFieldListeners() {
         // static import of MatrixUtil and ObjectType to cut down on clutter.
-        objectOnlyListener(sourceRow, ObjectType.INTEGER);
-        objectOnlyListener(targetRow, ObjectType.INTEGER);
-        objectOnlyListener(sizeRowsField, ObjectType.INTEGER);
-        objectOnlyListener(sizeColsField, ObjectType.INTEGER);
-        TextFieldListeners.addEnterListener(multiplier);
+        objectOnlyListener(sourceRow);
+        objectOnlyListener(targetRow);
+        objectOnlyListener(sizeRowsField);
+        objectOnlyListener(sizeColsField);
+        addEnterListener(multiplier);
+
+        sizeRowsField.setOnAction(actionEvent -> handleGenerateButton());
+        sizeColsField.setOnAction(actionEvent -> handleGenerateButton());
+        sourceRow.setOnAction(actionEvent -> performOperation());
+        targetRow.setOnAction(actionEvent -> performOperation());
+        multiplier.setOnAction(actionEvent -> {
+            operations.setValue("Multiply Row");
+            performOperation();
+        });
     }
 
     private void setupOperationsDropdown() {
@@ -125,15 +137,16 @@ public class MatrixController implements DataManipulation {
             int numRows = Integer.parseInt(sizeRowsField.getText());
             int numCols = Integer.parseInt(sizeColsField.getText());
             return generateMatrixData(numRows, numCols, (row, col) -> {
-                int cellValue = (int) Math.floor(Math.random() * 10);
-                return String.valueOf(cellValue);
+                if (randomDigits.isSelected()) {
+                    return String.valueOf((int) Math.floor(Math.random() * 10));
+                } else {
+                    return "0";
+                }
             });
         } else {
             System.out.println("Invalid input for matrix dimensions.");
             ErrorsAndSyntax.showErrorPopup("Invalid input for matrix dimensions.");
-            sizeColsField.setText("1");
-            sizeRowsField.setText("1");
-            return Collections.emptyList(); // Return an empty list if inputs are invalid
+            return Collections.emptyList();
         }
     }
 
@@ -144,9 +157,7 @@ public class MatrixController implements DataManipulation {
             return generateMatrixData(numRows, numCols, (row, col) -> (Objects.equals(row, col)) ? "1" : "0");
         } else {
             ErrorsAndSyntax.showErrorPopup("Invalid input for identity matrix dimensions");
-            sizeColsField.setText("1");
-            sizeRowsField.setText("1");
-            return Collections.emptyList(); // Return an empty list if inputs are invalid
+            return Collections.emptyList();
         }
     }
 
@@ -244,7 +255,7 @@ public class MatrixController implements DataManipulation {
         saveStage.initModality(Modality.WINDOW_MODAL);
         saveStage.initOwner(MatrixApp.getPrimaryStage());
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/SaveScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/saveScene.fxml"));
         Parent root;
         try {
             root = loader.load();
@@ -432,7 +443,6 @@ public class MatrixController implements DataManipulation {
     @Override
     public void setToolTips() {
         generateButton.setTooltip(new Tooltip("Generate a random matrix"));
-        saveButton.setTooltip(new Tooltip("Save the matrix"));
         loadButton.setTooltip(new Tooltip("Load a matrix"));
         operationButton.setTooltip(new Tooltip("Operate on matrix"));
         identityButton.setTooltip(new Tooltip("Set matrix to 1s and 0s"));
@@ -445,5 +455,7 @@ public class MatrixController implements DataManipulation {
         targetRow.setTooltip(new Tooltip("Specify target row"));
         sourceRow.setTooltip(new Tooltip("Specify source row"));
         multiplier.setTooltip(new Tooltip("Change multiplier"));
+        saveButton.setTooltip(new Tooltip("Save the matrix"));
+        scenes.setTooltip(new Tooltip("Change window"));
     }
 }

@@ -37,7 +37,7 @@ public enum Scenes {
     MULTIPLICATION {
         @Override
         public String toString() {
-            return "Matrix Multiply";
+            return "Multiply Matrix";
         }
         @Override
         public String getTitle() {
@@ -92,7 +92,7 @@ public enum Scenes {
 
         @Override
         public String getTitle() {
-            return "REF, RREF, Inverting Operations";
+            return "REF, RREF, & Inverting Operations";
         }
 
         @Override

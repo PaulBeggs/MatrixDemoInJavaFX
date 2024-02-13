@@ -2,7 +2,7 @@
 <project version="4">
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="MatrixGUI_2" options="--add-exports java.datatransfer/java.awt=DataStructuresProject2_PaulBeggs --add-exports javafx.graphics/com.sun.javafx.scene.traversal=MatrixDemoInJavaFX" />
+      <module name="MatrixGUI_2" options="--add-exports java.datatransfer/java.awt=DataStructuresProject2_PaulBeggs --add-exports javafx.graphics/com.sun.javafx.scene.traversal=MatrixDemoInJavaFX --add-exports org.junit.platform.commons/org.junit.platform.commons.util=MatrixDemoInJavaFX" />
     </option>
   </component>
 </project>

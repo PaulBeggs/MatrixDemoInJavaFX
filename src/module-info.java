@@ -1,10 +1,12 @@
 module MatrixDemoInJavaFX {
     requires javafx.fxml;
     requires javafx.controls;
+    requires junit;
 
-    exports matrix.gui;
+    exports matrix.util to junit;
+
     exports matrix.model;
-    exports matrix.util;
+//    exports matrix.util;
     exports matrix.fileManaging;
     exports matrix.view;
     opens matrix.gui;

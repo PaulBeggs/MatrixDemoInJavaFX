@@ -6,7 +6,6 @@ import matrix.model.MatrixCell;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 
 public class MatrixUtil {
 
@@ -102,26 +101,25 @@ public class MatrixUtil {
     }
 
     public static String correctRoundingError(String number) {
-        if (number.contains(".")) {
-            int indexOfDot = number.indexOf('.');
-            String decimalPart = number.substring(indexOfDot + 1);
+        // Use BigDecimal for precise arithmetic and rounding
+        BigDecimal num = new BigDecimal(number);
 
-            // Detect long sequences of 9s or 0s
+        // Detect long sequences of 9s or 0s after rounding to a fixed scale (e.g., 10 decimal places)
+        BigDecimal roundedNum = num.setScale(11, RoundingMode.HALF_UP);
+        String roundedStr = roundedNum.stripTrailingZeros().toPlainString();
+
+        if (roundedStr.contains(".")) {
+            String decimalPart = roundedStr.substring(roundedStr.indexOf('.') + 1);
+
+            // Check for sequences of 9s or 0s in the rounded string
             if (decimalPart.matches(".*(999999|000000).*")) {
-                // Round the number using BigDecimal to avoid floating-point issues
-                BigDecimal num = new BigDecimal(number);
-                int scale = decimalPart.indexOf('9') != -1 ? decimalPart.indexOf('9') : decimalPart.indexOf('0');
-                num = num.setScale(scale, RoundingMode.HALF_UP);
-
-                return correctNegativeZero(num.stripTrailingZeros().toPlainString());
+                int scale = decimalPart.indexOf('9') != -1 ? decimalPart.indexOf('9') : decimalPart.length();
+                roundedNum = num.setScale(scale, RoundingMode.HALF_UP);
+                roundedStr = roundedNum.stripTrailingZeros().toPlainString();
             }
         }
 
-        // Format the number to 10 decimal places if no long sequences are found
-        DecimalFormat df = new DecimalFormat("#.##########");
-        df.setRoundingMode(RoundingMode.HALF_UP);
-
-        return correctNegativeZero(df.format(Double.parseDouble(number)));
+        return correctNegativeZero(roundedStr);
     }
 
     private static String correctNegativeZero(String value) {
@@ -204,6 +202,9 @@ public class MatrixUtil {
 
     public static Matrix convertBackToOriginalForm(String[][] matrix) {
         String[][] originalFormMatrix = new String[matrix.length][];
+        System.out.println("Matrix length: " + matrix.length);
+//        System.out.println("OG Matrix: \n");
+        printStringMatrix(matrix);
         for (int i = 0; i < matrix.length; i++) {
             originalFormMatrix[i] = new String[matrix[i].length];
             for (int j = 0; j < matrix[i].length; j++) {
@@ -212,26 +213,6 @@ public class MatrixUtil {
             }
         }
         return new Matrix(originalFormMatrix);
-    }
-
-
-
-    public static void main(String[] args) {
-        // Sample matrix with fractions
-        String[][] matrix = {
-                {"1/2", "2/3"},
-                {"3/4", "4/5"}
-        };
-
-        // Convert the matrix to decimal form
-        String[][] decimalMatrix = convertToDecimalMatrix(matrix);
-        System.out.println("Decimal Matrix:");
-        printStringMatrix(decimalMatrix);
-
-//        // Convert the matrix to Double form
-//        Double[][] doubleMatrix = convertToDoubleMatrix(matrix);
-//        System.out.println("Double Matrix:");
-//        printDoubleMatrix(doubleMatrix);
     }
 
     public static void printStringMatrix(String[][] matrix) {

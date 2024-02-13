@@ -25,8 +25,7 @@ public class ThemeController {
     Button startApp, openCalculator, themeBtnMode, fractionBtnMode;
     @FXML
     CheckBox showInfo, forceFractions;
-    private boolean isLightMode = false;
-    private static boolean isFraction = true;
+    private static boolean isFraction = true, isLightMode = false;
 
     @FXML
     public void initialize() {
@@ -64,7 +63,7 @@ public class ThemeController {
 
     @FXML
     public void changeTheme() {
-        isLightMode = !isLightMode;
+        setLightMode(!isLightMode);
         updateTheme();
         MatrixApp.applyTheme(imgMode.getScene());
     }
@@ -74,6 +73,12 @@ public class ThemeController {
         setFraction(!isFraction);
         MatrixApp.setFractionMode(isFraction);
         updateFractionModeImage(isLightMode, isFraction);
+        if (!isFraction) {
+            forceFractions.setSelected(false);
+            forceFractions.setDisable(true);
+        } else {
+            forceFractions.setDisable(false);
+        }
     }
 
     private void updateTheme() {
@@ -161,6 +166,6 @@ public class ThemeController {
         forceFractions.setTooltip(new Tooltip("All decimals are presented as fractions"));
     }
 
-    public static boolean getFraction() {return isFraction;}
     public static void setFraction(boolean fraction) {isFraction = fraction;}
+    public void setLightMode(boolean lightMode) {isLightMode = lightMode;}
 }

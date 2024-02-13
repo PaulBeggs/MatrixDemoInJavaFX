@@ -24,7 +24,7 @@
       <cursor>
          <Cursor fx:constant="HAND" />
       </cursor></CheckBox>
-    <Button onAction="#saveButtonPressed" text="Save">
+    <Button fx:id="saveButton" onAction="#saveButtonPressed" text="Save">
       <cursor>
          <Cursor fx:constant="HAND" />
       </cursor></Button>

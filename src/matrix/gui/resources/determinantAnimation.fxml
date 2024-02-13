@@ -30,7 +30,7 @@
                </cursor>
             </Button>
             <Pane VBox.vgrow="ALWAYS" />
-            <Button fx:id="summarizeStepsButton" alignment="TOP_LEFT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleSummarizeStepsButton" prefWidth="115.0" text="Summarize Steps" VBox.vgrow="ALWAYS">
+            <Button fx:id="summarizeStepsButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleSummarizeStepsButton" prefWidth="115.0" text="Summarize Steps" textAlignment="CENTER" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
