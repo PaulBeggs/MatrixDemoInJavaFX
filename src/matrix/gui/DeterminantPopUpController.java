@@ -5,7 +5,11 @@ import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import matrix.model.Matrix;
@@ -49,12 +53,19 @@ public class DeterminantPopUpController {
         int totalSteps = matrix.getTotalSteps();
         System.out.println("These are the total steps (handleTimer): \n" + totalSteps);
 
+        // Timeline is not an accurate representation of the rows changing
+        // Rather, the timeline keeps track of all rows, but not the row index
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), (ActionEvent t) -> {
+            int currentStep = counter.getAndIncrement();
             if (totalSteps == 0) {
                 view.updateViews("initial");
             } else {
-                String stepKey = "Matrix #" + (counter.getAndIncrement() + 1);
+                String stepKey = "Matrix #" + (currentStep + 1);
                 System.out.println("Animating: " + stepKey);
+
+                // Highlight the current row being processed
+                highlightRow(currentStep);
+
                 view.updateViews(stepKey);
             }
         }));
@@ -65,12 +76,42 @@ public class DeterminantPopUpController {
         timeline.setOnFinished(e -> {
             // Create a PauseTransition for a delay
             PauseTransition delay = new PauseTransition(Duration.seconds(3));
-            delay.setOnFinished(event -> displayConsoleSummary()); // Call your method to display the summary
+            delay.setOnFinished(event -> displayConsoleSummary()); // Call method to display the summary
             delay.play();
         });
 
         start.setOnAction((t) -> timeline.play());
     }
+
+    // Need to correctly highlight the row that is being manipulated
+    // It may be necessary to use the operationSummary to clarify each time the row is manipulated
+    // Further, the problem may be related to the fact that the MatrixCells are a different generation
+    //   for each new entry in the Matrices map
+    // Look into setting up a record keeper for the rows that are changed
+    private void highlightRow(int rowIndex) {
+        matrixGrid.getChildren().forEach(node -> {
+            Integer row = GridPane.getRowIndex(node);
+            Integer col = GridPane.getColumnIndex(node);
+
+            // Reset style on all nodes first
+            node.getStyleClass().remove("matrix-row-highlight");
+
+            // Apply style if this is the correct row
+            if (row != null && row == rowIndex) {
+                System.out.println("Highlighting row: " + row + ", col: " + col);
+                node.getStyleClass().add("matrix-row-highlight");
+            }
+        });
+    }
+
+
+    private void clearHighlights() {
+        // Remove highlight from all cells, reverting to original styling
+        for (Node child : matrixGrid.getChildren()) {
+            child.getStyleClass().remove("matrix-row-highlight");
+        }
+    }
+
 
     private void displayConsoleSummary() {
         List<String> summary = matrix.getOperationSummary();
@@ -120,8 +161,10 @@ public class DeterminantPopUpController {
 
 
     public void setMatrixGrid(GridPane matrixGrid) {
+        System.out.println("Setting matrixGrid in DeterminantPopUpController: " + matrixGrid);
         this.matrixGrid = matrixGrid;
     }
+
 
     public void setMatrixCells (MatrixCell[][] matrixCells) {
         this.matrixCells = matrixCells;

@@ -16,7 +16,7 @@ import java.util.Objects;
 public class MatrixApp extends Application {
     public static Stage primaryStage;
     public static String selectedTheme = "light";
-    public static boolean fractionMode = true, isForceFractions = true, showInfo = false, matrixApp = false;
+    public static boolean fractionMode = true, isForceFractions = true, showInfo = false, matrixApp = false, fromMainController = false;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -57,5 +57,7 @@ public class MatrixApp extends Application {
     public static boolean isMatrixApp() {return matrixApp;}
     public static void setMatrixApp(boolean appBoolean) {matrixApp = appBoolean;}
     public static void closeApps() {Platform.exit(); System.exit(130);}
+    public static void setFromMainController(boolean fromMainController1) {fromMainController = fromMainController1;}
+    public static boolean getFromMainController() {return fromMainController;}
     public static void main(String[] args) {launch(args);}
 }

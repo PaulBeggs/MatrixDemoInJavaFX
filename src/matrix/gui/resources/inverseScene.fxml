@@ -17,7 +17,7 @@
 
 <BorderPane fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="matrix.gui.InverseController">
    <left>
-      <VBox prefWidth="136.0" spacing="5.0" BorderPane.alignment="CENTER">
+      <VBox prefWidth="136.0" spacing="5.0" styleClass="vbox" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="identityButton" mnemonicParsing="false" onAction="#handleRefFunctionality" prefWidth="116.0" text="REF">
                <cursor>

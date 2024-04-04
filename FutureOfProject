@@ -1,0 +1,27 @@
+I am conflicted as to if I want to change the way matrices are saved and retrieved.
+If I want to expand the program to encompass matrix multiplication, bases, eigenvalues, and or diagonalization capabilities
+I will need to have a better way of saving and retrieving matrices each time I need one for computation.
+For example, when a user saves a matrix that they want to use for later,
+
+Ideas that are coming into my head:
+For the matrix multiplication scene, I could have two load button that will load in matrices into specific grid-panes.
+If I were to do this, then the user wouldn't have to necessarily remember what they named the matrix before,
+because when they pull it out of storage, it will have all of the matrices listed.
+
+Another idea would be to (on start-up) immediately save all matrices from storage to a hashmap to be used in later
+calculations.
+
+Also give the user the option to shrink or expand a matrix in the pane to reduce clutter.
+That way, they can have a matrix [A] times a matrix [B], and when that is computed,
+they can look to see how it is computed, and if they want to see the resulting matrix in full view.
+
+I think as a space management process, I should keep the matrices as boxes, and have an option for the user to
+right click on one of the matrices to open a context menu that will have different options like: "Edit Matrix",
+"Delete Matrix", etc. The program should also be able to distinguish if one matrix is next to another, and if it is,
+to treat those matrices as operands.
+
+Implement a button that will pop up with two questions:
+generate a new matrix? (which will prompt the a pseudo "mainMatrix" scene
+load a matrix from file? (which will just load the matrix from file)
+It would be really cool to already have the "diagonal," "inverse," and/or "ref" versions of the matrix available to cut
+down on redundant computing.

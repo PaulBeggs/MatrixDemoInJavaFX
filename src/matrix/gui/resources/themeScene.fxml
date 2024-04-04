@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="parent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="matrix.gui.ThemeController">
+<BorderPane fx:id="parent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="vbox" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="matrix.gui.ThemeController">
    <center>
       <HBox spacing="10.0" BorderPane.alignment="CENTER">
          <children>
@@ -122,14 +122,20 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
                   </CheckBox>
-                  <CheckBox fx:id="showInfo" alignment="CENTER" mnemonicParsing="false" styleClass="title-label" text="Open General Information For Selection" textAlignment="CENTER" wrapText="true">
+                  <CheckBox fx:id="showInfo" alignment="CENTER" mnemonicParsing="false" styleClass="title-label" text="Open General Information" textAlignment="CENTER" wrapText="true">
                      <VBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
                      </VBox.margin>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
                   </CheckBox>
                </children>
             </VBox>

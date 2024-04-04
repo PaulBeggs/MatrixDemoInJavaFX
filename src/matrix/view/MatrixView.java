@@ -10,9 +10,8 @@ public class MatrixView {
     private MatrixCell[][] matrixCells;
     private final GridPane matrixGrid;
 
-    public MatrixView(GridPane matrixGridFromController, MatrixCell[][] matrixCells) {
+    public MatrixView(GridPane matrixGridFromController) {
         this.matrixGrid = matrixGridFromController;
-        this.matrixCells = matrixCells;
     }
 
     public void updateViews(boolean isEditable, Matrix matrix) {
@@ -42,7 +41,7 @@ public class MatrixView {
         }
     }
 
-    private void resizeMatrix() {
+    public static void resizeMatrix() {
         Stage mainstage = MatrixApp.getPrimaryStage();
         mainstage.sizeToScene();
     }

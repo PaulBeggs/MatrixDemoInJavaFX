@@ -1,6 +1,6 @@
 .root {
-    -primary-color: #282828;
-    -secondary-color: #383838;
+    -secondary-color: #282828;
+    -primary-color: #383838;
     -third-color: #181818;
 
     -hover-color: gray;
@@ -11,15 +11,30 @@
     -sub-subheader-color: #8B0000; /* Dark red. */
     -text-color: white;
 
+    -fx-background-color: #303030;
+}
+
+/* This needs work. It is used specifically for the determinant animation, but it is not applied to the correct matrix.
+ In that, it is applied to the determinant scene matrix, not the animated one. */
+.matrix-row-highlight {
+    -fx-background-color: yellow !important
+}
+
+.menu-item {
+    -fx-padding: 10px;
     -fx-background-color: -primary-color;
 }
 
-.textfield-grid-cell {
-    -fx-min-height: 70;
-    -fx-min-width: 120;
+.matrix-pane {
+    -fx-border-color: red;
+    -fx-background-color: -third-color;
+    -fx-pref-width: 55px;
+    -fx-pref-height: 55px;
+}
 
-    -fx-pref-height: 70;
-    -fx-pref-width: 120;
+.textfield-grid-cell {
+    -fx-pref-height: 100;
+    -fx-pref-width: 150;
 
     -fx-alignment: center;
 
@@ -28,6 +43,9 @@
 
     -fx-background-color: -third-color;
     -fx-text-fill: -text-color;
+
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
 }
 
 .button {
@@ -40,7 +58,7 @@
 
 .button:hover {
     -fx-text-fill: -text-color;
-    -fx-background-color: -secondary-color;
+    -fx-background-color: -primary-color;
     -fx-background-radius:0;
     -fx-border-color: -hover-color;
     -fx-border-width: 0 2 2 0;
@@ -48,29 +66,31 @@
 
 .button:focused {
     -fx-text-fill: -text-color;
-    -fx-background-color: -secondary-color;
+    -fx-background-color: -primary-color;
     -fx-background-radius:0;
     -fx-border-color: -focus-color;
     -fx-border-width: 0 2 2 0;
 }
 
 /* Focused item background color in the list */
-.choice-box .menu-item:focused {
+.menu-item:focused {
     -fx-background-color: -focus-color;
 }
 
 /* Text color of non-focused items in the list */
-.choice-box .menu-item > .label {
+.menu-item > .label {
     -fx-text-fill: -text-color;
 }
 
 /* Background color of the whole context menu */
-.choice-box .context-menu {
+.context-menu {
+    -fx-padding: 0px;
     -fx-background-color: -third-color;
+    -fx-border-color: -focus-color;
 }
 
 /* Text color of focused item in the list */
-.choice-box .menu-item:focused > .label {
+.menu-item:focused > .label {
     -fx-text-fill: -third-color;
 }
 
@@ -91,7 +111,7 @@
 }
 
 .choice-box:hover {
-    -fx-background-color: -secondary-color;
+    -fx-background-color: -primary-color;
     -fx-text-color: -text-color;
     -fx-text-fill: -text-color;
     -fx-background-radius: 0;
@@ -100,7 +120,7 @@
 }
 
 .choice-box:focused {
-    -fx-background-color: -secondary-color;
+    -fx-background-color: -primary-color;
     -fx-text-color: -text-color;
     -fx-text-fill: -text-color;
     -fx-background-radius: 0;
@@ -110,6 +130,12 @@
 
 .title-label {
     -fx-text-fill: -text-color;
+}
+
+.matrix-label {
+    -fx-fill: -text-color;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
 }
 
 .text-area {
@@ -133,14 +159,14 @@
 }
 
 .text-field:hover {
-    -fx-background-color: -secondary-color;
+    -fx-background-color: -primary-color;
     -fx-text-fill: -text-color;
     -fx-border-color: -hover-color;
     -fx-border-width: 2 2 2 2;
 }
 
 .text-field:focused {
-    -fx-background-color: -secondary-color;
+    -fx-background-color: -primary-color;
     -fx-text-fill: -text-color;
     -fx-border-color: -focus-color;
     -fx-border-width: 2 2 2 2;
@@ -152,7 +178,7 @@
 }
 
 .check-box .box {
-    -fx-background-color: -secondary-color;
+    -fx-background-color: -primary-color;
     -fx-border-color: -hover-color;
 }
 
@@ -161,7 +187,7 @@
 }
 
 .check-box:selected .box {
-    -fx-background-color: -secondary-color;
+    -fx-background-color: -primary-color;
     -fx-border-color: -focus-color;
 }
 
@@ -200,25 +226,22 @@
 }
 
 .text-flow {
-    -fx-background-color: -secondary-color;
+    -fx-background-color: -primary-color;
     -fx-control-inner-background: -third-color;
 }
 
 .scroll-pane {
-    -fx-background-color: -primary-color;
+    -fx-background-color: -secondary-color;
     -fx-control-inner-background: -third-color;
 }
 
-.borderpane {
-    -fx-background-color: -primary-color;
-}
 /* Custom CSS for Slider */
 .slider {
-    -fx-background-color: -primary-color; /* Background color of the slider */
+    -fx-background-color: -secondary-color; /* Background color of the slider */
 }
 
 .slider .track {
-    -fx-background-color: -secondary-color; /* Track (background) color */
+    -fx-background-color: -primary-color; /* Track (background) color */
 }
 
 .slider .thumb {
@@ -230,3 +253,38 @@
     -fx-radius: 2;
 }
 
+
+/* Style the TabPane background */
+.tab-pane {
+    -fx-background-color: -primary-color;
+}
+
+/* Style the tabs within the TabPane */
+.tab-pane .tab-header-background {
+    -fx-background-color: -primary-color;
+}
+
+.tab-pane .tab {
+    -fx-background-color: -third-color;
+}
+
+/* Style the selected tab */
+.tab-pane .tab:selected {
+    -fx-background-color: -focus-color;
+    -fx-border-color: -secondary-color;
+    -fx-focus-color: transparent;
+}
+
+/* Style for the tab labels */
+.tab-pane .tab .tab-label {
+    -fx-text-fill: -text-color;
+}
+
+/* Style for the content area of the selected tab */
+.tab-content-area {
+    -fx-background-color: -secondary-color;
+}
+
+.vbox{
+    -fx-background-color: -secondary-color;
+}

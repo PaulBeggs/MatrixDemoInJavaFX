@@ -47,9 +47,10 @@ public class DeterminantController implements DataManipulation {
     @FXML
     private void initialize() {
         update();
-        matrixView = new MatrixView(matrixGrid, matrixCells);
+        matrixView = new MatrixView(matrixGrid);
         setupDirectionText();
         setupScenesDropdown();
+        setToolTips();
         Matrix matrix = MatrixSingleton.getInstance();
         matrixView.updateViews(true, matrix);
     }
@@ -129,7 +130,7 @@ public class DeterminantController implements DataManipulation {
         saveStage.initModality(Modality.WINDOW_MODAL);
         saveStage.initOwner(MatrixApp.getPrimaryStage());
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/SaveScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/saveScene.fxml"));
         Parent root;
         try {
             root = loader.load();
@@ -170,10 +171,6 @@ public class DeterminantController implements DataManipulation {
                 throw new IllegalArgumentException(e);
             }
 
-            DeterminantPopUpController determinantPopUpController = loader.getController();
-            determinantPopUpController.setMatrixCells(matrixCells);
-            determinantPopUpController.setMatrixGrid(matrixGrid);
-
             Scene animationScene = new Scene(root);
             animationScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
                 if (event.getCode() == KeyCode.ESCAPE) {
@@ -186,7 +183,6 @@ public class DeterminantController implements DataManipulation {
         } else {
             System.out.println("Not square.");
         }
-
     }
 
     @Override
@@ -241,6 +237,10 @@ public class DeterminantController implements DataManipulation {
 
     @Override
     public void setToolTips() {
-
+        determinantValue.setTooltip(new Tooltip("Displays the determinant value"));
+        directions.setTooltip(new Tooltip("Shows determinant properties"));
+        checkBox.setTooltip(new Tooltip("Shows process of triangularization"));
+        saveButton.setTooltip(new Tooltip("Save the matrix"));
+        scenes.setTooltip(new Tooltip("Change window"));
     }
 }

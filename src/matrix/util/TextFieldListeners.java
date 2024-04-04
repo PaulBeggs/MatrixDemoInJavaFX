@@ -6,12 +6,9 @@ import matrix.model.Matrix;
 import matrix.model.MatrixSingleton;
 
 public class TextFieldListeners {
-    public static void objectOnlyListener(TextField textField, ObjectType objectType) {
+    public static void objectOnlyListener(TextField textField) {
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            String regex = switch (objectType) {
-                case INTEGER -> "-?\\d*"; // Allows negative integers
-                case DOUBLE -> "-?\\d*(\\.\\d*)?"; // Allows negative doubles and decimals
-            };
+            String regex = "\\d*"; // Allows positive integers
 
             if (!newValue.matches(regex)) {
                 // The newValue is not a valid format, so don't change the text field.

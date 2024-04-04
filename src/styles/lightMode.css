@@ -1,7 +1,7 @@
 .root {
-    -primary-color: #e0e0e0 ;
-    -secondary-color: #f7f7f7;
-    -third-color: #f2f2f2;
+    -primary-color: #f7f7f7;
+    -secondary-color: #f2f2f2;
+    -third-color: #e0e0e0;
 
     -hover-color: gray;
     -focus-color: red;
@@ -14,20 +14,39 @@
     -fx-background-color: -primary-color;
 }
 
+.matrix-row-highlight {
+    -fx-background-color: yellow
+}
+
+.matrix-pane {
+    -fx-border-color: red;
+    -fx-background-color: -third-color;
+    -fx-pref-width: 55px;
+    -fx-pref-height: 55px;
+}
+
+.menu-item {
+    -fx-padding: 10px;
+    -fx-background-color: -secondary-color;
+}
+
 .textfield-grid-cell {
     -fx-min-height: 70;
     -fx-min-width: 120;
 
-    -fx-pref-height: 70;
-    -fx-pref-width: 120;
+    -fx-pref-height: 100;
+    -fx-pref-width: 150;
 
     -fx-alignment: center;
 
-    -fx-border-color: red;
+    -fx-border-color: -focus-color;
     -fx-border-width: .75;
 
     -fx-background-color: -third-color;
     -fx-text-fill: -text-color;
+
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
 }
 
 .button {
@@ -40,7 +59,7 @@
 
 .button:hover {
     -fx-text-fill: -text-color;
-    -fx-background-color: -secondary-color;
+    -fx-background-color: -primary-color;
     -fx-background-radius:0;
     -fx-border-color: -hover-color;
     -fx-border-width: 0 2 2 0;
@@ -48,29 +67,31 @@
 
 .button:focused {
     -fx-text-fill: -text-color;
-    -fx-background-color: -secondary-color;
+    -fx-background-color: -primary-color;
     -fx-background-radius:0;
     -fx-border-color: -focus-color;
     -fx-border-width: 0 2 2 0;
 }
 
 /* Focused item background color in the list */
-.choice-box .menu-item:focused {
+.menu-item:focused {
     -fx-background-color: -focus-color;
 }
 
 /* Text color of non-focused items in the list */
-.choice-box .menu-item > .label {
+.menu-item > .label {
     -fx-text-fill: -text-color;
 }
 
 /* Background color of the whole context menu */
-.choice-box .context-menu {
+.context-menu {
+    -fx-padding: 0px;
     -fx-background-color: -third-color;
+    -fx-border-color: -focus-color;
 }
 
 /* Text color of focused item in the list */
-.choice-box .menu-item:focused > .label {
+.menu-item:focused > .label {
     -fx-text-fill: -third-color;
 }
 
@@ -112,6 +133,12 @@
     -fx-text-fill: -text-color;
 }
 
+.matrix-label {
+    -fx-fill: -text-color;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
 .text-area {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
@@ -133,14 +160,14 @@
 }
 
 .text-field:hover {
-    -fx-background-color: -secondary-color;
+    -fx-background-color: -primary-color;
     -fx-text-fill: -text-color;
     -fx-border-color: -hover-color;
     -fx-border-width: 2 2 2 2;
 }
 
 .text-field:focused {
-    -fx-background-color: -secondary-color;
+    -fx-background-color: -primary-color;
     -fx-text-fill: -text-color;
     -fx-border-color: -focus-color;
     -fx-border-width: 2 2 2 2;
@@ -245,6 +272,54 @@
     -fx-control-inner-background: -third-color;
 }
 
-.borderpane {
+/* Custom CSS for Slider */
+.slider {
+    -fx-background-color: -secondary-color; /* Background color of the slider */
+}
+
+.slider .track {
+    -fx-background-color: -primary-color; /* Track (background) color */
+}
+
+.slider .thumb {
+    -fx-background-color: white; /* Thumb (bar) color */
+}
+
+.slider:focused .thumb {
+    -fx-background-color: yellow; /* Thumb (bar) color when slider is focused */
+    -fx-radius: 2;
+}
+/* Style the TabPane background */
+.tab-pane {
+    -fx-background-color: -secondary-color;
+}
+
+/* Style the tabs within the TabPane */
+.tab-pane .tab-header-background {
+    -fx-background-color: -third-color;
+}
+
+.tab-pane .tab {
     -fx-background-color: -primary-color;
+}
+
+/* Style the selected tab */
+.tab-pane .tab:selected {
+    -fx-background-color: -subheader-color;
+    -fx-border-color: -secondary-color;
+    -fx-focus-color: transparent;
+}
+
+/* Style for the tab labels */
+.tab-pane .tab .tab-label {
+    -fx-text-fill: -text-color;
+}
+
+/* Style for the content area of the selected tab */
+.tab-content-area {
+    -fx-background-color: -secondary-color;
+}
+
+.vbox{
+    -fx-background-color: -secondary-color;
 }

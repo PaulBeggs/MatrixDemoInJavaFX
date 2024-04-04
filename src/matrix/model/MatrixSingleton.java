@@ -3,9 +3,8 @@ package matrix.model;
 import matrix.fileManaging.FilePath;
 import matrix.fileManaging.MatrixFileHandler;
 import matrix.fileManaging.MatrixType;
-import java.util.List;
 
-import static matrix.util.MatrixUtil.convertBackToOriginalForm;
+import java.util.List;
 
 public class MatrixSingleton {
     private static Matrix instance;
@@ -19,6 +18,8 @@ public class MatrixSingleton {
             // Load from file or create a new Matrix
             System.out.println("Instance is null");
             instance = MatrixFileHandler.loadMatrixFromFile(FilePath.MATRIX_PATH.getPath());
+//            instance = new Matrix(1,1);
+//            instance.setValue(0,0, "0.01614006291888");
         }
         return instance;
     }

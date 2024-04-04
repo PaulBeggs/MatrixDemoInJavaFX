@@ -32,13 +32,14 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
+import static matrix.util.TextFieldListeners.addEnterListener;
 import static matrix.util.TextFieldListeners.objectOnlyListener;
 
 public class MatrixController implements DataManipulation {
     @FXML
     BorderPane borderPane;
     @FXML
-    Button generateButton, saveButton, operationButton, identityButton, transposeButton, operationSummaryButton, loadButton, clearSummaryButton;
+    Button generateButton, saveButton, operationButton, identityButton, transposeButton, operationSummaryButton, loadButton, clearSummaryButton, allFormsButton;
     @FXML
     TextField sizeColsField, sizeRowsField, targetRow, sourceRow, multiplier;
     @FXML
@@ -47,6 +48,8 @@ public class MatrixController implements DataManipulation {
     ChoiceBox<String> operations;
     @FXML
     GridPane matrixGrid;
+    @FXML
+    CheckBox randomDigits;
     private MatrixView matrixView;
     private int step = 1;
     private MatrixCell[][] matrixCells;
@@ -55,7 +58,7 @@ public class MatrixController implements DataManipulation {
     @FXML
     private void initialize() {
         update();
-        matrixView = new MatrixView(matrixGrid, matrixCells);
+        matrixView = new MatrixView(matrixGrid);
         setupTextFieldListeners();
         setupOperationsDropdown();
         setupScenesDropdown();
@@ -67,11 +70,20 @@ public class MatrixController implements DataManipulation {
 
     private void setupTextFieldListeners() {
         // static import of MatrixUtil and ObjectType to cut down on clutter.
-        objectOnlyListener(sourceRow, ObjectType.INTEGER);
-        objectOnlyListener(targetRow, ObjectType.INTEGER);
-        objectOnlyListener(sizeRowsField, ObjectType.INTEGER);
-        objectOnlyListener(sizeColsField, ObjectType.INTEGER);
-        TextFieldListeners.addEnterListener(multiplier);
+        objectOnlyListener(sourceRow);
+        objectOnlyListener(targetRow);
+        objectOnlyListener(sizeRowsField);
+        objectOnlyListener(sizeColsField);
+        addEnterListener(multiplier);
+
+        sizeRowsField.setOnAction(actionEvent -> handleGenerateButton());
+        sizeColsField.setOnAction(actionEvent -> handleGenerateButton());
+        sourceRow.setOnAction(actionEvent -> performOperation());
+        targetRow.setOnAction(actionEvent -> performOperation());
+        multiplier.setOnAction(actionEvent -> {
+            operations.setValue("Multiply Row");
+            performOperation();
+        });
     }
 
     private void setupOperationsDropdown() {
@@ -125,15 +137,16 @@ public class MatrixController implements DataManipulation {
             int numRows = Integer.parseInt(sizeRowsField.getText());
             int numCols = Integer.parseInt(sizeColsField.getText());
             return generateMatrixData(numRows, numCols, (row, col) -> {
-                int cellValue = (int) Math.floor(Math.random() * 10);
-                return String.valueOf(cellValue);
+                if (randomDigits.isSelected()) {
+                    return String.valueOf((int) Math.floor(Math.random() * 10));
+                } else {
+                    return "0";
+                }
             });
         } else {
             System.out.println("Invalid input for matrix dimensions.");
             ErrorsAndSyntax.showErrorPopup("Invalid input for matrix dimensions.");
-            sizeColsField.setText("1");
-            sizeRowsField.setText("1");
-            return Collections.emptyList(); // Return an empty list if inputs are invalid
+            return Collections.emptyList();
         }
     }
 
@@ -144,9 +157,7 @@ public class MatrixController implements DataManipulation {
             return generateMatrixData(numRows, numCols, (row, col) -> (Objects.equals(row, col)) ? "1" : "0");
         } else {
             ErrorsAndSyntax.showErrorPopup("Invalid input for identity matrix dimensions");
-            sizeColsField.setText("1");
-            sizeRowsField.setText("1");
-            return Collections.emptyList(); // Return an empty list if inputs are invalid
+            return Collections.emptyList();
         }
     }
 
@@ -244,7 +255,7 @@ public class MatrixController implements DataManipulation {
         saveStage.initModality(Modality.WINDOW_MODAL);
         saveStage.initOwner(MatrixApp.getPrimaryStage());
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/SaveScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/saveScene.fxml"));
         Parent root;
         try {
             root = loader.load();
@@ -307,17 +318,19 @@ public class MatrixController implements DataManipulation {
         int targetRowIndex = Integer.parseInt(targetRow.getText()) - 1;
         int sourceRowIndex = Integer.parseInt(sourceRow.getText()) - 1;
 
+        String strMultiplier = multiplier.getText();
+
         switch (selectedOption) {
             case "Swap Rows":
                 operationsSummary.add("#" + step++ + ", Swapped rows: " + (targetRowIndex + 1) + ", " + (sourceRowIndex + 1) + "\n");
                 matrix.swapRows(targetRowIndex, sourceRowIndex);
                 break;
             case "Multiply Row":
-                operationsSummary.add("#" + step++ + ", Multiplied row: " + (targetRowIndex + 1) + " by " + multiplier + "\n");
+                operationsSummary.add("#" + step++ + ", Multiplied row: " + (targetRowIndex + 1) + " by " + strMultiplier + "\n");
                 handleRowOperation(targetRowIndex, multiplier, matrix::multiplyRow);
                 break;
             case "Add Rows":
-                operationsSummary.add("#" + step++ + ", Multiplied row: " + (sourceRowIndex + 1) + " by " + multiplier + ", and added it to" + (targetRowIndex + 1) + "\n");
+                operationsSummary.add("#" + step++ + ", Multiplied row: " + (sourceRowIndex + 1) + " by " + strMultiplier + ", and added it to row: " + (targetRowIndex + 1) + "\n");
                 handleRowOperation(targetRowIndex, multiplier, (index, value) -> matrix.addRows(sourceRowIndex, targetRowIndex, value));
                 break;
             default:
@@ -429,10 +442,41 @@ public class MatrixController implements DataManipulation {
         }
     }
 
+    @FXML
+    public void handleAllForms() {
+        MatrixApp.setFromMainController(true);
+        Stage initStage = new Stage();
+        initStage.setTitle("Matrix Selection");
+        initStage.initModality(Modality.WINDOW_MODAL);
+        initStage.initOwner(MatrixApp.getPrimaryStage());
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/initializeMatrixScene.fxml"));
+        Parent root;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            ErrorsAndSyntax.showErrorPopup("Cannot load the scene.");
+            throw new IllegalArgumentException(e);
+        }
+
+        Scene initScene = new Scene(root);
+        initScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                initStage.close();
+            }
+        });
+        MatrixApp.applyTheme(initScene);
+        initStage.setScene(initScene);
+        initStage.showAndWait();
+        matrixGrid.getChildren().clear();
+        List<List<String>> matrixData = MatrixFileHandler.loadMatrixDataFromFile(FilePath.MATRIX_PATH.getPath());
+        updateMatrixGrid(false, matrixData);
+        MatrixApp.setFromMainController(false);
+    }
+
     @Override
     public void setToolTips() {
         generateButton.setTooltip(new Tooltip("Generate a random matrix"));
-        saveButton.setTooltip(new Tooltip("Save the matrix"));
         loadButton.setTooltip(new Tooltip("Load a matrix"));
         operationButton.setTooltip(new Tooltip("Operate on matrix"));
         identityButton.setTooltip(new Tooltip("Set matrix to 1s and 0s"));
@@ -445,5 +489,7 @@ public class MatrixController implements DataManipulation {
         targetRow.setTooltip(new Tooltip("Specify target row"));
         sourceRow.setTooltip(new Tooltip("Specify source row"));
         multiplier.setTooltip(new Tooltip("Change multiplier"));
+        saveButton.setTooltip(new Tooltip("Save the matrix"));
+        scenes.setTooltip(new Tooltip("Change window"));
     }
 }
