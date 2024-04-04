@@ -54,9 +54,10 @@ I use IntelliJ and Windows, so for installation, I will walk through how to get 
 	1. Click on the gear next to the minimize button. 
 	2. Click `Project Structure...`. You should be presented with a menu that looks like the picture below. 
 	3. Notice the underlined `+`. Click that button and proceed to download the JDK by using the options that are already filled in for you.
-	![alt text](https://i.imgur.com/7SG2G75.png)
-	4. Click `Apply`, and now configure your JDK at the top of the screen. 
-	5. There may be a yellow warning that says your JDK is not configured. 
+ 
+		![alt text](https://i.imgur.com/7SG2G75.png)
+	5. Click `Apply`, and now configure your JDK at the top of the screen. 
+	6. There may be a yellow warning that says your JDK is not configured. 
 		* Simply restart your IDE and wait. This is a large project, so indexing takes some time.
 5. **Install SceneBuilder**:
 	1. Go to [this link](https://gluonhq.com/products/scene-builder/#download).
@@ -93,7 +94,7 @@ To use the application, follow these steps:
 
 1. In the `Project` tab, navigate to the `MatrixApp` class. It is located in the project hierarchy as shown:
 
-![alt text](https://i.imgur.com/iIta6Qu.png)
+	![alt text](https://i.imgur.com/iIta6Qu.png)
 
 2. On line 16, click the green button to start the application. 
 
