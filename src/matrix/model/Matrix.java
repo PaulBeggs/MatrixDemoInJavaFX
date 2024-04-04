@@ -17,6 +17,7 @@ public class Matrix implements MatrixOperations {
     private String[][] data;
     private int numCols, numRows, sign, counter = 1, step = 1;
     private final List<String> operationsSummary = new ArrayList<>();
+    private boolean signChange = false;
 
     /*
     ---------------------------------------------------------------------------------------------
@@ -174,32 +175,39 @@ public class Matrix implements MatrixOperations {
     ---------------------------------------------------------------------------------------------
      */
 
-    public void handleInvertingFunctionality() {
-        // Save the original mode choice directly based on the current mode
-        boolean ogChoice = MatrixApp.isFractionMode();
+    // Need to add a boolean check for if the matrix is dependent. For example, if it has a row that is all 0s,
+    // then it is dependent, and thus, it does not have an inverse.
+    // Use RREF to definitively show dependence.
+    public void convertToInvertedForm() {
+        if (isSquare() && !isIndependent()) {
+            // Save the original mode choice directly based on the current mode
+            boolean ogChoice = MatrixApp.isFractionMode();
 
-        // Switch to decimal mode for the inversion process if currently in fraction mode
-        if (ogChoice) {
-            MatrixApp.setFractionMode(false);
+            // Switch to decimal mode for the inversion process if currently in fraction mode
+            if (ogChoice) {
+                MatrixApp.setFractionMode(false);
+            }
+
+            // Perform the matrix inversion operations
+            Matrix originalMatrix = MatrixSingleton.getInstance().copy();
+            Matrix augmentedMatrix = augmentMatrixWithIdentity(originalMatrix);
+
+            augmentedMatrix.convertToReducedEchelonForm();
+            // System.out.println("Augmented matrix: " + augmentedMatrix);
+
+            String[][] inverseMatrix = extractRightSide(augmentedMatrix);
+            // System.out.println("Inverted matrix: \n" + Arrays.deepToString(inverseMatrix));
+
+            // Restore the original mode based on the saved choice
+            MatrixApp.setFractionMode(ogChoice);
+
+            // Convert the inverted matrix back to its original form (fraction or decimal)
+            // and store it, ensuring the conversion respects the user's original mode preference
+            System.out.println("Before converting to og form: \n" + Arrays.deepToString(inverseMatrix));
+            MatrixFileHandler.matrices.put("Inverse", convertBackToOriginalForm(inverseMatrix));
+        } else {
+            System.out.println("Matrix is either not square or is dependent.");
         }
-
-        // Perform the matrix inversion operations
-        Matrix originalMatrix = MatrixSingleton.getInstance().copy();
-        Matrix augmentedMatrix = augmentMatrixWithIdentity(originalMatrix);
-
-        augmentedMatrix.convertToReducedEchelonForm();
-        // System.out.println("Augmented matrix: " + augmentedMatrix);
-
-        String[][] inverseMatrix = extractRightSide(augmentedMatrix);
-        // System.out.println("Inverted matrix: \n" + Arrays.deepToString(inverseMatrix));
-
-        // Restore the original mode based on the saved choice
-        MatrixApp.setFractionMode(ogChoice);
-
-        // Convert the inverted matrix back to its original form (fraction or decimal)
-        // and store it, ensuring the conversion respects the user's original mode preference
-        System.out.println("Before converting to og form: \n" + Arrays.deepToString(inverseMatrix));
-        MatrixFileHandler.matrices.put("Inverse", convertBackToOriginalForm(inverseMatrix));
     }
 
 
@@ -348,6 +356,16 @@ public class Matrix implements MatrixOperations {
         }
     }
 
+    public boolean isIndependent() {
+        boolean independent = false;
+        if (getCols() > getRows()) {
+            independent = true;
+        } else if (isSquare()) {
+
+        }
+        return independent;
+    }
+
     /*
     ---------------------------------------------------------------------------------------------
                                              DETERMINANT
@@ -374,6 +392,7 @@ public class Matrix implements MatrixOperations {
         }
         String deter = correctRoundingError(String.valueOf(multiplyDiagonal()));
         System.out.println("Triangular matrix:");
+        MatrixFileHandler.matrices.put("Triangular", convertBackToOriginalForm(data));
         printStringMatrix(data);
         MatrixSingleton.setTriangularInstance(copy());
         System.out.println("This is the determinant: " + deter);
@@ -410,7 +429,7 @@ public class Matrix implements MatrixOperations {
                         stringSign = "-";
                     }
                     operationsSummary.add("#" + step++ + " Swapping rows: " + (currentRow + 1) + ", " + (pivotRow + 1) + "\n" +
-                            "Sign instance: (" + stringSign + ")" + "\n");
+                            "Sign after swapping: (" + stringSign + ")" + "\n");
                 }
                 // Eliminate elements below the pivot
                 eliminateBelow(currentRow, currentCol);
@@ -547,6 +566,9 @@ public class Matrix implements MatrixOperations {
         int temp = numRows;
         numRows = numCols;
         numCols = temp;
+
+        System.out.println("Putting transpose matrix: \n" + convertBackToOriginalForm(data));
+        MatrixFileHandler.matrices.put("Transpose", convertBackToOriginalForm(data));
     }
 
     public void setToIdentity() {

@@ -54,7 +54,7 @@ public class DeterminantPopUpController {
         System.out.println("These are the total steps (handleTimer): \n" + totalSteps);
 
         // Timeline is not an accurate representation of the rows changing
-        // It is a good way to keep track of the total amount of rows, but not the row index
+        // Rather, the timeline keeps track of all rows, but not the row index
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), (ActionEvent t) -> {
             int currentStep = counter.getAndIncrement();
             if (totalSteps == 0) {

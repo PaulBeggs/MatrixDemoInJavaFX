@@ -14,4 +14,6 @@ module MatrixDemoInJavaFX {
     opens matrix.util;
     opens matrix.fileManaging;
     opens matrix.view;
+    exports matrix.view.paneInMyAss;
+    opens matrix.view.paneInMyAss;
 }

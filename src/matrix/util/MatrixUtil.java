@@ -28,6 +28,10 @@ public class MatrixUtil {
             return "-" + convertDecimalToFraction(String.valueOf(-decimalValue));
         }
 
+        if (decimalValue == 0) {
+            return "0";
+        }
+
         if (!MatrixApp.isForceFractions() && !hasRepeatingDecimals(decimalValue, 2, 2)) {
             return convertFractionToDecimalString(correctRoundingError(String.valueOf(decimalValue)));
         }

@@ -32,13 +32,12 @@ public class InverseController implements DataManipulation {
     GridPane matrixGrid;
     @FXML
     GridPane identityMatrixGrid;
-    private MatrixCell[][] matrixCells;
     private MatrixView matrixView;
 
     @FXML
     private void initialize() {
         update();
-        matrixView = new MatrixView(matrixGrid, matrixCells);
+        matrixView = new MatrixView(matrixGrid);
         setupScenesDropdown();
         setupDirectionText();
         Matrix matrix = MatrixSingleton.getInstance();
@@ -70,7 +69,7 @@ public class InverseController implements DataManipulation {
             ErrorsAndSyntax.showErrorPopup("Matrix must be square.");
             throw new IllegalArgumentException("Matrix must be square.");
         }
-        matrix.handleInvertingFunctionality();
+        matrix.convertToInvertedForm();
         matrix = MatrixFileHandler.matrices.get("Inverse");
         matrixView.updateViews(false, matrix);
         save(FilePath.REF_PATH.getPath(), matrix, MatrixType.REGULAR);
@@ -121,7 +120,7 @@ public class InverseController implements DataManipulation {
         System.out.println("This is the matrix that is initially created: \n" + matrix);
 
         // Create MatrixCells with the initialized Matrix model
-        matrixCells = new MatrixCell[numRows][numCols];
+        MatrixCell[][] matrixCells = new MatrixCell[numRows][numCols];
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
                 String cellValue = matrixData.get(row).get(col);

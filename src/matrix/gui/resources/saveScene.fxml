@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefWidth="237.0" spacing="10" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="matrix.gui.SaveController">
+<VBox alignment="CENTER" prefWidth="237.0" spacing="10" styleClass="vbox" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="matrix.gui.SaveController">
     <Label styleClass="title-label" text="Enter file name:">
       <font>
          <Font size="15.0" />

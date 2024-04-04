@@ -35,7 +35,7 @@ public class ExpressionEvaluator {
     along with the specific string "sqrt".
 
     --------------------------------------------------------------------
-    (?<!\\d)\\": Finds any decimal that is missing a digit before it and adds a 0 placeholder.
+    (?<!\\d)\\": Finds any decimal missing a digit before it and adds a 0 placeholder.
 
     (?<!\\d): Negative lookbehind assertion, ensuring that there is no digit
       before the double quote.
@@ -73,7 +73,7 @@ public class ExpressionEvaluator {
         for (int i = 0; i < tokens.size(); i++) {
             TokenInfo currentToken = tokens.get(i);
             if (i < tokens.size() - 1 && isNumeric(currentToken.getToken()) && isNumeric(tokens.get(i + 1).getToken())) {
-                // Combine current number with the next number
+                // Combine the current number with the next number
                 String combinedNumber = currentToken.getToken() + tokens.get(i + 1).getToken();
                 processedTokens.add(new TokenInfo(combinedNumber, currentToken.getStartIndex()));
                 i++; // Skip the next token as it's now combined
@@ -322,8 +322,8 @@ public class ExpressionEvaluator {
 
     private static String insertImplicitMultiplication(String expression) {
         expression = expression.replaceAll("(\\d)\\(", "$1*("); // Insert * between a digit and (
-        expression = expression.replaceAll("\\)(\\d)", ")*$1"); // Insert * between ) and a digit
-        expression = expression.replaceAll("\\)\\(", ")*(");    // Insert * between ) and (
+        expression = expression.replaceAll("\\)(\\d)", ")*$1"); // Insert * between ')' and a digit
+        expression = expression.replaceAll("\\)\\(", ")*(");    // Insert * between ')' and '('
         return expression;
     }
 

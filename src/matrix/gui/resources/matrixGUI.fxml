@@ -15,9 +15,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="matrix.gui.MatrixController">
+<BorderPane fx:id="borderPane" maxHeight="800.0" maxWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="matrix.gui.MatrixController">
    <left>
-      <VBox prefHeight="525.0" prefWidth="136.0" spacing="5.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="525.0" prefWidth="136.0" spacing="5.0" styleClass="vbox" BorderPane.alignment="CENTER">
          <children>
             <Label alignment="CENTER" prefWidth="116.0" styleClass="title-label" text="Rows">
                <cursor>
@@ -29,7 +29,7 @@
                   <Cursor fx:constant="DEFAULT" />
                </cursor></Label>
             <TextField fx:id="sizeColsField" promptText="Columns" styleClass="text-field" />
-            <CheckBox fx:id="randomDigits" alignment="CENTER" mnemonicParsing="false" styleClass="title-label" text="Random Values" wrapText="true">
+            <CheckBox fx:id="randomDigits" alignment="CENTER" mnemonicParsing="false" selected="true" styleClass="title-label" text="Random Values" wrapText="true">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></CheckBox>
@@ -60,7 +60,13 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
+            <Button mnemonicParsing="false" text="Terminal" />
             <Pane VBox.vgrow="ALWAYS" />
+            <Button fx:id="allFormsButton" mnemonicParsing="false" onAction="#handleAllForms" prefWidth="116.0" text="All Forms">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
             <ChoiceBox fx:id="scenes" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="116.0" VBox.vgrow="NEVER">
                <opaqueInsets>
                   <Insets />
@@ -98,7 +104,7 @@
       </GridPane>
    </center>
    <right>
-      <VBox prefWidth="136.0" spacing="5.0" BorderPane.alignment="CENTER">
+      <VBox prefWidth="136.0" spacing="5.0" styleClass="vbox" BorderPane.alignment="CENTER">
          <padding>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </padding>

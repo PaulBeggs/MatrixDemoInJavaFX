@@ -1,6 +1,7 @@
- 
- 
+7 1 7
+2 4 2
+2 2 5
 
-Determinant: 0
+Determinant: 78
 
 --------------

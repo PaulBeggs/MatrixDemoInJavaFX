@@ -57,7 +57,7 @@ public class MatrixTest {
 
         System.out.println(matrix);
 
-        matrix.handleInvertingFunctionality();
+        matrix.convertToInvertedForm();
 
         System.out.println(MatrixFileHandler.matrices.get(("Inverse")));
     }

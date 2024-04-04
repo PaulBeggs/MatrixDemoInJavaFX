@@ -47,7 +47,7 @@ public class DeterminantController implements DataManipulation {
     @FXML
     private void initialize() {
         update();
-        matrixView = new MatrixView(matrixGrid, matrixCells);
+        matrixView = new MatrixView(matrixGrid);
         setupDirectionText();
         setupScenesDropdown();
         setToolTips();
@@ -170,10 +170,6 @@ public class DeterminantController implements DataManipulation {
                 ErrorsAndSyntax.showErrorPopup("Cannot load the scene.");
                 throw new IllegalArgumentException(e);
             }
-
-            DeterminantPopUpController determinantPopUpController = loader.getController();
-//            determinantPopUpController.setMatrixCells(matrixCells);
-//            determinantPopUpController.setMatrixGrid(matrixGrid);
 
             Scene animationScene = new Scene(root);
             animationScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {

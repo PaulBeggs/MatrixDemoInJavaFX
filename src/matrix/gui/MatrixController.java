@@ -39,7 +39,7 @@ public class MatrixController implements DataManipulation {
     @FXML
     BorderPane borderPane;
     @FXML
-    Button generateButton, saveButton, operationButton, identityButton, transposeButton, operationSummaryButton, loadButton, clearSummaryButton;
+    Button generateButton, saveButton, operationButton, identityButton, transposeButton, operationSummaryButton, loadButton, clearSummaryButton, allFormsButton;
     @FXML
     TextField sizeColsField, sizeRowsField, targetRow, sourceRow, multiplier;
     @FXML
@@ -58,7 +58,7 @@ public class MatrixController implements DataManipulation {
     @FXML
     private void initialize() {
         update();
-        matrixView = new MatrixView(matrixGrid, matrixCells);
+        matrixView = new MatrixView(matrixGrid);
         setupTextFieldListeners();
         setupOperationsDropdown();
         setupScenesDropdown();
@@ -318,17 +318,19 @@ public class MatrixController implements DataManipulation {
         int targetRowIndex = Integer.parseInt(targetRow.getText()) - 1;
         int sourceRowIndex = Integer.parseInt(sourceRow.getText()) - 1;
 
+        String strMultiplier = multiplier.getText();
+
         switch (selectedOption) {
             case "Swap Rows":
                 operationsSummary.add("#" + step++ + ", Swapped rows: " + (targetRowIndex + 1) + ", " + (sourceRowIndex + 1) + "\n");
                 matrix.swapRows(targetRowIndex, sourceRowIndex);
                 break;
             case "Multiply Row":
-                operationsSummary.add("#" + step++ + ", Multiplied row: " + (targetRowIndex + 1) + " by " + multiplier + "\n");
+                operationsSummary.add("#" + step++ + ", Multiplied row: " + (targetRowIndex + 1) + " by " + strMultiplier + "\n");
                 handleRowOperation(targetRowIndex, multiplier, matrix::multiplyRow);
                 break;
             case "Add Rows":
-                operationsSummary.add("#" + step++ + ", Multiplied row: " + (sourceRowIndex + 1) + " by " + multiplier + ", and added it to" + (targetRowIndex + 1) + "\n");
+                operationsSummary.add("#" + step++ + ", Multiplied row: " + (sourceRowIndex + 1) + " by " + strMultiplier + ", and added it to row: " + (targetRowIndex + 1) + "\n");
                 handleRowOperation(targetRowIndex, multiplier, (index, value) -> matrix.addRows(sourceRowIndex, targetRowIndex, value));
                 break;
             default:
@@ -438,6 +440,38 @@ public class MatrixController implements DataManipulation {
             ErrorsAndSyntax.showErrorPopup("Unable to show the information.");
             throw new IllegalArgumentException(e);
         }
+    }
+
+    @FXML
+    public void handleAllForms() {
+        MatrixApp.setFromMainController(true);
+        Stage initStage = new Stage();
+        initStage.setTitle("Matrix Selection");
+        initStage.initModality(Modality.WINDOW_MODAL);
+        initStage.initOwner(MatrixApp.getPrimaryStage());
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/initializeMatrixScene.fxml"));
+        Parent root;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            ErrorsAndSyntax.showErrorPopup("Cannot load the scene.");
+            throw new IllegalArgumentException(e);
+        }
+
+        Scene initScene = new Scene(root);
+        initScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                initStage.close();
+            }
+        });
+        MatrixApp.applyTheme(initScene);
+        initStage.setScene(initScene);
+        initStage.showAndWait();
+        matrixGrid.getChildren().clear();
+        List<List<String>> matrixData = MatrixFileHandler.loadMatrixDataFromFile(FilePath.MATRIX_PATH.getPath());
+        updateMatrixGrid(false, matrixData);
+        MatrixApp.setFromMainController(false);
     }
 
     @Override
