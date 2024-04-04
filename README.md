@@ -38,30 +38,33 @@ I use IntelliJ and Windows, so for installation, I will walk through how to get 
 	8. Select a file name, then download.
 2. **Now that you have IntelliJ installed, download the project to get started**:
 	1. Go up to the blue box that looks like this:
-	![44b967e0866c0a5c8c874387d4358afd.jpg](:/f11465efd68d4f83ada0935cbc120e1e)
-		1. Open the dropdown menu and click `download zip`.
-		2. Unzip the folder, and place in `IdeaProjects`. (This folder should be automatically downloaded with the installation of IntelliJ.
-		3. Open IntelliJ. You should see a menu like this:
-			![First Menu for IntelliJ.png](:/4fcd4d4918b44b129e60500c72e9fb25)
-		4. Click `Open`. 
-		5. Navigate to your `IdeaProjects` folder, and select the file named `MatrixDemoInJavaFX-master`. (You can keep or change this file name to whatever you want.) 
+
+ 	![alt text](https://i.imgur.com/BfFSDD3.jpg)
+
+	2. Open the dropdown menu and click `download zip`.
+	3. Unzip the folder, and place in `IdeaProjects`. (This folder should be automatically downloaded with the installation of IntelliJ.
+	4. Open IntelliJ. You should see a menu like this:
+ 
+		![alt text](https://i.imgur.com/7SG2G75.png)
+	6. Click `Open`. 
+	7. Navigate to your `IdeaProjects` folder, and select the file named `MatrixDemoInJavaFX-master`. (You can keep or change this file name to whatever you want.) 
 
 
-3. **To get started on the project**:
+4. **To get started on the project**:
 	1. Click on the gear next to the minimize button. 
 	2. Click `Project Structure...`. You should be presented with a menu that looks like the picture below. 
 	3. Notice the underlined `+`. Click that button and proceed to download the JDK by using the options that are already filled in for you.
-	![Project Structure.png](:/784b57239d3e46a48e479d8b22b0dacf)
+	![alt text](https://i.imgur.com/7SG2G75.png)
 	4. Click `Apply`, and now configure your JDK at the top of the screen. 
 	5. There may be a yellow warning that says your JDK is not configured. 
 		* Simply restart your IDE and wait. This is a large project, so indexing takes some time.
-4. **Install SceneBuilder**:
+5. **Install SceneBuilder**:
 	1. Go to [this link](https://gluonhq.com/products/scene-builder/#download).
 	2. Scroll down to 'Download Scene Builder'.
 	3. Click the first option, or whatever is relevant to your system.
 	4. Open the installer from the folder you selected.
 	5. Follow the prompts.
-5. **Add JavaFX to the project:**
+6. **Add JavaFX to the project:**
 	1. Download the JavaFX package from Gluon using this [link](https://gluonhq.com/products/javafx/).
 	2. Scroll down until you see the download for Windows. 
 		* Be sure to download the SDK version.
@@ -73,10 +76,11 @@ I use IntelliJ and Windows, so for installation, I will walk through how to get 
 	8. Search for `javafx-sdk-20.0.2`
 	9. Click the arrow to expand the dropdown menu.
 	10. Go to `lib` and highlight the following, as shown in the picture below:
-![JavaFX Library.png](:/84432a9b883a49928fc05b339c4d9e60)		
-	11. Select `OK` and `apply`. 
-	12. *Note this may take a couple of tries. Consider trouble shooting sources in case you cannot get the library added properly. I consistently have problems adding this library, so don't be discouraged if it doesn't work the first time.*
-6. **Add JUnit to the project:**
+     
+		![alt text](https://i.imgur.com/CcEvtZC.png)	
+	12. Select `OK` and `apply`. 
+	13. *Note this may take a couple of tries. Consider trouble shooting sources in case you cannot get the library added properly. I consistently have problems adding this library, so don't be discouraged if it doesn't work the first time.*
+7. **Add JUnit to the project:**
 	1. From the prior step, follow the same procedure until sub-step 3. 
 	2. This time, do not click `From Java`. Instead, click `From Maven`.
 	3. Type `JUnit` and the magnifying class next to the text box.
@@ -88,7 +92,9 @@ I use IntelliJ and Windows, so for installation, I will walk through how to get 
 To use the application, follow these steps:
 
 1. In the `Project` tab, navigate to the `MatrixApp` class. It is located in the project hierarchy as shown:
-![MatrixApp Destination.png](:/97f506ead6254962930a96a81a757ae1)
+
+![alt text](https://i.imgur.com/iIta6Qu.png)
+
 2. On line 16, click the green button to start the application. 
 
 ## Acknowledgments
