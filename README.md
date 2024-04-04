@@ -28,7 +28,7 @@ Ensure you have the following installed (*refer to Installation for additional h
 I use IntelliJ and Windows, so for installation, I will walk through how to get the project going using **Windows**. 
 
 1. **If you haven't already, download IntelliJ**:
-	1. Go to [IntelliJ Download Page](https://www.jetbrains.com/idea/download/download-thanks.html?platform=windows&code=IIC).
+	1. Go to [IntelliJ Download Page](https://www.jetbrains.com/idea/download/?fromIDE=&section=windows).
 	2. Download either the community version, or the ultimate version based on your needs.
 	3. Go to your `downloads` file (or wherever you have your downloads from online go).
 	4. Click (or search) `ideaIC-2023.3.6`.
